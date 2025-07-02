@@ -11,11 +11,11 @@ import { HiBars3 } from "react-icons/hi2";
 const NavMenu = () => {
   return (
     <div className="bg-gray-900 text-gray-300">
-      <nav className="max-w-7xl mx-auto h-16 flex items-center px-4 sm:px-6 lg:px-8">
+      <nav className="h-16 flex items-center">
         <Link to="/" className="text-xl flex px-2 py-1">
           MiLiMan'S
         </Link>
-        <div className="ml-auto flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <div className="ml-auto flex flex-col gap-x-2 gap-y-1 items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
           <div className="hidden sm:inline">
             <NavLink className="px-2 py-1" to="/books">
               All Books
@@ -27,7 +27,7 @@ const NavMenu = () => {
               Borrow Summary
             </NavLink>
           </div>
-          <div className="inline sm:hidden">
+          <div className="block sm:hidden">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <HiBars3 className="text-xl mx-2 my-1" />

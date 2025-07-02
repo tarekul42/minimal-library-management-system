@@ -6,6 +6,8 @@ import { router } from "./routes/routes.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <div className="bg-gray-900">
     <RouterProvider router={router} />
+    </div>
   </StrictMode>
 );

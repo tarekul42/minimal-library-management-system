@@ -1,0 +1,60 @@
+import { Link, NavLink } from "react-router";
+import "./NavMenu.css";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { HiBars3 } from "react-icons/hi2";
+
+const NavMenu = () => {
+  return (
+    <div className="bg-gray-900 text-gray-300">
+      <nav className="max-w-7xl mx-auto h-16 flex items-center px-4 sm:px-6 lg:px-8">
+        <Link to="/" className="text-xl flex px-2 py-1">
+          MiLiMan'S
+        </Link>
+        <div className="ml-auto flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+          <div className="hidden sm:inline">
+            <NavLink className="px-2 py-1" to="/books">
+              All Books
+            </NavLink>
+            <NavLink className="px-2 py-1" to="/create-book">
+              Add Book
+            </NavLink>
+            <NavLink className="px-2 py-1" to="/borrow-summary">
+              Borrow Summary
+            </NavLink>
+          </div>
+          <div className="inline sm:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <HiBars3 className="text-xl mx-2 my-1" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-gray-900 text-gray-300 mx-2">
+                <DropdownMenuItem>
+                  <NavLink className="px-2 py-1" to="/books">
+                    All Books
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <NavLink className="px-2 py-1" to="/create-book">
+                    Add Book
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <NavLink className="px-2 py-1" to="/borrow-summary">
+                    Borrow Summary
+                  </NavLink>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default NavMenu;

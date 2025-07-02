@@ -1,0 +1,11 @@
+.active {
+  text-decoration: none;
+  background-color: #1e2939;
+  border-radius: 4px;
+}
+
+a:hover {
+  text-decoration: none;
+  background-color: #364153;
+  border-radius: 4px;
+}

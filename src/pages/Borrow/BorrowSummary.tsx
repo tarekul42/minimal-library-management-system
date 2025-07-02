@@ -4,7 +4,7 @@
 const BorrowSummary = () => {
     return (
         <div>
-            
+            this is borrow summary component
         </div>
     );
 };

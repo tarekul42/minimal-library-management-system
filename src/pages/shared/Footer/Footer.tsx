@@ -37,7 +37,6 @@ export default function Footer() {
               Summary
             </Link>
           </nav>
-
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
             <Link to="#">

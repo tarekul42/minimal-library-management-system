@@ -15,7 +15,7 @@ import { HiMiniPencilSquare } from "react-icons/hi2";
 
 const Books = () => {
   return (
-    <div className="w-full">
+    <div className="w-full min-h-screen">
       <Table border={2}>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>

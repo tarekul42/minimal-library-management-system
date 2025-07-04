@@ -3,7 +3,7 @@
 
 const BorrowSummary = () => {
     return (
-        <div>
+        <div className="min-h-screen">
             this is borrow summary component
         </div>
     );

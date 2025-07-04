@@ -10,17 +10,17 @@ import { HiBars3 } from "react-icons/hi2";
 
 const NavMenu = () => {
   return (
-    <div className="bg-gray-900 text-gray-300">
+    <div className="bg-gray-800 text-gray-300  px-6 sm:px-8 lg:px-10">
       <nav className="h-16 flex items-center">
-        <Link to="/" className="text-xl flex px-2 py-1">
+        <Link to="/" className="text-xl flex py-1">
           MiLiMan'S
         </Link>
-        <div className="ml-auto flex flex-col gap-x-2 gap-y-1 items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <div className="ml-auto flex flex-col  gap-y-1 items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
           <div className="hidden sm:inline">
             <NavLink className="px-2 py-1" to="/books">
               All Books
             </NavLink>
-            <NavLink className="px-2 py-1" to="/create-book">
+            <NavLink className="px-2 py-1 mx-2" to="/create-book">
               Add Book
             </NavLink>
             <NavLink className="px-2 py-1" to="/borrow-summary">

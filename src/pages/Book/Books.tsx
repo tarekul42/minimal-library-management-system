@@ -11,7 +11,7 @@ import {
 import { HiTrash } from "react-icons/hi2";
 import { HiShoppingCart } from "react-icons/hi2";
 import { HiEye } from "react-icons/hi2";
-import { HiMiniPencilSquare } from "react-icons/hi2";
+import EditBook from "./EditBook";
 
 const Books = () => {
   return (
@@ -26,7 +26,9 @@ const Books = () => {
             <TableHead className="text-gray-100">Author</TableHead>
             <TableHead className="text-gray-100">Genre</TableHead>
             <TableHead className="text-gray-100 text-center">Copies</TableHead>
-            <TableHead className="text-gray-100 text-center">Availablity</TableHead>
+            <TableHead className="text-gray-100 text-center">
+              Availablity
+            </TableHead>
             <TableHead className="text-gray-100 text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -45,9 +47,9 @@ const Books = () => {
               <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
                 <HiShoppingCart />
               </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
+              {/* <button className=""> */}
+                <EditBook />
+              {/* </button> */}
               <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
                 <HiTrash />
               </button>

@@ -4,8 +4,8 @@
   border-radius: 4px;
 }
 
-a:hover {
+.navbarLink:hover {
   text-decoration: none;
-  background-color: #364153;
+  background-color: #1e2939;
   border-radius: 4px;
 }

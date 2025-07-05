@@ -12,11 +12,11 @@ import { Link } from "react-router";
 const Home = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center p-6 sm:p-8 lg:p-10">
+      <div className="flex flex-col items-center justify-center p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
         <h1 className="text-xl md:text-2xl lg:text-3xl p-1 sm:p-2 lg:p-4">Minimal Library Management System</h1>
         <h1 className="text-xl md:text-2xl lg:text-3xl p-1 sm:p-2 lg:p-4">Our Available Books</h1>
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center gap-4 py-2 md:py-3 lg:py-4">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center gap-4 py-2 md:py-3 lg:py-4">
           <Card className="w-full max-w-sm bg-gray-900 border-0 text-gray-300">
             <CardHeader>
               <img

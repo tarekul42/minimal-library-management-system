@@ -21,211 +21,24 @@ const Books = () => {
         <TableCaption>A list of all books.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-gray-100">ISBN</TableHead>
+            <TableHead className="text-gray-100 text-center">ISBN</TableHead>
             <TableHead className="text-gray-100">Title</TableHead>
             <TableHead className="text-gray-100">Author</TableHead>
-            <TableHead className="text-gray-100">Copies</TableHead>
-            <TableHead className="text-gray-100">Availablity</TableHead>
-            <TableHead className="text-gray-100">Actions</TableHead>
+            <TableHead className="text-gray-100">Genre</TableHead>
+            <TableHead className="text-gray-100 text-center">Copies</TableHead>
+            <TableHead className="text-gray-100 text-center">Availablity</TableHead>
+            <TableHead className="text-gray-100 text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell>9780061120084</TableCell>
+            <TableCell className="text-center">9780061120084</TableCell>
             <TableCell>To Kill a Mockingbird</TableCell>
             <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
-              <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiShoppingCart />
-              </button>
-              <button className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiMiniPencilSquare />
-              </button>
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>7</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell className="flex gap-1">
+            <TableCell>Fiction</TableCell>
+            <TableCell className="text-center">7</TableCell>
+            <TableCell className="text-center">Available</TableCell>
+            <TableCell className="flex gap-1 justify-center">
               <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
                 <HiEye />
               </button>

@@ -35,13 +35,13 @@ const Home = () => {
             <CardFooter className="flex-col gap-2">
               <Button
                 type="submit"
-                className="w-full bg-gray-300 text-gray-950"
+                className="w-full bg-gray-300 text-gray-950 cursor-pointer"
               >
                 View Details
               </Button>
               <Button
                 variant="outline"
-                className="w-full bg-gray-900 border-gray-800"
+                className="w-full bg-gray-900 border-gray-800 cursor-pointer"
               >
                 Borrow this book
               </Button>
@@ -199,7 +199,7 @@ const Home = () => {
           </Card>
         </div>
         <Link to="/books">
-          <Button className="rounded bg-gray-300 text-gray-950 my-2 md:my-3 lg:my-4">
+          <Button className="rounded bg-gray-300 text-gray-950 my-2 md:my-3 lg:my-4 cursor-pointer">
             Explore all books
           </Button>
         </Link>

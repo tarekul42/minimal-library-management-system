@@ -53,7 +53,7 @@ const EditBook = () => {
               <HiMiniPencilSquare />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
             <DialogHeader>
               <DialogTitle className="text-gray-300">Edit profile</DialogTitle>
             </DialogHeader>

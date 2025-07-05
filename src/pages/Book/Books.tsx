@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/table";
 import { HiTrash } from "react-icons/hi2";
 import { HiShoppingCart } from "react-icons/hi2";
-import { HiEye } from "react-icons/hi2";
 import EditBook from "./EditBook";
+import Book from "./Book";
 
 const Books = () => {
   return (
@@ -41,15 +41,11 @@ const Books = () => {
             <TableCell className="text-center">7</TableCell>
             <TableCell className="text-center">Available</TableCell>
             <TableCell className="flex gap-1 justify-center">
-              <button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiEye />
-              </button>
+              <Book />
               <button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
                 <HiShoppingCart />
               </button>
-              {/* <button className=""> */}
-                <EditBook />
-              {/* </button> */}
+              <EditBook />
               <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
                 <HiTrash />
               </button>

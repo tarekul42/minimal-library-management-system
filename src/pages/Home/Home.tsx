@@ -7,12 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetBookQuery } from "@/redux/api/baseApi";
+import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { Link } from "react-router";
 
 const Home = () => {
-  const { data, isLoading } = useGetBookQuery("");
+  const { data, isLoading } = useGetBooksQuery(undefined);
 
   // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];

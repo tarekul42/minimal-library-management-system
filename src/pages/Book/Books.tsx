@@ -12,8 +12,22 @@ import EditBook from "./EditBook";
 import Book from "./Book";
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
+import { useGetBooksQuery } from "@/redux/api/baseApi";
+import type { IBook } from "@/types/book";
 
 const Books = () => {
+  const { data, isLoading } = useGetBooksQuery(undefined);
+
+  // If data is nested, extract the array for mapping
+  const books: IBook[] = data?.data || [];
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen p-6 sm:p-8 lg:p-10  xl:py-10 xl:px-0">
@@ -34,20 +48,23 @@ const Books = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="text-center">9780061120084</TableCell>
-            <TableCell>To Kill a Mockingbird</TableCell>
-            <TableCell>Harper Lee</TableCell>
-            <TableCell>Fiction</TableCell>
-            <TableCell className="text-center">7</TableCell>
-            <TableCell className="text-center">Available</TableCell>
-            <TableCell className="flex gap-1 justify-center">
-              <Book />
-              <Borrow />
-              <EditBook />
-              <DeleteBook />
-            </TableCell>
-          </TableRow>
+          {books &&
+            books.map((book: IBook) => (
+              <TableRow>
+                <TableCell className="text-center">{book.isbn}</TableCell>
+                <TableCell>{book.title}</TableCell>
+                <TableCell>{book.author}</TableCell>
+                <TableCell>{book.genre}</TableCell>
+                <TableCell className="text-center">{book.copies}</TableCell>
+                <TableCell className="text-center">{book.available ? "Available" : "Not Available"}</TableCell>
+                <TableCell className="flex gap-1 justify-center">
+                  <Book />
+                  <Borrow />
+                  <EditBook />
+                  <DeleteBook />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

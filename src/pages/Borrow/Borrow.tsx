@@ -17,7 +17,7 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import MLMSDatePicker from "@/components/form/MLMSDatePicker";
 
 const Borrow = () => {
-  const handleEdit: SubmitHandler<FieldValues> = (data) => {
+  const handleBorrow: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
 
@@ -50,7 +50,7 @@ const Borrow = () => {
                   <span className="text-sm font-semibold text-gray-400">9</span>
                 </CardTitle>
                 </CardContent>
-              <MLMSForm className="space-y-3" onSubmit={handleEdit}>
+              <MLMSForm className="space-y-3" onSubmit={handleBorrow}>
                 <MLMSInput name="quantity" label="Quantity" />
                 <MLMSDatePicker name="dueDate" label="Due Date" />
                 <DialogFooter className="pt-6">

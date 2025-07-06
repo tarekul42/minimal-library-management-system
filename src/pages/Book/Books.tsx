@@ -8,10 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { HiTrash } from "react-icons/hi2";
 import { HiShoppingCart } from "react-icons/hi2";
 import EditBook from "./EditBook";
 import Book from "./Book";
+import DeleteBook from "./DeleteBook";
 
 const Books = () => {
   return (
@@ -46,9 +46,7 @@ const Books = () => {
                 <HiShoppingCart />
               </button>
               <EditBook />
-              <button className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
-                <HiTrash />
-              </button>
+              <DeleteBook />
             </TableCell>
           </TableRow>
         </TableBody>

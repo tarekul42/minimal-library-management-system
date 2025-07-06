@@ -72,7 +72,7 @@ const EditBook = () => {
                 />
             <DialogFooter className="pt-6">
               <DialogClose asChild>
-                <Button variant="outline" className="bg-gray-900 border-gray-800 text-gray-300 cursor-pointer">Cancel</Button>
+                <Button variant="outline" className="bg-gray-900 border-gray-600 text-gray-300 cursor-pointer">Cancel</Button>
               </DialogClose>
               <Button type="submit" className="bg-gray-300 text-gray-950 cursor-pointer">Save changes</Button>
             </DialogFooter>

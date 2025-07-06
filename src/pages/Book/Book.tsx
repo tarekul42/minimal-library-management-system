@@ -38,7 +38,7 @@ const Book = () => {
                 <CardTitle className="text-gray-300">
                   Title: The Hobbit
                 </CardTitle>
-                <CardTitle className="">
+                <CardTitle>
                   Author:{" "}
                   <span className="text-sm font-semibold text-gray-400">
                     J.R.R. Tolkien

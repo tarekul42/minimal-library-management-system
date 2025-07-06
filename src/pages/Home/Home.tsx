@@ -43,7 +43,7 @@ const Home = () => {
                 variant="outline"
                 className="w-full bg-gray-900 border-gray-800 cursor-pointer"
               >
-                Borrow this book
+                Borrow now
               </Button>
             </CardFooter>
           </Card>

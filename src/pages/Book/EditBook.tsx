@@ -14,9 +14,7 @@ import MLMSInput from "@/components/form/MLMSInput";
 import MLMSSelect from "@/components/form/MLMSSelect";
 import MLMSTextArea from "@/components/form/MLMSTextArea";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 const Genre = [
@@ -35,13 +33,12 @@ const availablity = [
     value: "NOT_AVAILABLE",
     label: "Not Available",
   },
-]
+];
 
 const EditBook = () => {
-
-      const handleEdit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data);
-      };
+  const handleEdit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -54,7 +51,7 @@ const EditBook = () => {
           </DialogTrigger>
           <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
             <DialogHeader>
-              <DialogTitle className="text-gray-300">Edit profile</DialogTitle>
+              <DialogTitle className="text-gray-300">Edit Book</DialogTitle>
             </DialogHeader>
             <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
               <MLMSForm className="space-y-3" onSubmit={handleEdit}>
@@ -70,12 +67,22 @@ const EditBook = () => {
                   defaultValue="AVAILABLE"
                   options={availablity}
                 />
-            <DialogFooter className="pt-6">
-              <DialogClose asChild>
-                <Button variant="outline" className="bg-gray-900 border-gray-600 text-gray-300 cursor-pointer">Cancel</Button>
-              </DialogClose>
-              <Button type="submit" className="bg-gray-300 text-gray-950 cursor-pointer">Save changes</Button>
-            </DialogFooter>
+                <DialogFooter className="pt-6">
+                  <DialogClose asChild>
+                    <Button
+                      variant="outline"
+                      className="bg-gray-900 border-gray-600 text-gray-300 cursor-pointer"
+                    >
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    type="submit"
+                    className="bg-gray-300 text-gray-950 cursor-pointer"
+                  >
+                    Save changes
+                  </Button>
+                </DialogFooter>
               </MLMSForm>
             </Card>
           </DialogContent>

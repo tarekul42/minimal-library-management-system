@@ -43,7 +43,7 @@ const DeleteBook = () => {
                 </DialogClose>
                 <Button
                   type="submit"
-                  className="bg-gray-300 text-gray-950 cursor-pointer"
+                  className="bg-red-500 text-white font-semibold cursor-pointer"
                 >
                   Yes, Delete
                 </Button>

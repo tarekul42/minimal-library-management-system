@@ -17,9 +17,9 @@ const Books = () => {
   return (
     <div className="w-full min-h-screen p-6 sm:p-8 lg:p-10  xl:py-10 xl:px-0">
       <h1 className="text-3xl pb-4 text-center">All Books</h1>
-      <Table border={2} className="border">
+      <Table border={2} className="border border-gray-400">
         <TableCaption className="pb-4">A list of all books.</TableCaption>
-        <TableHeader>
+        <TableHeader className="bg-gray-900">
           <TableRow>
             <TableHead className="text-gray-100 text-center">ISBN</TableHead>
             <TableHead className="text-gray-100">Title</TableHead>

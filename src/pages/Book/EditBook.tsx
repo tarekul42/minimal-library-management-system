@@ -37,7 +37,6 @@ const availablity = [
   },
 ]
 
-
 const EditBook = () => {
 
       const handleEdit: SubmitHandler<FieldValues> = (data) => {

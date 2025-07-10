@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://library-management-api-iota.vercel.app/api/",
+    baseUrl: "https://library-management-api-iota.vercel.app/api",
   }),
   tagTypes: ["book", "borrow"],
   endpoints: (builder) => ({
@@ -33,7 +33,7 @@ export const baseApi = createApi({
     }),
 
     // update book
-    updateBook: builder.mutation<
+    editBook: builder.mutation<
       IBook,
       { bookId: string; bookData: Partial<IBook> }
     >({
@@ -76,7 +76,7 @@ export const {
   useGetBooksQuery,
   useCreateBookMutation,
   useGetBookQuery,
-  useUpdateBookMutation,
+  useEditBookMutation,
   useDeleteBookMutation,
   useBorrowBookMutation,
   useGetBorrowSummaryQuery,

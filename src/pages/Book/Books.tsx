@@ -20,6 +20,7 @@ const Books = () => {
 
   // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
+  console.log(books);
 
   return (
     <>
@@ -66,18 +67,32 @@ const Books = () => {
                         {book.copies}
                       </TableCell>
                       <TableCell className="text-center">
-                        {book.available ? "Available" : "Not Available"}
+                        <span
+                          className={
+                            book.available ? "text-green-400" : "text-red-400"
+                          }
+                        >
+                          {book.available ? "Available" : "Not Available"}
+                        </span>
                       </TableCell>
                       <TableCell className="flex gap-1 justify-center">
-                        <Book />
-                        <Borrow />
-                        <EditBook />
-                        <DeleteBook />
+                        <Book bookId={book._id} book={book} />
+                        <Borrow bookId={book._id} book={book} />
+                        <EditBook bookId={book._id} book={book} />
+                        <DeleteBook bookId={book._id} book={book} />
                       </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
             </Table>
+            {books.length === 0 && !isLoading && (
+              <div className="text-center py-8">
+                <p className="text-gray-400 text-lg">No books found</p>
+                <p className="text-gray-500 text-sm">
+                  Add some books to get started
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}

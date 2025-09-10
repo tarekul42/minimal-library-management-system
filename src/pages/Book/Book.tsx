@@ -11,14 +11,48 @@ import {
 import { HiEye } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { IBook } from "@/types/book";
+import { useGetBookQuery } from "@/redux/api/baseApi";
 
-const Book = () => {
+interface BookProps {
+  bookId: string;
+  book: IBook;
+}
+
+const Book = ({ bookId, book }: BookProps) => {
+  const { data, isLoading, error} = useGetBookQuery(bookId);
+  
+  const bookData = book || data?.data;
+  const { title, author, genre, isbn, description, copies, available } = bookData;
+
+  const handleViewClick = () =>{
+    console.log("Viewing book details for: ", title);
+  }
+
+
+  if (isLoading) {
+    return (
+      <Button disabled className="text-blue-500 bg-gray-900 text-xl p-2 rounded">
+        <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+      </Button>
+    );
+  }
+
+  if (error || !bookData) {
+    return (
+      <Button disabled className="text-red-500 bg-gray-900 text-xl p-2 rounded">
+        <HiEye />
+      </Button>
+    );
+  }
+
   return (
     <>
       <Dialog>
-        <form>
           <DialogTrigger asChild>
-            <Button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900">
+            <Button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+            onClick={handleViewClick}
+            >
               <HiEye />
             </Button>
           </DialogTrigger>
@@ -31,47 +65,45 @@ const Book = () => {
                 <img
                   className="rounded-xl"
                   src="https://i.ibb.co/j9pJxVL0/LmpwZw.jpg"
-                  alt="The Theory of Everything Book Image"
+                  alt={`${title} Book Cover`}
                 />
               </CardHeader>
               <CardContent className="px-0 space-y-1">
                 <CardTitle className="text-gray-300">
-                  Title: The Hobbit
+                  Title: {title}
                 </CardTitle>
                 <CardTitle>
                   Author:{" "}
                   <span className="text-sm font-semibold text-gray-400">
-                    J.R.R. Tolkien
+                    {author}
                   </span>
                 </CardTitle>
                 <CardTitle>
                   Genre:{" "}
                   <span className="text-sm font-semibold text-gray-400">
-                    FANTASY
+                    {genre}
                   </span>
                 </CardTitle>
                 <CardTitle>
                   ISBN:{" "}
                   <span className="text-sm font-semibold text-gray-400">
-                    9780547928227
+                    {isbn}
                   </span>
                 </CardTitle>
                 <CardTitle>
                   Description:{" "}
                   <span className="text-sm font-semibold text-gray-400">
-                    A classic fantasy novel that follows the journey of Bilbo
-                    Baggins as he embarks on an epic quest filled with dragons,
-                    treasure, and adventure.
+                    {description}
                   </span>
                 </CardTitle>
                 <CardTitle>
                   Copies:{" "}
-                  <span className="text-sm font-semibold text-gray-400">9</span>
+                  <span className="text-sm font-semibold text-gray-400">{copies}</span>
                 </CardTitle>
                 <CardTitle>
                   Availablity:{" "}
                   <span className="text-sm font-semibold text-gray-400">
-                    Available
+                    {available ? "Available" : "Not Available"}
                   </span>
                 </CardTitle>
               </CardContent>
@@ -84,7 +116,6 @@ const Book = () => {
               </DialogClose>
             </DialogFooter>
           </DialogContent>
-        </form>
       </Dialog>
     </>
   );

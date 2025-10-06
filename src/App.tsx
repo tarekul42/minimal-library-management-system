@@ -5,9 +5,11 @@ import Footer from "./pages/shared/Footer/Footer";
 function App() {
   return (
     <>
-      <div className="max-w-7xl mx-auto bg-gray-950 text-gray-50">
+      <div className="bg-gray-950 text-gray-50">
         <NavMenu />
-        <Outlet />
+        <div className="max-w-7xl mx-auto">
+          <Outlet />
+        </div>
         <Footer />
       </div>
     </>

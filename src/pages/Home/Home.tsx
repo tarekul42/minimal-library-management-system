@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
 const Home = () => {
@@ -54,17 +55,18 @@ const Home = () => {
                   <CardDescription>{singleData.author}</CardDescription>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                  <Button
-                    type="submit"
-                    className="w-full bg-gray-300 text-gray-950 cursor-pointer"
-                  >
-                    View Details
-                  </Button>
+                    <Button
+                      type="submit"
+                      className="w-full bg-gray-300 text-gray-950 cursor-pointer"
+                    >
+                      See Details
+                    </Button>
                   <Button
                     variant="outline"
                     className="w-full bg-gray-900 border-gray-800 cursor-pointer"
                   >
                     Borrow now
+                    <ArrowRight className="ml-2" />
                   </Button>
                 </CardFooter>
               </Card>

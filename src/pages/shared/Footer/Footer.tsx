@@ -14,7 +14,7 @@ export default function Footer() {
           {/* Logo and description */}
           <div className="mb-6 py-1 md:mb-0 text-center md:text-left">
             <Link to="/" className="text-2xl font-bold text-white">
-              MiLiMan'S
+              Library
             </Link>
             <p className="mt-2 text-sm max-w-xs">
               Providing seamless access to resources, user support, and

@@ -221,7 +221,7 @@ const CreateBook = () => {
             />
 
             {/* Submit Button */}
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button type="submit" disabled={isLoading} className="w-full text-foreground">
               Submit
             </Button>
           </form>

@@ -13,7 +13,7 @@ const NavMenu = () => {
     <div className="bg-gray-900 text-gray-300  px-6 sm:px-8 lg:px-10">
       <nav className="h-16 flex items-center">
         <Link to="/" className="navbarLink text-xl flex px-2 py-1">
-          MiLiMan'S
+          Library
         </Link>
         <div className="ml-auto flex flex-col  gap-y-1 items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
           <div className="hidden sm:inline">

@@ -1,10 +1,10 @@
 
 import App from "@/App";
+import BorrowBookModalWrapper from "@/components/modalWrappers/BorrowBookModalWrapper";
 import EditBookModalWrapper from "@/components/modalWrappers/EditBookModalWrapper";
 import ViewBookModalWrapper from "@/components/modalWrappers/ViewBookModalWrapper";
 import Books from "@/pages/Book/Books";
 import CreateBook from "@/pages/Book/CreateBook";
-import Borrow from "@/pages/Borrow/Borrow";
 import BorrowSummary from "@/pages/Borrow/BorrowSummary";
 import Home from "@/pages/Home/Home";
 import { createBrowserRouter } from "react-router";
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/borrow/:bookId",
-        Component: Borrow,
+        Component: BorrowBookModalWrapper,
       },
       {
         path: "/borrow-summary",

@@ -7,11 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import MLMSForm from "@/components/form/MLMSFrom";
-import MLMSInput from "@/components/form/MLMSInput";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -21,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useBorrowBookMutation } from "@/redux/api/baseApi";
+import { useBorrowBookMutation, useGetBookQuery } from "@/redux/api/baseApi";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -33,6 +31,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 
 interface BorrowBookModalProps {
   open: boolean;
@@ -42,8 +41,10 @@ interface BorrowBookModalProps {
 
 // Schema definition
 const borrowBookSchema = z.object({
-  quantity: z.number().min(1, { message: "Quantity must be at least 1." }),
-  dueDate: z.date({ message: "Date is required." }),
+  quantity: z.coerce
+    .number()
+    .min(1, { message: "Quantity must be at least 1." }),
+  dueDate: z.date(),
 });
 
 const Borrow: React.FC<BorrowBookModalProps> = ({
@@ -52,9 +53,12 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
   bookId,
 }) => {
   const [borrowBook, { isLoading: isUpdating }] = useBorrowBookMutation();
-  const handleBorrow: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-  };
+  const {
+    data: book,
+    isLoading,
+    isError,
+  } = useGetBookQuery(bookId!, { skip: !bookId });
+  const bookData = book?.data;
 
   const form = useForm<z.infer<typeof borrowBookSchema>>({
     resolver: zodResolver(borrowBookSchema),
@@ -65,58 +69,92 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
   });
 
   const onSubmit = async (values: z.infer<typeof borrowBookSchema>) => {
+    if (!bookId || !values.quantity || !values.dueDate) {
+      alert("Book ID, quantity, and due date are required.");
+      return;
+    }
     try {
-      const bookData = { ...values, bookId: bookId! };
-      await borrowBook({ bookData }).unwrap();
+      const borrowData = {
+        book: bookId,
+        quantity: values.quantity,
+        dueDate: values.dueDate.toISOString(),
+      };
+      console.log("sending payload", borrowData)
+
+      await borrowBook(borrowData).unwrap();
       form.reset();
 
-      // Show success message (you can implement toast notifications here)
       console.log("Book updated successfully!");
       onOpenChange(false);
     } catch (error) {
       console.error("Error updating book:", error);
-      // Handle error (you can implement error toast here)
+      alert("Failed to borrow book. Please check your input and try again.");
     }
   };
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
-          <DialogHeader>
-            <DialogTitle className="text-gray-300">Borrow Book</DialogTitle>
-          </DialogHeader>
-          <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                <CardContent className="px-0 space-y-1">
-                  <CardTitle className="text-gray-300">
-                    Title: The Hobbit
-                  </CardTitle>
-                  <CardTitle>
-                    Author:{" "}
-                    <span className="text-sm font-semibold text-gray-400">
-                      J.R.R. Tolkien
-                    </span>
-                  </CardTitle>
-                  <CardTitle>
-                    Copies:{" "}
-                    <span className="text-sm font-semibold text-gray-400">
-                      9
-                    </span>
-                  </CardTitle>
-                </CardContent>
-                <MLMSForm className="space-y-3" onSubmit={handleBorrow}>
-                  <MLMSInput name="quantity" label="Quantity" />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isError || !bookData ? (
+        <div>Error loading book data.</div>
+      ) : (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
+            <DialogHeader>
+              <DialogTitle className="text-gray-300">Borrow Book</DialogTitle>
+            </DialogHeader>
+            <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
+                  <CardContent className="px-0 space-y-1">
+                    <CardTitle className="text-gray-300">
+                      {bookData.title}
+                    </CardTitle>
+                    <CardTitle>
+                      Author:{" "}
+                      <span className="text-sm font-semibold text-gray-400">
+                        {bookData.author}
+                      </span>
+                    </CardTitle>
+                    <CardTitle>
+                      Copies:{" "}
+                      <span className="text-sm font-semibold text-gray-400">
+                        {bookData.copies}
+                      </span>
+                    </CardTitle>
+                  </CardContent>
+
+                  <FormField
+                    control={form.control}
+                    name="quantity"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Quantity</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Quantity"
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.valueAsNumber)
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <FormField
                     control={form.control}
                     name="dueDate"
                     render={({ field }) => (
                       <FormItem className="flex flex-col w-full bg-none">
-                        <FormLabel>Date of birth</FormLabel>
+                        <FormLabel>Due Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
@@ -147,7 +185,7 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
                             />
                           </PopoverContent>
                         </Popover>
-                        <FormDescription>
+                        <FormDescription className="sr-only">
                           Your Due Date to confirm your borrow.
                         </FormDescription>
                         <FormMessage />
@@ -172,12 +210,12 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
                       {isUpdating ? "Borrowing...." : "Borrow now"}
                     </Button>
                   </DialogFooter>
-                </MLMSForm>
-              </form>
-            </Form>
-          </Card>
-        </DialogContent>
-      </Dialog>
+                </form>
+              </Form>
+            </Card>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

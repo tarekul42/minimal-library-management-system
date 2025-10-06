@@ -23,7 +23,6 @@ const Books = () => {
 
   // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
-  console.log(books);
 
   const [bookModalOpen, setBookModalOpen] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState<string | null>(null);

@@ -8,15 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditBook from "./EditBook";
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HiEye } from "react-icons/hi2";
+import { HiEye, HiMiniPencilSquare } from "react-icons/hi2";
 import Book from "./Book";
+import EditBook from "./EditBook";
 
 const Books = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
@@ -27,10 +27,17 @@ const Books = () => {
 
   const [bookModalOpen, setBookModalOpen] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editBookId, setEditBookId] = useState<string | null>(null);
 
   const handleViewBook = (bookId: string) => {
     setSelectedBookId(bookId);
     setBookModalOpen(true);
+  };
+
+  const handleEditBook = (bookId: string) => {
+    setEditBookId(bookId);
+    setEditModalOpen(true);
   };
 
   return (
@@ -69,7 +76,7 @@ const Books = () => {
               <TableBody>
                 {books &&
                   books.map((book: IBook) => (
-                    <TableRow>
+                    <TableRow key={book._id}>
                       <TableCell className="text-center">{book.isbn}</TableCell>
                       <TableCell>{book.title}</TableCell>
                       <TableCell>{book.author}</TableCell>
@@ -94,7 +101,12 @@ const Books = () => {
                           <HiEye />
                         </Button>
                         <Borrow />
-                        <EditBook />
+                        <Button
+                          className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+                          onClick={() => handleEditBook(book._id)}
+                        >
+                          <HiMiniPencilSquare />
+                        </Button>
                         <DeleteBook />
                       </TableCell>
                     </TableRow>
@@ -114,6 +126,11 @@ const Books = () => {
               open={bookModalOpen}
               onOpenChange={setBookModalOpen}
               bookId={selectedBookId}
+            />
+            <EditBook
+              open={editModalOpen}
+              onOpenChange={setEditModalOpen}
+              bookId={editBookId}
             />
           </div>
         </>

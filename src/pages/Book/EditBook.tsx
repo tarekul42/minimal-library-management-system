@@ -5,9 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { HiMiniPencilSquare } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useGetBookQuery, useEditBookMutation } from "@/redux/api/baseApi";
@@ -32,8 +30,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { Genre } from "@/types/book";
-import { useState } from "react";
-import { useParams } from "react-router";
+
+interface EditBookModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  bookId: string | null;
+}
 
 const genreOptions = [
   { value: "FICTION", label: "Fiction" },
@@ -63,12 +65,17 @@ const editBookSchema = z.object({
   available: z.string(),
 });
 
-const EditBook = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { id } = useParams<{ id: string }>();
-  const { data: book, isLoading: isFetching } = useGetBookQuery(id);
-  const [editBook, { isLoading: isUpdating }] = useEditBookMutation(id);
-
+const EditBook: React.FC<EditBookModalProps> = ({
+  open,
+  onOpenChange,
+  bookId,
+}) => {
+  const {
+    data: book,
+    isLoading,
+    isError,
+  } = useGetBookQuery(bookId!, { skip: !bookId });
+  const [editBook, { isLoading: isUpdating }] = useEditBookMutation();
   const bookData = book?.data;
 
   const form = useForm<z.infer<typeof editBookSchema>>({
@@ -84,22 +91,6 @@ const EditBook = () => {
     },
   });
 
-  // Update form when book data is loaded
-  const handleDialogOpen = () => {
-    if (bookData) {
-      form.reset({
-        title: bookData.title,
-        author: bookData.author,
-        genre: bookData.genre,
-        isbn: bookData.isbn,
-        description: bookData.description || "",
-        copies: bookData.copies,
-        available: bookData.available.toString(),
-      });
-    }
-    setIsOpen(true);
-  };
-
   const onSubmit = async (values: z.infer<typeof editBookSchema>) => {
     try {
       const updateData = {
@@ -109,230 +100,215 @@ const EditBook = () => {
       };
 
       console.log(values.genre);
-      await editBook({ id, bookData: updateData }).unwrap();
-      setIsOpen(false);
+      await editBook({ bookId: bookId!, bookData: updateData }).unwrap();
       form.reset();
 
       // Show success message (you can implement toast notifications here)
       console.log("Book updated successfully!");
+      onOpenChange(false);
     } catch (error) {
       console.error("Error updating book:", error);
       // Handle error (you can implement error toast here)
     }
   };
 
-  if (isFetching && !book) {
-    return (
-      <Button
-        disabled
-        className="text-amber-500 bg-gray-900 text-xl p-2 rounded"
-      >
-        <div className="animate-spin h-4 w-4 border-2 border-amber-500 border-t-transparent rounded-full"></div>
-      </Button>
-    );
-  }
-
-  if (!bookData) {
-    return (
-      <Button disabled className="text-red-500 bg-gray-900 text-xl p-2 rounded">
-        <HiMiniPencilSquare />
-      </Button>
-    );
-  }
-
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button
-            className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
-            onClick={handleDialogOpen}
-          >
-            <HiMiniPencilSquare />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2 max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-gray-300">
-              Edit Book: {bookData.title}
-            </DialogTitle>
-          </DialogHeader>
-          <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                {/* Title */}
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter book title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Author */}
-                <FormField
-                  control={form.control}
-                  name="author"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Author</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter author name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Genre */}
-                <FormField
-                  control={form.control}
-                  name="genre"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Genre</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isError || !bookData ? (
+        <div>Error loading book data.</div>
+      ) : (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2 max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-gray-300">
+                Edit Book: {bookData.title}
+              </DialogTitle>
+            </DialogHeader>
+            <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
+                  {/* Title */}
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a genre" />
-                          </SelectTrigger>
+                          <Input placeholder="Enter book title" {...field} />
                         </FormControl>
-                        <SelectContent>
-                          {genreOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                {/* ISBN */}
-                <FormField
-                  control={form.control}
-                  name="isbn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>ISBN</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter ISBN number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  {/* Author */}
+                  <FormField
+                    control={form.control}
+                    name="author"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Author</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter author name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                {/* Description */}
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter book description"
-                          {...field}
-                          rows={3}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Copies */}
-                <FormField
-                  control={form.control}
-                  name="copies"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Copies</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min={0}
-                          placeholder="Enter number of copies"
-                          {...field}
+                  {/* Genre */}
+                  <FormField
+                    control={form.control}
+                    name="genre"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Genre</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
                           value={field.value}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a genre" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {genreOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                {/* Availability */}
-                <FormField
-                  control={form.control}
-                  name="available"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Availability</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                  {/* ISBN */}
+                  <FormField
+                    control={form.control}
+                    name="isbn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ISBN</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select availability" />
-                          </SelectTrigger>
+                          <Input placeholder="Enter ISBN number" {...field} />
                         </FormControl>
-                        <SelectContent>
-                          {availabilityOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <DialogFooter className="pt-6">
-                  <DialogClose asChild>
+                  {/* Description */}
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter book description"
+                            {...field}
+                            rows={3}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Copies */}
+                  <FormField
+                    control={form.control}
+                    name="copies"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Copies</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="Enter number of copies"
+                            {...field}
+                            value={field.value}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Availability */}
+                  <FormField
+                    control={form.control}
+                    name="available"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Availability</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select availability" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availabilityOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <DialogFooter className="pt-6">
+                    <DialogClose asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="bg-gray-900 border-gray-600 text-gray-300"
+                        disabled={isUpdating}
+                      >
+                        Cancel
+                      </Button>
+                    </DialogClose>
                     <Button
-                      type="button"
-                      variant="outline"
-                      className="bg-gray-900 border-gray-600 text-gray-300"
+                      type="submit"
+                      className="bg-gray-300 text-gray-950"
                       disabled={isUpdating}
                     >
-                      Cancel
+                      {isUpdating ? "Saving..." : "Save Changes"}
                     </Button>
-                  </DialogClose>
-                  <Button
-                    type="submit"
-                    className="bg-gray-300 text-gray-950"
-                    disabled={isUpdating}
-                  >
-                    {isUpdating ? "Saving..." : "Save Changes"}
-                  </Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </Card>
-        </DialogContent>
-      </Dialog>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </Card>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

@@ -25,7 +25,7 @@ const Book: React.FC<BookModalProps> = ({ open, onOpenChange, bookId }) => {
   } = useGetBookQuery(bookId!, { skip: !bookId });
 
   const bookData = book?.data;
-  const { title, author, genre, isbn, description, copies, available } =
+  const { title, author, image, genre, isbn, description, copies, available } =
     bookData ?? {};
 
   return (
@@ -48,7 +48,7 @@ const Book: React.FC<BookModalProps> = ({ open, onOpenChange, bookId }) => {
               <CardHeader>
                 <img
                   className="rounded-xl"
-                  src="https://i.ibb.co/j9pJxVL0/LmpwZw.jpg"
+                  src={`${image}`}
                   alt={`${title} Book Cover`}
                 />
               </CardHeader>

@@ -114,10 +114,10 @@ const EditBook: React.FC<EditBookModalProps> = ({
 
   return (
     <>
-      {isLoading ? (
-        <div>Loading...</div>
+      {isLoading || isError || !bookData ? (
+        <div>{""}</div>
       ) : isError || !bookData ? (
-        <div>Error loading book data.</div>
+        <div> </div>
       ) : (
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2 max-h-[90vh] overflow-y-auto">

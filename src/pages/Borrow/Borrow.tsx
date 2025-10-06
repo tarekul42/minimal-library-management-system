@@ -79,7 +79,7 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
         quantity: values.quantity,
         dueDate: values.dueDate.toISOString(),
       };
-      console.log("sending payload", borrowData)
+      console.log("sending payload", borrowData);
 
       await borrowBook(borrowData).unwrap();
       form.reset();
@@ -95,9 +95,9 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
   return (
     <>
       {isLoading ? (
-        <div>Loading...</div>
+        <div>{""}</div>
       ) : isError || !bookData ? (
-        <div>Error loading book data.</div>
+        <div> </div>
       ) : (
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">

@@ -14,7 +14,12 @@ import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HiEye, HiMiniPencilSquare, HiShoppingCart } from "react-icons/hi2";
+import {
+  HiEye,
+  HiMiniPencilSquare,
+  HiShoppingCart,
+  HiTrash,
+} from "react-icons/hi2";
 import Book from "./Book";
 import EditBook from "./EditBook";
 
@@ -30,6 +35,8 @@ const Books = () => {
   const [editBookId, setEditBookId] = useState<string | null>(null);
   const [borrowModalOpen, setBorrowModalOpen] = useState(false);
   const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteBookId, setDeleteBookId] = useState<string | null>(null);
 
   const handleViewBook = (bookId: string) => {
     setSelectedBookId(bookId);
@@ -44,6 +51,11 @@ const Books = () => {
   const handleborrowBook = (bookId: string) => {
     setBorrowBookId(bookId);
     setBorrowModalOpen(true);
+  };
+
+  const handleDeleteBook = (bookId: string) => {
+    setDeleteBookId(bookId);
+    setDeleteModalOpen(true);
   };
 
   return (
@@ -106,8 +118,10 @@ const Books = () => {
                         >
                           <HiEye />
                         </Button>
-                        <Button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
-                          onClick={() => handleborrowBook(book._id)}>
+                        <Button
+                          className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+                          onClick={() => handleborrowBook(book._id)}
+                        >
                           <HiShoppingCart />
                         </Button>
                         <Button
@@ -116,7 +130,14 @@ const Books = () => {
                         >
                           <HiMiniPencilSquare />
                         </Button>
-                        <DeleteBook />
+                        <Button
+                          className="text-red-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+                          onClick={() => {
+                            handleDeleteBook(book._id);
+                          }}
+                        >
+                          <HiTrash />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -141,9 +162,15 @@ const Books = () => {
               onOpenChange={setEditModalOpen}
               bookId={editBookId}
             />
-            <Borrow open={borrowModalOpen}
-            onOpenChange={setBorrowModalOpen}
-            bookId={borrowBookId}
+            <Borrow
+              open={borrowModalOpen}
+              onOpenChange={setBorrowModalOpen}
+              bookId={borrowBookId}
+            />
+            <DeleteBook
+              open={deleteModalOpen}
+              onOpenChange={setDeleteModalOpen}
+              bookId={deleteBookId}
             />
           </div>
         </>

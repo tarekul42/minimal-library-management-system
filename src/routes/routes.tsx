@@ -1,9 +1,9 @@
 
 import App from "@/App";
-import Book from "@/pages/Book/Book";
+import EditBookModalWrapper from "@/components/modalWrappers/EditBookModalWrapper";
+import ViewBookModalWrapper from "@/components/modalWrappers/ViewBookModalWrapper";
 import Books from "@/pages/Book/Books";
 import CreateBook from "@/pages/Book/CreateBook";
-import EditBook from "@/pages/Book/EditBook";
 import Borrow from "@/pages/Borrow/Borrow";
 import BorrowSummary from "@/pages/Borrow/BorrowSummary";
 import Home from "@/pages/Home/Home";
@@ -26,11 +26,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/books/:id",
-        Component: Book,
+        Component: ViewBookModalWrapper,
       },
       {
         path: "/edit-book/:id",
-        Component: EditBook,
+        Component: EditBookModalWrapper,
       },
       {
         path: "/borrow/:bookId",

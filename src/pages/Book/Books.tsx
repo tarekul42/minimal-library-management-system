@@ -14,7 +14,7 @@ import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HiEye, HiMiniPencilSquare } from "react-icons/hi2";
+import { HiEye, HiMiniPencilSquare, HiShoppingCart } from "react-icons/hi2";
 import Book from "./Book";
 import EditBook from "./EditBook";
 
@@ -29,6 +29,8 @@ const Books = () => {
   const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editBookId, setEditBookId] = useState<string | null>(null);
+  const [borrowModalOpen, setBorrowModalOpen] = useState(false);
+  const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
 
   const handleViewBook = (bookId: string) => {
     setSelectedBookId(bookId);
@@ -38,6 +40,11 @@ const Books = () => {
   const handleEditBook = (bookId: string) => {
     setEditBookId(bookId);
     setEditModalOpen(true);
+  };
+
+  const handleborrowBook = (bookId: string) => {
+    setBorrowBookId(bookId);
+    setBorrowModalOpen(true);
   };
 
   return (
@@ -100,7 +107,10 @@ const Books = () => {
                         >
                           <HiEye />
                         </Button>
-                        <Borrow />
+                        <Button className="text-teal-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+                          onClick={() => handleborrowBook(book._id)}>
+                          <HiShoppingCart />
+                        </Button>
                         <Button
                           className="text-amber-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
                           onClick={() => handleEditBook(book._id)}
@@ -131,6 +141,10 @@ const Books = () => {
               open={editModalOpen}
               onOpenChange={setEditModalOpen}
               bookId={editBookId}
+            />
+            <Borrow open={borrowModalOpen}
+            onOpenChange={setBorrowModalOpen}
+            bookId={borrowBookId}
             />
           </div>
         </>

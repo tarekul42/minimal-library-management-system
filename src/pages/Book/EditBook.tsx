@@ -289,7 +289,7 @@ const EditBook: React.FC<EditBookModalProps> = ({
                       <Button
                         type="button"
                         variant="outline"
-                        className="bg-gray-900 border-gray-600 text-gray-300"
+                        className="bg-gray-900 border-gray-600 text-gray-300 cursor-pointer"
                         disabled={isUpdating}
                       >
                         Cancel
@@ -297,10 +297,10 @@ const EditBook: React.FC<EditBookModalProps> = ({
                     </DialogClose>
                     <Button
                       type="submit"
-                      className="bg-gray-300 text-gray-950"
+                      className="bg-gray-300 text-gray-950 cursor-pointer"
                       disabled={isUpdating}
                     >
-                      {isUpdating ? "Saving..." : "Save Changes"}
+                      {isUpdating ? "Saving...." : "Save Changes"}
                     </Button>
                   </DialogFooter>
                 </form>

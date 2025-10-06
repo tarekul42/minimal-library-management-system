@@ -9,11 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import EditBook from "./EditBook";
-import Book from "./Book";
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { HiEye } from "react-icons/hi2";
+import Book from "./Book";
 
 const Books = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
@@ -21,6 +24,14 @@ const Books = () => {
   // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
   console.log(books);
+
+  const [bookModalOpen, setBookModalOpen] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+
+  const handleViewBook = (bookId: string) => {
+    setSelectedBookId(bookId);
+    setBookModalOpen(true);
+  };
 
   return (
     <>
@@ -76,10 +87,15 @@ const Books = () => {
                         </span>
                       </TableCell>
                       <TableCell className="flex gap-1 justify-center">
-                        <Book bookId={book._id} book={book} />
-                        <Borrow bookId={book._id} book={book} />
-                        <EditBook bookId={book._id} book={book} />
-                        <DeleteBook bookId={book._id} book={book} />
+                        <Button
+                          className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
+                          onClick={() => handleViewBook(book._id)}
+                        >
+                          <HiEye />
+                        </Button>
+                        <Borrow />
+                        <EditBook />
+                        <DeleteBook />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -93,6 +109,12 @@ const Books = () => {
                 </p>
               </div>
             )}
+            {/* Book Modal */}
+            <Book
+              open={bookModalOpen}
+              onOpenChange={setBookModalOpen}
+              bookId={selectedBookId}
+            />
           </div>
         </>
       )}

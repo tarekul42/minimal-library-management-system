@@ -16,7 +16,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import MLMSDatePicker from "@/components/form/MLMSDatePicker";
 
-const Borrow = ({bookId, book}) => {
+const Borrow = () => {
   const handleBorrow: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };

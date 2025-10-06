@@ -6,60 +6,44 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { HiEye } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { IBook } from "@/types/book";
 import { useGetBookQuery } from "@/redux/api/baseApi";
 
-interface BookProps {
-  bookId: string;
-  book: IBook;
+interface BookModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  bookId: string | null;
 }
 
-const Book = ({ bookId, book }: BookProps) => {
-  const { data, isLoading, error} = useGetBookQuery(bookId);
-  
-  const bookData = book || data?.data;
-  const { title, author, genre, isbn, description, copies, available } = bookData;
+const Book: React.FC<BookModalProps> = ({ open, onOpenChange, bookId }) => {
+  const {
+    data: book,
+    isLoading,
+    isError,
+  } = useGetBookQuery(bookId!, { skip: !bookId });
 
-  const handleViewClick = () =>{
-    console.log("Viewing book details for: ", title);
-  }
-
-
-  if (isLoading) {
-    return (
-      <Button disabled className="text-blue-500 bg-gray-900 text-xl p-2 rounded">
-        <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-      </Button>
-    );
-  }
-
-  if (error || !bookData) {
-    return (
-      <Button disabled className="text-red-500 bg-gray-900 text-xl p-2 rounded">
-        <HiEye />
-      </Button>
-    );
-  }
+  const bookData = book?.data;
+  const { title, author, genre, isbn, description, copies, available } =
+    bookData ?? {};
 
   return (
     <>
-      <Dialog>
-          <DialogTrigger asChild>
-            <Button className="text-blue-500 hover:bg-gray-950 text-xl cursor-pointer p-2 rounded bg-gray-900"
-            onClick={handleViewClick}
-            >
-              <HiEye />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
-            <DialogHeader>
-              <DialogTitle className="text-gray-300">Book Details</DialogTitle>
-            </DialogHeader>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
+          <DialogHeader>
+            <DialogTitle className="text-gray-300">Book Details</DialogTitle>
+          </DialogHeader>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-[100vh]">
+              <div className="spinner"></div>
+            </div>
+          ) : isError || !bookData ? (
+            <div className="flex justify-center items-center h-[100vh]">
+              <h1 className="text-3xl">No Book found</h1>
+            </div>
+          ) : (
             <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
               <CardHeader>
                 <img
@@ -69,9 +53,7 @@ const Book = ({ bookId, book }: BookProps) => {
                 />
               </CardHeader>
               <CardContent className="px-0 space-y-1">
-                <CardTitle className="text-gray-300">
-                  Title: {title}
-                </CardTitle>
+                <CardTitle className="text-gray-300">Title: {title}</CardTitle>
                 <CardTitle>
                   Author:{" "}
                   <span className="text-sm font-semibold text-gray-400">
@@ -98,7 +80,9 @@ const Book = ({ bookId, book }: BookProps) => {
                 </CardTitle>
                 <CardTitle>
                   Copies:{" "}
-                  <span className="text-sm font-semibold text-gray-400">{copies}</span>
+                  <span className="text-sm font-semibold text-gray-400">
+                    {copies}
+                  </span>
                 </CardTitle>
                 <CardTitle>
                   Availablity:{" "}
@@ -108,14 +92,15 @@ const Book = ({ bookId, book }: BookProps) => {
                 </CardTitle>
               </CardContent>
             </Card>
-            <DialogFooter className="sm:justify-start">
-              <DialogClose asChild>
-                <Button type="button" variant="secondary" className="bg-gray-400">
-                  Close
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
+          )}
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" className="bg-gray-400">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   );

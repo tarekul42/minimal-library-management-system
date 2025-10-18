@@ -10,13 +10,31 @@ import {
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router";
+import Book from "../Book/Book";
+import Borrow from "../Borrow/Borrow";
 
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
 
   // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
+
+  const [bookModalOpen, setBookModalOpen] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+  const [borrowModalOpen, setBorrowModalOpen] = useState(false);
+  const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
+
+  const handleViewBook = (bookId: string) => {
+    setSelectedBookId(bookId);
+    setBookModalOpen(true);
+  };
+
+  const handleBorrowBook = (bookId: string) => {
+    setBorrowBookId(bookId);
+    setBorrowModalOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -55,15 +73,17 @@ const Home = () => {
                   <CardDescription>{singleData.author}</CardDescription>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                    <Button
-                      type="submit"
-                      className="w-full bg-gray-300 text-gray-950 cursor-pointer"
-                    >
-                      See Details
-                    </Button>
+                  <Button
+                    type="submit"
+                    className="w-full bg-gray-300 text-gray-950 cursor-pointer"
+                    onClick={() => handleViewBook(singleData._id)}
+                  >
+                    See Details
+                  </Button>
                   <Button
                     variant="outline"
                     className="w-full bg-gray-900 border-gray-800 cursor-pointer"
+                    onClick={() => handleBorrowBook(singleData._id)}
                   >
                     Borrow now
                     <ArrowRight className="ml-2" />
@@ -78,6 +98,17 @@ const Home = () => {
           </Button>
         </Link>
       </div>
+      {/* Book Modal */}
+      <Book
+        open={bookModalOpen}
+        onOpenChange={setBookModalOpen}
+        bookId={selectedBookId}
+      />
+      <Borrow
+        open={borrowModalOpen}
+        onOpenChange={setBorrowModalOpen}
+        bookId={borrowBookId}
+      />
     </>
   );
 };

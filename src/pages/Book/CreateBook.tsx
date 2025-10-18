@@ -66,7 +66,7 @@ const CreateBook = () => {
     try {
       await createBook(values).unwrap();
       form.reset();
-      navigate("/");
+      navigate("/books");
     } catch (error) {
       console.error("Error creating book", error);
     }
@@ -149,7 +149,7 @@ const CreateBook = () => {
               name="isbn"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Author</FormLabel>
+                  <FormLabel>ISBN</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter ISBN no." {...field} />
                   </FormControl>
@@ -221,7 +221,11 @@ const CreateBook = () => {
             />
 
             {/* Submit Button */}
-            <Button type="submit" disabled={isLoading} className="w-full text-foreground">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full text-foreground"
+            >
               Submit
             </Button>
           </form>

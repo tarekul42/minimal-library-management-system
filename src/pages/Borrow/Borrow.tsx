@@ -32,22 +32,10 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import type { IBorrowBookModalProps } from "@/types/borrowBook";
+import { borrowBookSchema } from "@/schema/borrowBookSchema";
 
-interface BorrowBookModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  bookId: string | null;
-}
-
-// Schema definition
-const borrowBookSchema = z.object({
-  quantity: z.coerce
-    .number()
-    .min(1, { message: "Quantity must be at least 1." }),
-  dueDate: z.date(),
-});
-
-const Borrow: React.FC<BorrowBookModalProps> = ({
+const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,
   onOpenChange,
   bookId,

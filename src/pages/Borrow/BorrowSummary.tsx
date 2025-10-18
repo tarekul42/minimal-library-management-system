@@ -13,7 +13,6 @@ import type { IBorrowSummary } from "@/types/borrowSummary";
 const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery(undefined);
 
-  console.log(data);
   const summary: IBorrowSummary[] = data?.data || [];
 
   if (isLoading) {

@@ -31,42 +31,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { Genre } from "@/types/book";
 import { toast } from "sonner";
+import type { IEditBookModalProps } from "@/types/editBook";
+import { editBookSchema } from "@/schema/editBookSchema";
+import { availabilityOptions, genreOptions } from "@/fakeData/editBookData";
 
-interface EditBookModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  bookId: string | null;
-}
-
-const genreOptions = [
-  { value: "FICTION", label: "Fiction" },
-  { value: "NON_FICTION", label: "Non-Fiction" },
-  { value: "SCIENCE", label: "Science" },
-  { value: "HISTORY", label: "History" },
-  { value: "BIOGRAPHY", label: "Biography" },
-  { value: "FANTASY", label: "Fantasy" },
-];
-
-const availabilityOptions = [
-  { value: "true", label: "Available" },
-  { value: "false", label: "Not Available" },
-];
-
-// Schema definition
-const editBookSchema = z.object({
-  title: z.string().min(1, { message: "Title is required." }),
-  author: z.string().min(1, { message: "Author is required." }),
-  genre: z.string().min(1, { message: "Genre is required." }),
-  isbn: z.string().min(1, { message: "ISBN is required." }),
-  description: z.string().optional(),
-  copies: z
-    .number({ invalid_type_error: "Copies must be a number." })
-    .int()
-    .min(0, { message: "Copies cannot be negative." }),
-  available: z.string(),
-});
-
-const EditBook: React.FC<EditBookModalProps> = ({
+const EditBook: React.FC<IEditBookModalProps> = ({
   open,
   onOpenChange,
   bookId,
@@ -103,8 +72,6 @@ const EditBook: React.FC<EditBookModalProps> = ({
       console.log(values.genre);
       await editBook({ bookId: bookId!, bookData: updateData }).unwrap();
       form.reset();
-
-      console.log("Book updated successfully!");
       toast.success("Book updated successfully!");
       onOpenChange(false);
     } catch (error) {

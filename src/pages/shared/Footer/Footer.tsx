@@ -56,7 +56,7 @@ export default function Footer() {
       </footer>
       {/* footer 2: Copyright */}
       <footer className="text-center flex items-center justify-center text-gray-500 p-2 sm:p-3 lg:p-4 text-sm bg-black">
-        &copy; 2025 All rights reserved by MiLiMan'S.
+        &copy; 2025 All rights reserved by Library.
       </footer>
     </>
   );

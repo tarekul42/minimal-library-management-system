@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useDeleteBookMutation, useGetBookQuery } from "@/redux/api/baseApi";
+import { toast } from "sonner";
 
 interface DeleteBookModalProps {
   open: boolean;
@@ -33,10 +34,11 @@ const DeleteBook: React.FC<DeleteBookModalProps> = ({
   const handleDelete = async () => {
     try {
       await deleteBook(bookId).unwrap();
-      console.log("Book Deleted successfully!");
+      toast.success("Book deleted successfully!");
       onOpenChange(false);
     } catch (error) {
       console.error("Error deleting book:", error);
+      toast.error("Error deleting book!");
     }
   };
 

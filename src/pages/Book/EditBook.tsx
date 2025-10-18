@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { Genre } from "@/types/book";
+import { toast } from "sonner";
 
 interface EditBookModalProps {
   open: boolean;
@@ -104,9 +105,11 @@ const EditBook: React.FC<EditBookModalProps> = ({
       form.reset();
 
       console.log("Book updated successfully!");
+      toast.success("Book updated successfully!");
       onOpenChange(false);
     } catch (error) {
       console.error("Error updating book:", error);
+      toast.error("Error updating book!");
     }
   };
 

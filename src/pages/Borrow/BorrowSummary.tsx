@@ -14,7 +14,6 @@ const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery(undefined);
 
   console.log(data);
-  // If data is nested, extract the array for mapping
   const summary: IBorrowSummary[] = data?.data || [];
 
   if (isLoading) {

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 // Schema definition
 const formSchema = z.object({
@@ -61,6 +62,7 @@ const CreateBook = () => {
       navigate("/books");
     } catch (error) {
       console.error("Error creating book", error);
+      toast.error("Failed to create book");
     }
   }
 

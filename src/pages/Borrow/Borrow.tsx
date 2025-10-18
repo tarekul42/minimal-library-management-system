@@ -31,6 +31,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 interface BorrowBookModalProps {
   open: boolean;
@@ -69,7 +70,7 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
 
   const onSubmit = async (values: z.infer<typeof borrowBookSchema>) => {
     if (!bookId || !values.quantity || !values.dueDate) {
-      alert("Book ID, quantity, and due date are required.");
+      toast.warning("Book ID, quantity, and due date are required.");
       return;
     }
     try {
@@ -83,11 +84,14 @@ const Borrow: React.FC<BorrowBookModalProps> = ({
       await borrowBook(borrowData).unwrap();
       form.reset();
 
-      console.log("Book updated successfully!");
+      console.log("Book borrowed successfully!");
+      toast.success("Book borrowed successfully!");
       onOpenChange(false);
     } catch (error) {
       console.error("Error updating book:", error);
-      alert("Failed to borrow book. Please check your input and try again.");
+      toast.error(
+        "Failed to borrow book. Please check your input and try again.",
+      );
     }
   };
 

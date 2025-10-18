@@ -18,7 +18,6 @@ import Borrow from "../Borrow/Borrow";
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
 
-  // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
 
   const [bookModalOpen, setBookModalOpen] = useState(false);

@@ -1,4 +1,3 @@
-// Displays an aggregated summary of all borrowed books.
 import {
   Table,
   TableBody,

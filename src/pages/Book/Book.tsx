@@ -1,4 +1,3 @@
-// Detailed view of a single book’s information.
 import {
   Dialog,
   DialogClose,

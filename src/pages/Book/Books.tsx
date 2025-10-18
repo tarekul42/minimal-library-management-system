@@ -1,4 +1,3 @@
-// Displays a list of all books with options to view, edit, delete, and borrow.
 import {
   Table,
   TableBody,

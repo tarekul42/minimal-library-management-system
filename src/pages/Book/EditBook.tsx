@@ -103,12 +103,10 @@ const EditBook: React.FC<EditBookModalProps> = ({
       await editBook({ bookId: bookId!, bookData: updateData }).unwrap();
       form.reset();
 
-      // Show success message (you can implement toast notifications here)
       console.log("Book updated successfully!");
       onOpenChange(false);
     } catch (error) {
       console.error("Error updating book:", error);
-      // Handle error (you can implement error toast here)
     }
   };
 

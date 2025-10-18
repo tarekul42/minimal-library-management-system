@@ -1,4 +1,3 @@
-// Form to borrow a selected book.
 import {
   Dialog,
   DialogClose,

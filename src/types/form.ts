@@ -1,5 +1,5 @@
 export interface IInput {
-    name: string;
-    label: string;
-    defaultValue?: string;
+  name: string;
+  label: string;
+  defaultValue?: string;
 }

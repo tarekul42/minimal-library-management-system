@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useGetBookQuery, useEditBookMutation } from "@/redux/api/baseApi";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +33,7 @@ import { toast } from "sonner";
 import type { IEditBookModalProps } from "@/types/editBook";
 import { editBookSchema } from "@/schema/editBookSchema";
 import { availabilityOptions, genreOptions } from "@/fakeData/editBookData";
+import { useEditBookMutation, useGetBookQuery } from "@/redux/api/bookApi";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,

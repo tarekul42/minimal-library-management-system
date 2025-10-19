@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetBookQuery } from "@/redux/api/baseApi";
 import type { IBookModalProps } from "@/types/book";
+import { useGetBookQuery } from "@/redux/api/bookApi";
 
 const Book: React.FC<IBookModalProps> = ({ open, onOpenChange, bookId }) => {
   const {

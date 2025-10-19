@@ -18,7 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useBorrowBookMutation, useGetBookQuery } from "@/redux/api/baseApi";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -34,6 +33,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import type { IBorrowBookModalProps } from "@/types/borrowBook";
 import { borrowBookSchema } from "@/schema/borrowBookSchema";
+import { useBorrowBookMutation } from "@/redux/api/borrowApi";
+import { useGetBookQuery } from "@/redux/api/bookApi";
 
 const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetBorrowSummaryQuery } from "@/redux/api/baseApi";
+import { useGetBorrowSummaryQuery } from "@/redux/api/borrowApi";
 import type { IBorrowSummary } from "@/types/borrowSummary";
 
 const BorrowSummary = () => {

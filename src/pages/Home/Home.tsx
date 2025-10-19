@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
@@ -15,6 +14,7 @@ import Book from "../Book/Book";
 import Borrow from "../Borrow/Borrow";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { closeModal, openModal } from "@/redux/features/modalSlice";
+import { useGetBooksQuery } from "@/redux/api/bookApi";
 
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);

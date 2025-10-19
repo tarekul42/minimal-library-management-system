@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
-import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +21,7 @@ import Book from "./Book";
 import EditBook from "./EditBook";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { closeModal, openModal } from "@/redux/features/modalSlice";
+import { useGetBooksQuery } from "@/redux/api/bookApi";
 
 const Books = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);

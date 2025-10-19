@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { useDeleteBookMutation, useGetBookQuery } from "@/redux/api/baseApi";
 import { toast } from "sonner";
 import type { DeleteBookModalProps } from "@/types/deleteBookModalProps";
+import { useDeleteBookMutation, useGetBookQuery } from "@/redux/api/bookApi";
 
 const DeleteBook: React.FC<DeleteBookModalProps> = ({
   open,

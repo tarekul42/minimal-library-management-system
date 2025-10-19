@@ -11,12 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useDeleteBookMutation, useGetBookQuery } from "@/redux/api/baseApi";
 import { toast } from "sonner";
-
-interface DeleteBookModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  bookId: string | null;
-}
+import type { DeleteBookModalProps } from "@/types/deleteBookModalProps";
 
 const DeleteBook: React.FC<DeleteBookModalProps> = ({
   open,

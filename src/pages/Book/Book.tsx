@@ -9,14 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetBookQuery } from "@/redux/api/baseApi";
+import type { IBookModalProps } from "@/types/book";
 
-interface BookModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  bookId: string | null;
-}
-
-const Book: React.FC<BookModalProps> = ({ open, onOpenChange, bookId }) => {
+const Book: React.FC<IBookModalProps> = ({ open, onOpenChange, bookId }) => {
   const {
     data: book,
     isLoading,

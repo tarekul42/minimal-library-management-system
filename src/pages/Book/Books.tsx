@@ -11,7 +11,6 @@ import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   HiEye,
@@ -21,40 +20,35 @@ import {
 } from "react-icons/hi2";
 import Book from "./Book";
 import EditBook from "./EditBook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { closeModal, openModal } from "@/redux/features/modalSlice";
 
 const Books = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
 
-  // If data is nested, extract the array for mapping
   const books: IBook[] = data?.data || [];
 
-  const [bookModalOpen, setBookModalOpen] = useState(false);
-  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editBookId, setEditBookId] = useState<string | null>(null);
-  const [borrowModalOpen, setBorrowModalOpen] = useState(false);
-  const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [deleteBookId, setDeleteBookId] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { type, bookId } = useAppSelector((state) => state.modal);
 
   const handleViewBook = (bookId: string) => {
-    setSelectedBookId(bookId);
-    setBookModalOpen(true);
+    dispatch(openModal({ type: "view", bookId }));
   };
 
   const handleEditBook = (bookId: string) => {
-    setEditBookId(bookId);
-    setEditModalOpen(true);
+    dispatch(openModal({ type: "edit", bookId }));
   };
 
   const handleborrowBook = (bookId: string) => {
-    setBorrowBookId(bookId);
-    setBorrowModalOpen(true);
+    dispatch(openModal({ type: "borrow", bookId }));
   };
 
   const handleDeleteBook = (bookId: string) => {
-    setDeleteBookId(bookId);
-    setDeleteModalOpen(true);
+    dispatch(openModal({ type: "delete", bookId }));
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
   };
 
   return (
@@ -152,24 +146,24 @@ const Books = () => {
             )}
             {/* Book Modal */}
             <Book
-              open={bookModalOpen}
-              onOpenChange={setBookModalOpen}
-              bookId={selectedBookId}
+              open={type === "view"}
+              onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+              bookId={bookId}
             />
             <EditBook
-              open={editModalOpen}
-              onOpenChange={setEditModalOpen}
-              bookId={editBookId}
+              open={type === "edit"}
+              onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+              bookId={bookId}
             />
             <Borrow
-              open={borrowModalOpen}
-              onOpenChange={setBorrowModalOpen}
-              bookId={borrowBookId}
+              open={type === "borrow"}
+              onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+              bookId={bookId}
             />
             <DeleteBook
-              open={deleteModalOpen}
-              onOpenChange={setDeleteModalOpen}
-              bookId={deleteBookId}
+              open={type === "delete"}
+              onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+              bookId={bookId}
             />
           </div>
         </>

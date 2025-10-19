@@ -23,27 +23,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-
-// Schema definition
-const formSchema = z.object({
-  title: z.string().min(1, { message: "Title is required." }),
-  author: z.string().min(1, { message: "Author is required." }),
-  genre: z.string().min(1, { message: "Genre is required." }),
-  isbn: z.string().min(1, { message: "ISBN is required." }),
-  description: z.string().min(1, { message: "Description is required." }),
-  copies: z
-    .number({ invalid_type_error: "Copies must be a number." })
-    .int()
-    .min(0, { message: "Copies cannot be negative." }),
-  availability: z.string().min(1, { message: "Availability is required." }),
-});
+import { createBookSchema } from "@/schema/createBookSchema";
 
 const CreateBook = () => {
   const [createBook, { isLoading }] = useCreateBookMutation();
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createBookSchema>>({
+    resolver: zodResolver(createBookSchema),
     defaultValues: {
       title: "",
       author: "",
@@ -55,7 +42,7 @@ const CreateBook = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof createBookSchema>) {
     try {
       await createBook(values).unwrap();
       form.reset();

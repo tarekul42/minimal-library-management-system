@@ -17,3 +17,9 @@ export interface IBook {
   copies: number;
   available: boolean;
 }
+
+export interface IBookModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  bookId: string | null;
+}

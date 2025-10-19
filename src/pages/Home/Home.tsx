@@ -10,29 +10,30 @@ import {
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/types/book";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router";
 import Book from "../Book/Book";
 import Borrow from "../Borrow/Borrow";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { closeModal, openModal } from "@/redux/features/modalSlice";
 
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
 
   const books: IBook[] = data?.data || [];
 
-  const [bookModalOpen, setBookModalOpen] = useState(false);
-  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
-  const [borrowModalOpen, setBorrowModalOpen] = useState(false);
-  const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { type, bookId } = useAppSelector((state) => state.modal);
 
   const handleViewBook = (bookId: string) => {
-    setSelectedBookId(bookId);
-    setBookModalOpen(true);
+    dispatch(openModal({ type: "view", bookId }));
   };
 
   const handleBorrowBook = (bookId: string) => {
-    setBorrowBookId(bookId);
-    setBorrowModalOpen(true);
+    dispatch(openModal({ type: "borrow", bookId }));
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
   };
 
   if (isLoading) {
@@ -99,14 +100,14 @@ const Home = () => {
       </div>
       {/* Book Modal */}
       <Book
-        open={bookModalOpen}
-        onOpenChange={setBookModalOpen}
-        bookId={selectedBookId}
+        open={type === "view"}
+        onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+        bookId={bookId}
       />
       <Borrow
-        open={borrowModalOpen}
-        onOpenChange={setBorrowModalOpen}
-        bookId={borrowBookId}
+        open={type === "borrow"}
+        onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
+        bookId={bookId}
       />
     </>
   );

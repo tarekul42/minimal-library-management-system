@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useCreateBookMutation } from "@/redux/api/bookApi";
 import { useBookForm } from "@/hooks/useBookForm";
+import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
 
@@ -10,7 +11,7 @@ const CreateBook = () => {
   const navigate = useNavigate();
   const form = useBookForm("create");
 
-  async function onSubmit(values: any) {
+  async function onSubmit(values: BookFormData) {
     try {
       await createBook(values).unwrap();
       form.reset();

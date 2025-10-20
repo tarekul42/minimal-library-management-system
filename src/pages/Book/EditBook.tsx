@@ -1,11 +1,12 @@
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import type { IEditBookModalProps } from "@/types/editBook";
 import { useEditBookMutation, useGetBookQuery } from "@/redux/api/bookApi";
 import { useBookForm } from "@/hooks/useBookForm";
+import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
-import type { IEditBookModalProps } from "@/types/editBook";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,
@@ -21,7 +22,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
   const bookData = book?.data;
   const form = useBookForm("edit", bookData);
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: BookFormData) => {
     try {
       // Convert availability string to boolean for the API
       const updateData = {

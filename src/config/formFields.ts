@@ -1,7 +1,7 @@
-import type { FormFieldConfig } from "@/schema/types/form";
 import { availabilityOptions, genreOptions } from "@/fakeData/editBookData";
+import type { IFormFieldConfig } from "@/types/form";
 
-export const bookFormFields: FormFieldConfig[] = [
+export const bookFormFields: IFormFieldConfig[] = [
   {
     name: "title",
     label: "Title",

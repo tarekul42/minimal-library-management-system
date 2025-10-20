@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,11 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { bookFormFields } from "@/config/formFields";
+import type { BookFormData } from "@/schema/bookSchema";
 import type { UseFormReturn } from "react-hook-form";
 
 interface BookFormProps {
-  form: UseFormReturn<any>;
-  onSubmit: (values: any) => void | Promise<void>;
+  form: UseFormReturn<BookFormData>;
+  onSubmit: (values: BookFormData) => void | Promise<void>;
   isLoading: boolean;
   submitButtonText: string;
 }

@@ -1,15 +1,9 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createBookSchema } from "@/schema/createBookSchema";
-import { editBookSchema } from "@/schema/editBookSchema";
+import { bookSchema, type BookFormData } from "@/schema/bookSchema";
 import type { IBook } from "@/types/book";
 
-type FormType = "create" | "edit";
-
-export const useBookForm = (type: FormType, book?: IBook) => {
-  const schema = type === "create" ? createBookSchema : editBookSchema;
-
+export const useBookForm = (book?: IBook) => {
   const defaultValues = {
     title: book?.title || "",
     author: book?.author || "",
@@ -20,8 +14,8 @@ export const useBookForm = (type: FormType, book?: IBook) => {
     availability: book?.available ? "available" : "unavailable",
   };
 
-  return useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  return useForm<BookFormData>({
+    resolver: zodResolver(bookSchema),
     defaultValues,
   });
 };

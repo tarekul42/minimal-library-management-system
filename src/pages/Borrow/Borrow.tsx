@@ -32,9 +32,10 @@ import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import type { IBorrowBookModalProps } from "@/types/borrowBook";
-import { borrowBookSchema } from "@/schema/borrowBookSchema";
+import { validationMessages } from "@/config/validationMessages";
 import { useBorrowBookMutation } from "@/redux/api/borrowApi";
 import { useGetBookQuery } from "@/redux/api/bookApi";
+import { borrowBookSchema } from "@/schema/borrowBookSchema";
 
 const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,
@@ -49,15 +50,18 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
   } = useGetBookQuery(bookId!, { skip: !bookId });
   const bookData = book?.data;
 
-  const form = useForm<z.infer<typeof borrowBookSchema>>({
-    resolver: zodResolver(borrowBookSchema),
+  const schema = borrowBookSchema(bookData?.copies || 0, validationMessages);
+  type BorrowFormData = z.infer<typeof schema>;
+
+  const form = useForm<BorrowFormData>({
+    resolver: zodResolver(schema),
     defaultValues: {
       quantity: 1,
       dueDate: new Date(),
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof borrowBookSchema>) => {
+  const onSubmit = async (values: BorrowFormData) => {
     if (!bookId || !values.quantity || !values.dueDate) {
       toast.warning("Book ID, quantity, and due date are required.");
       return;
@@ -86,11 +90,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
 
   return (
     <>
-      {isLoading ? (
-        <div>{""}</div>
-      ) : isError || !bookData ? (
-        <div> </div>
-      ) : (
+      {isLoading || isError || !bookData ? null : (
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
             <DialogHeader>

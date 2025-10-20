@@ -14,6 +14,7 @@ const CreateBook = () => {
   async function onSubmit(values: BookFormData) {
     try {
       await createBook(values).unwrap();
+      toast.success("Book created successfully");
       form.reset();
       navigate("/books");
     } catch (error) {

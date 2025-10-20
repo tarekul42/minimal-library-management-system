@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { bookFormFields } from "@/config/formFields";
+import type { IFormFieldConfig } from "@/types/form";
 import type { BookFormData } from "@/schema/bookSchema";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -34,7 +34,7 @@ export const BookForm = ({
   isLoading,
   submitButtonText,
 }: BookFormProps) => {
-  const renderFormField = (fieldConfig: any) => {
+  const renderFormField = (fieldConfig: IFormFieldConfig) => {
     const { name, label, placeholder, type, options, min } = fieldConfig;
 
     return (
@@ -60,11 +60,13 @@ export const BookForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {options?.map((option: any) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
+                    {options?.map(
+                      (option: { value: string; label: string }) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ),
+                    )}
                   </SelectContent>
                 </Select>
               ) : type === "textarea" ? (

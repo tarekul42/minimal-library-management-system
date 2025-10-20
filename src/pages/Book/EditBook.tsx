@@ -42,11 +42,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
 
   return (
     <>
-      {isLoading || isError || !bookData ? (
-        <div>{""}</div>
-      ) : isError || !bookData ? (
-        <div> </div>
-      ) : (
+      {isLoading || isError || !bookData ? null : (
         <FormContainer
           type="dialog"
           title={`Edit Book: ${bookData.title}`}
@@ -60,7 +56,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
             submitButtonText="Save Changes"
           />
 
-          <DialogFooter className="pt-6">
+          <DialogFooter>
             <DialogClose asChild>
               <Button
                 type="button"

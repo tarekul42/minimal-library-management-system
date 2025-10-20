@@ -39,11 +39,7 @@ const DeleteBook: React.FC<DeleteBookModalProps> = ({
 
   return (
     <>
-      {isLoading ? (
-        <div>{""}</div>
-      ) : isError || !bookData ? (
-        <div> </div>
-      ) : (
+      {isLoading || isError || !bookData ? null : (
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogContent className="w-full sm:w-5/6 md:w-3/4 lg:w-1/2">
             <DialogHeader>

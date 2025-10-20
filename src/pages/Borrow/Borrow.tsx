@@ -103,7 +103,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
                   className="space-y-4"
                 >
                   <CardContent className="px-0 space-y-1">
-                    <CardTitle className="text-gray-300">
+                    <CardTitle className="text-gray-300 text-lg">
                       {bookData.title}
                     </CardTitle>
                     <CardTitle>

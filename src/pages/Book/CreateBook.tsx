@@ -9,7 +9,7 @@ import { BookForm } from "@/components/BookForm";
 const CreateBook = () => {
   const [createBook, { isLoading }] = useCreateBookMutation();
   const navigate = useNavigate();
-  const form = useBookForm("create");
+  const form = useBookForm();
 
   async function onSubmit(values: BookFormData) {
     try {

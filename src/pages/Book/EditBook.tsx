@@ -20,11 +20,10 @@ const EditBook: React.FC<IEditBookModalProps> = ({
   } = useGetBookQuery(bookId!, { skip: !bookId });
   const [editBook, { isLoading: isUpdating }] = useEditBookMutation();
   const bookData = book?.data;
-  const form = useBookForm("edit", bookData);
+  const form = useBookForm(bookData);
 
   const onSubmit = async (values: BookFormData) => {
     try {
-      // Convert availability string to boolean for the API
       const updateData = {
         ...values,
         available: values.availability === "available",

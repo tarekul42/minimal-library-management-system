@@ -11,7 +11,9 @@ export const useBookForm = (book?: IBook) => {
     isbn: book?.isbn || "",
     description: book?.description || "",
     copies: book?.copies || 0,
-    availability: book?.available ? "available" : "unavailable",
+    availability: (book?.available ? "available" : "unavailable") as
+      | "available"
+      | "unavailable",
   };
 
   return useForm<BookFormData>({

@@ -118,16 +118,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-.spinner {
-  width: 48px;
-  height: 48px;
-  border: 6px solid #27272a;      /* Tailwind gray-900 (#27272a) */
-  border-top: 6px solid #a3a3a3;  /* Tailwind gray-400 (#a3a3a3) */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}

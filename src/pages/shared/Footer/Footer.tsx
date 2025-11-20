@@ -1,10 +1,5 @@
 import { Link } from "react-router";
-import {
-  BsFacebook,
-  BsInstagram,
-  BsLinkedin,
-  BsTwitterX,
-} from "react-icons/bs";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -40,16 +35,16 @@ export default function Footer() {
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
             <Link to="#">
-              <BsFacebook className="text-xl" />
+              <Facebook className="text-xl" />
             </Link>
             <Link to="#">
-              <BsTwitterX className="text-xl" />
+              <Twitter className="text-xl" />
             </Link>
             <Link to="#">
-              <BsInstagram className="text-xl" />
+              <Instagram className="text-xl" />
             </Link>
             <Link to="#">
-              <BsLinkedin className="text-xl" />
+              <Linkedin className="text-xl" />
             </Link>
           </div>
         </div>

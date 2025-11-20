@@ -25,6 +25,7 @@ export const bookApi = baseApi.injectEndpoints({
         url: `/books/${bookId}`,
         method: "GET",
       }),
+      providesTags: ["book"],
     }),
 
     // update book

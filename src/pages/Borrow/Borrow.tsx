@@ -36,12 +36,14 @@ import { validationMessages } from "@/config/validationMessages";
 import { useBorrowBookMutation } from "@/redux/api/borrowApi";
 import { useGetBookQuery } from "@/redux/api/bookApi";
 import { borrowBookSchema } from "@/schema/borrowBookSchema";
+import { useNavigate } from "react-router";
 
 const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,
   onOpenChange,
   bookId,
 }) => {
+  const navigate = useNavigate();
   const [borrowBook, { isLoading: isUpdating }] = useBorrowBookMutation();
   const {
     data: book,
@@ -80,6 +82,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
       console.log("Book borrowed successfully!");
       toast.success("Book borrowed successfully!");
       onOpenChange(false);
+      navigate("/borrow-summary");
     } catch (error) {
       console.error("Error updating book:", error);
       toast.error(

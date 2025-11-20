@@ -4,7 +4,6 @@ import {
   CardContent,
   CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import type { IBook } from "@/types/book";
@@ -12,34 +11,28 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import Book from "../Book/Book";
 import Borrow from "../Borrow/Borrow";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { closeModal, openModal } from "@/redux/features/modalSlice";
+import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
+import Banner from "./Banner";
+
+import { Spinner } from "@/components/ui/spinner";
 
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
-
   const books: IBook[] = data?.data || [];
 
-  const dispatch = useAppDispatch();
-  const { type, bookId } = useAppSelector((state) => state.modal);
-
-  const handleViewBook = (bookId: string) => {
-    dispatch(openModal({ type: "view", bookId }));
-  };
-
-  const handleBorrowBook = (bookId: string) => {
-    dispatch(openModal({ type: "borrow", bookId }));
-  };
-
-  const handleCloseModal = () => {
-    dispatch(closeModal());
-  };
+  const {
+    modalType,
+    bookId,
+    handleViewBook,
+    handleBorrowBook,
+    handleCloseModal,
+  } = useBookModals();
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-[100vh]">
-        <div className="spinner"></div>
+      <div className="flex-1 flex justify-center items-center">
+        <Spinner size={48} />
       </div>
     );
   }
@@ -47,10 +40,13 @@ const Home = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
-        <h1 className="text-xl md:text-2xl lg:text-3xl p-1 sm:p-2 lg:p-4">
-          Minimal Library Management System
-        </h1>
-        <h1 className="text-xl md:text-2xl lg:text-3xl p-1 sm:p-2 lg:p-4">
+        <div>
+          <h1 className="text-xl md:text-2xl lg:text-3xl p-1 sm:p-2 lg:p-4 text-center font-semibold">
+            Minimal Library Management System
+          </h1>
+          <Banner />
+        </div>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold p-1 sm:p-2 lg:p-4">
           Our Available Books
         </h1>
 
@@ -58,19 +54,14 @@ const Home = () => {
           {books &&
             books.map((singleData: IBook) => (
               <Card
-                key={singleData.isbn}
+                key={singleData._id}
                 className="w-full max-w-sm bg-gray-900 border-0 text-gray-300"
               >
-                <CardHeader>
-                  <img
-                    className="rounded-xl"
-                    src="https://i.ibb.co/j9pJxVL0/LmpwZw.jpg"
-                    alt="The Theory of Everything Book Image"
-                  />
-                </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
                   <CardTitle>{singleData.title}</CardTitle>
-                  <CardDescription>{singleData.author}</CardDescription>
+                  <CardDescription>Author: {singleData.author}</CardDescription>
+                  <CardDescription>Genre: {singleData.genre}</CardDescription>
+                  <CardDescription>ISBN: {singleData.isbn}</CardDescription>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
                   <Button
@@ -100,12 +91,12 @@ const Home = () => {
       </div>
       {/* Book Modal */}
       <Book
-        open={type === "view"}
+        open={modalType === "view"}
         onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
         bookId={bookId}
       />
       <Borrow
-        open={type === "borrow"}
+        open={modalType === "borrow"}
         onOpenChange={(isOpen) => !isOpen && handleCloseModal()}
         bookId={bookId}
       />

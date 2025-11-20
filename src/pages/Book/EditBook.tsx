@@ -7,6 +7,7 @@ import { useBookForm } from "@/hooks/useBookForm";
 import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,
@@ -42,7 +43,30 @@ const EditBook: React.FC<IEditBookModalProps> = ({
 
   return (
     <>
-      {isLoading || isError || !bookData ? null : (
+      {isLoading ? (
+        <FormContainer
+          type="dialog"
+          title="Loading Book Details..."
+          open={open}
+          onOpenChange={onOpenChange}
+        >
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </FormContainer>
+      ) : isError || !bookData ? null : (
         <FormContainer
           type="dialog"
           title={`Edit Book: ${bookData.title}`}
@@ -61,7 +85,6 @@ const EditBook: React.FC<IEditBookModalProps> = ({
               <Button
                 type="button"
                 variant="outline"
-                className="bg-gray-900 border-gray-600 text-gray-300 cursor-pointer"
                 disabled={isUpdating}
               >
                 Cancel

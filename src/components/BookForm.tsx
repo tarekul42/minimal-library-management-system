@@ -17,23 +17,14 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { bookFormFields } from "@/config/formFields";
-import type { IFormFieldConfig } from "@/types/form";
-import type { BookFormData } from "@/schema/bookSchema";
-import type { UseFormReturn } from "react-hook-form";
-
-interface BookFormProps {
-  form: UseFormReturn<BookFormData>;
-  onSubmit: (values: BookFormData) => void | Promise<void>;
-  isLoading: boolean;
-  submitButtonText: string;
-}
+import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
 
 export const BookForm = ({
   form,
   onSubmit,
   isLoading,
   submitButtonText,
-}: BookFormProps) => {
+}: IBookFormProps) => {
   const renderFormField = (fieldConfig: IFormFieldConfig) => {
     const { name, label, placeholder, type, options, min } = fieldConfig;
 
@@ -49,8 +40,8 @@ export const BookForm = ({
               {type === "select" ? (
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  value={field.value}
+                  defaultValue={field.value as string}
+                  value={field.value as string}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
@@ -65,7 +56,7 @@ export const BookForm = ({
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
-                      ),
+                      )
                     )}
                   </SelectContent>
                 </Select>
@@ -77,7 +68,6 @@ export const BookForm = ({
                   min={min}
                   placeholder={placeholder}
                   {...field}
-                  value={field.value}
                   onChange={(e) =>
                     type === "number"
                       ? field.onChange(Number(e.target.value))

@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HiBars3 } from "react-icons/hi2";
+import { Menu } from "lucide-react";
 
 const NavMenu = () => {
   return (
@@ -30,7 +30,7 @@ const NavMenu = () => {
           <div className="block sm:hidden">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <HiBars3 className="text-xl mx-2 my-1" />
+                <Menu className="h-6 w-6" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-gray-950 text-gray-300 mx-2">
                 <DropdownMenuItem>

@@ -1,15 +1,9 @@
 import type { IValidationMessages } from "@/types/validationMessages";
 import z from "zod";
 
-// Define a type for the schema creation function
-export type BorrowBookSchemaCreator = (
+export const borrowBookSchema = (
   availableCopies: number,
   messages: IValidationMessages,
-) => z.ZodType<{ quantity: number; dueDate: Date }>;
-
-export const borrowBookSchema: BorrowBookSchemaCreator = (
-  availableCopies,
-  messages,
 ) => {
   return z
     .object({

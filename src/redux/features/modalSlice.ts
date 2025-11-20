@@ -1,11 +1,7 @@
+import type { IModalState, IOpenModalPayload } from "@/types/modals";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface ModalState {
-  type: "view" | "edit" | "borrow" | "delete" | null;
-  bookId: string | null;
-}
-
-const initialState: ModalState = {
+const initialState: IModalState = {
   type: null,
   bookId: null,
 };
@@ -14,13 +10,7 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openModal: (
-      state,
-      action: PayloadAction<{
-        type: "view" | "edit" | "borrow" | "delete";
-        bookId: string;
-      }>,
-    ) => {
+    openModal: (state, action: PayloadAction<IOpenModalPayload>) => {
       state.type = action.payload.type;
       state.bookId = action.payload.bookId;
     },

@@ -1,5 +1,8 @@
 # Minimal Library Management System
 
+![CI](https://github.com/tarekul42/minimal-library-management-system/actions/workflows/ci.yml/badge.svg)
+![CD](https://github.com/tarekul42/minimal-library-management-system/actions/workflows/cd.yml/badge.svg)
+
 This is a simple, modern web application for managing a small library. It allows users to add, edit, view, and delete books, as well as manage borrowing records.
 
 ## Features
@@ -94,3 +97,51 @@ The project follows a feature-oriented structure to keep the codebase organized 
 ├───schema/         # Zod schemas for data validation
 └───types/          # TypeScript type definitions
 ```
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+### CI Workflow
+- **Triggers**: Runs on every push and pull request to `main` and `develop` branches
+- **Node Versions**: Tests on Node.js 18.x and 20.x for compatibility
+- **Steps**:
+  - Linting with ESLint
+  - TypeScript compilation
+  - Production build verification
+  - Upload build artifacts
+
+### CD Workflow
+- **Triggers**: Runs on every push to `main` branch
+- **Deployment**: Automatically deploys to Vercel
+- **Steps**:
+  - Build production bundle
+  - Deploy to Vercel production environment
+
+### Setting up Vercel Deployment
+
+To enable automatic deployment to Vercel, you need to add the following secrets to your GitHub repository:
+
+1. **VERCEL_TOKEN**: Your Vercel authentication token
+   - Go to [Vercel Account Settings > Tokens](https://vercel.com/account/tokens)
+   - Create a new token and copy it
+
+2. **VERCEL_ORG_ID**: Your Vercel organization ID
+   - Run `npx vercel link` in your project directory
+   - Find the value in `.vercel/project.json`
+
+3. **VERCEL_PROJECT_ID**: Your Vercel project ID
+   - Same as above, found in `.vercel/project.json`
+
+4. Add these secrets to your GitHub repository:
+   - Go to Settings > Secrets and variables > Actions
+   - Click "New repository secret"
+   - Add each secret with its corresponding value
+
+---
+
+## Contact
+
+Name: Tarekul Islam
+
+Email: john.dioe@example.com

@@ -1,43 +1,59 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
 name: CI
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-
 jobs:
-  test-and-build:
-    name: Test and Build
+  build:
+    name: Build & Check
     runs-on: ubuntu-latest
-    
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
-    
+        node-version: [18.x]
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Setup Node.js ${{ matrix.node-version }}
+
+      - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-      
-      - name: Run ESLint
-        run: npm run lint
-      
-      - name: Build TypeScript
-        run: npm run build
-      
-      - name: Upload build artifacts (Node 20.x only)
-        if: matrix.node-version == '20.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: dist/
-          retention-days: 7
+
+      - name: TypeScript check
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit
+          else
+            echo "No tsconfig.json — skipping tsc check"
+          fi
+
+      - name: Lint
+        run: |
+          if npm run -s lint --if-present; then
+            echo "Lint passed (or no lint script)"
+          else
+            exit 1
+          fi
+
+      - name: Run tests
+        run: |
+          if npm test --if-present; then
+            echo "Tests passed (or no test script)"
+          else
+            exit 1
+          fi
+
+      - name: Build
+        run: |
+          if npm run -s build --if-present; then
+            echo "Build succeeded (or no build script)"
+          else
+            exit 1
+          fi

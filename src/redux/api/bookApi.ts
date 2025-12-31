@@ -1,16 +1,16 @@
-import type { IBook } from "@/types/book";
+import type { IApiResponse, IBook } from "@/types/book";
 import { baseApi } from "./baseApi";
 
 export const bookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // get books query
-    getBooks: builder.query({
+    getBooks: builder.query<IApiResponse<IBook[]>, void>({
       query: () => "/books",
       providesTags: ["book"],
     }),
 
     // create book
-    createBook: builder.mutation({
+    createBook: builder.mutation<IApiResponse<IBook>, Record<string, unknown>>({
       query: (bookData) => ({
         url: "/books",
         method: "POST",
@@ -20,7 +20,7 @@ export const bookApi = baseApi.injectEndpoints({
     }),
 
     // get book
-    getBook: builder.query({
+    getBook: builder.query<IApiResponse<IBook>, string>({
       query: (bookId) => ({
         url: `/books/${bookId}`,
         method: "GET",
@@ -30,8 +30,8 @@ export const bookApi = baseApi.injectEndpoints({
 
     // update book
     editBook: builder.mutation<
-      IBook,
-      { bookId: string; bookData: Partial<IBook> }
+      IApiResponse<IBook>,
+      { bookId: string; bookData: Record<string, unknown> }
     >({
       query: ({ bookId, bookData }) => ({
         url: `/books/${bookId}`,
@@ -42,7 +42,7 @@ export const bookApi = baseApi.injectEndpoints({
     }),
 
     // delete book
-    deleteBook: builder.mutation({
+    deleteBook: builder.mutation<IApiResponse<void>, string>({
       query: (bookId) => ({
         url: `/books/${bookId}`,
         method: "DELETE",

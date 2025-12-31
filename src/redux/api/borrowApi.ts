@@ -1,9 +1,14 @@
+import type { IApiResponse } from "@/types/book";
+import type { IBorrowSummary } from "@/types/borrowSummary";
 import { baseApi } from "./baseApi";
 
 export const borrowApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // borrow book
-    borrowBook: builder.mutation({
+    borrowBook: builder.mutation<
+      IApiResponse<void>,
+      { book: string; quantity: number; dueDate: string }
+    >({
       query: (bookData) => ({
         url: "/borrow",
         method: "POST",
@@ -13,7 +18,7 @@ export const borrowApi = baseApi.injectEndpoints({
     }),
 
     // get borrow summary
-    getBorrowSummary: builder.query({
+    getBorrowSummary: builder.query<IApiResponse<IBorrowSummary[]>, void>({
       query: () => "/borrow",
       providesTags: ["borrow"],
     }),

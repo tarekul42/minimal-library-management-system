@@ -28,7 +28,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
       const updateData = {
         ...values,
         available: values.availability === "available",
-        genre: bookData.genre,
+        genre: bookData!.genre,
       };
 
       await editBook({ bookId: bookId!, bookData: updateData }).unwrap();

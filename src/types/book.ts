@@ -18,6 +18,12 @@ export interface IBook {
   available: boolean;
 }
 
+export interface IApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 export interface IBookModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -41,7 +41,7 @@ You need to have [Node.js](https://nodejs.org/) (version 20.x or higher) and [np
 
 1.  Clone the repository:
     ```sh
-    git clone [<repository-url>](https://github.com/tarekul42/minimal-library-management-system.git)
+    git clone https://github.com/tarekul42/minimal-library-management-system.git
     ```
 2.  Navigate to the project directory:
     ```sh
@@ -144,4 +144,4 @@ To enable automatic deployment to Vercel, you need to add the following secrets 
 
 Name: Tarekul Islam
 
-Email: john.dioe@example.com
+Email: tarekulrifat142@gmail.com

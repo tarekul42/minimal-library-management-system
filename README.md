@@ -41,7 +41,7 @@ You need to have [Node.js](https://nodejs.org/) (version 20.x or higher) and [np
 
 1.  Clone the repository:
     ```sh
-    git clone <repository-url>
+    git clone [<repository-url>](https://github.com/tarekul42/minimal-library-management-system.git)
     ```
 2.  Navigate to the project directory:
     ```sh

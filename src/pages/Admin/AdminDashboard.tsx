@@ -1,7 +1,7 @@
 import { Navigate, Link } from "react-router";
 import { useAppSelector } from "@/redux/hook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Users, Tags, BookMarked, DollarSign } from "lucide-react";
+import { BookOpen, Users, Tags, BookMarked, DollarSign, BarChart3, FileText } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -11,6 +11,18 @@ const AdminDashboard = () => {
   }
 
   const links = [
+    {
+      title: "Dashboard",
+      description: "Stats, charts, and popular books",
+      icon: BarChart3,
+      href: "/admin/dashboard",
+    },
+    {
+      title: "Reports",
+      description: "Export CSV/PDF reports",
+      icon: FileText,
+      href: "/admin/reports",
+    },
     {
       title: "Books",
       description: "Manage book catalog",

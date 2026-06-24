@@ -13,6 +13,8 @@ import Settings from "@/pages/User/Settings";
 import Authors from "@/pages/Author/Authors";
 import AuthorDetail from "@/pages/Author/AuthorDetail";
 import AdminDashboard from "@/pages/Admin/AdminDashboard";
+import Dashboard from "@/pages/Admin/Dashboard";
+import Reports from "@/pages/Admin/Reports";
 import AdminBooks from "@/pages/Admin/AdminBooks";
 import AdminAuthors from "@/pages/Admin/AdminAuthors";
 import AdminCategories from "@/pages/Admin/AdminCategories";
@@ -39,6 +41,8 @@ export const router = createBrowserRouter([
       { path: "/authors", element: <Authors /> },
       { path: "/authors/:authorId", element: <AuthorDetail /> },
       { path: "/admin", element: <AdminDashboard /> },
+      { path: "/admin/dashboard", element: <Dashboard /> },
+      { path: "/admin/reports", element: <Reports /> },
       { path: "/admin/books", element: <AdminBooks /> },
       { path: "/admin/authors", element: <AdminAuthors /> },
       { path: "/admin/categories", element: <AdminCategories /> },

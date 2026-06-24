@@ -5,6 +5,8 @@ import CreateBook from "@/pages/Book/CreateBook";
 import BorrowSummary from "@/pages/Borrow/BorrowSummary";
 import MyBorrows from "@/pages/Borrow/MyBorrows";
 import Fines from "@/pages/Fines/Fines";
+import WishlistPage from "@/pages/Wishlist/WishlistPage";
+import Notifications from "@/pages/Notifications/Notifications";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
@@ -38,6 +40,8 @@ export const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/profile", element: <Profile /> },
       { path: "/settings", element: <Settings /> },
+      { path: "/wishlist", element: <WishlistPage /> },
+      { path: "/notifications", element: <Notifications /> },
       { path: "/authors", element: <Authors /> },
       { path: "/authors/:authorId", element: <AuthorDetail /> },
       { path: "/admin", element: <AdminDashboard /> },

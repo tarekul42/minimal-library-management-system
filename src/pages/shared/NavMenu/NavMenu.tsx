@@ -7,10 +7,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, LogOut, BookOpen, Library, Users, Shield, BookMarked, DollarSign } from "lucide-react";
+import { Menu, User, LogOut, BookOpen, Library, Users, Shield, BookMarked, DollarSign, Heart } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import NotificationBell from "@/components/shared/NotificationBell";
 
 const NavMenu = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
@@ -49,8 +50,16 @@ const NavMenu = () => {
                   <DollarSign className="h-4 w-4 inline mr-1" />
                   Fines
                 </NavLink>
+                <NavLink className="navbarLink px-2 py-1" to="/wishlist">
+                  <Heart className="h-4 w-4 inline mr-1" />
+                  Wishlist
+                </NavLink>
               </>
             )}
+
+            {isAuthenticated ? (
+              <NotificationBell />
+            ) : null}
 
             {isAuthenticated ? (
               <DropdownMenu>
@@ -122,6 +131,12 @@ const NavMenu = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <NavLink to="/fines">Fines</NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/wishlist">Wishlist</NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/notifications">Notifications</NavLink>
                     </DropdownMenuItem>
                   </>
                 )}

@@ -1,7 +1,7 @@
 import { Navigate, Link } from "react-router";
 import { useAppSelector } from "@/redux/hook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Users, Tags } from "lucide-react";
+import { BookOpen, Users, Tags, BookMarked, DollarSign } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -29,6 +29,22 @@ const AdminDashboard = () => {
       icon: Tags,
       href: "/admin/categories",
     },
+    {
+      title: "Borrows",
+      description: "View active/overdue borrows",
+      icon: BookMarked,
+      href: "/admin/borrows",
+    },
+    ...(user.role === "admin"
+      ? [
+          {
+            title: "Fines",
+            description: "Manage fines",
+            icon: DollarSign,
+            href: "/admin/fines",
+          },
+        ]
+      : []),
   ];
 
   return (

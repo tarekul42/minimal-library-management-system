@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, LogOut, BookOpen, Library, Users, Shield } from "lucide-react";
+import { Menu, User, LogOut, BookOpen, Library, Users, Shield, BookMarked, DollarSign } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,19 @@ const NavMenu = () => {
             <NavLink className="navbarLink px-2 py-1" to="/borrow-summary">
               Borrows
             </NavLink>
+
+            {isAuthenticated && (
+              <>
+                <NavLink className="navbarLink px-2 py-1" to="/my-borrows">
+                  <BookMarked className="h-4 w-4 inline mr-1" />
+                  My Books
+                </NavLink>
+                <NavLink className="navbarLink px-2 py-1" to="/fines">
+                  <DollarSign className="h-4 w-4 inline mr-1" />
+                  Fines
+                </NavLink>
+              </>
+            )}
 
             {isAuthenticated ? (
               <DropdownMenu>
@@ -102,6 +115,16 @@ const NavMenu = () => {
                 <DropdownMenuItem asChild>
                   <NavLink to="/borrow-summary">Borrows</NavLink>
                 </DropdownMenuItem>
+                {isAuthenticated && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/my-borrows">My Books</NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/fines">Fines</NavLink>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 {isAuthenticated ? (
                   <>
                     <DropdownMenuSeparator />

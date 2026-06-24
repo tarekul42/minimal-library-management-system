@@ -3,6 +3,8 @@ import Books from "@/pages/Book/Books";
 import BookDetail from "@/pages/Book/BookDetail";
 import CreateBook from "@/pages/Book/CreateBook";
 import BorrowSummary from "@/pages/Borrow/BorrowSummary";
+import MyBorrows from "@/pages/Borrow/MyBorrows";
+import Fines from "@/pages/Fines/Fines";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
@@ -14,6 +16,8 @@ import AdminDashboard from "@/pages/Admin/AdminDashboard";
 import AdminBooks from "@/pages/Admin/AdminBooks";
 import AdminAuthors from "@/pages/Admin/AdminAuthors";
 import AdminCategories from "@/pages/Admin/AdminCategories";
+import AdminBorrows from "@/pages/Admin/AdminBorrows";
+import AdminFines from "@/pages/Admin/AdminFines";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -26,6 +30,8 @@ export const router = createBrowserRouter([
       { path: "/books/:bookId", element: <BookDetail /> },
       { path: "/create-book", element: <CreateBook /> },
       { path: "/borrow-summary", element: <BorrowSummary /> },
+      { path: "/my-borrows", element: <MyBorrows /> },
+      { path: "/fines", element: <Fines /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/profile", element: <Profile /> },
@@ -36,6 +42,8 @@ export const router = createBrowserRouter([
       { path: "/admin/books", element: <AdminBooks /> },
       { path: "/admin/authors", element: <AdminAuthors /> },
       { path: "/admin/categories", element: <AdminCategories /> },
+      { path: "/admin/borrows", element: <AdminBorrows /> },
+      { path: "/admin/fines", element: <AdminFines /> },
     ],
   },
 ]);

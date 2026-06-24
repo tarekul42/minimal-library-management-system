@@ -1,3 +1,4 @@
+import { useGetBorrowSummaryQuery } from "@/redux/api/borrowApi";
 import {
   Table,
   TableBody,
@@ -7,14 +8,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetBorrowSummaryQuery } from "@/redux/api/borrowApi";
-import type { IBorrowSummary } from "@/types/borrowSummary";
 import { Spinner } from "@/components/ui/spinner";
+import type { IBorrow } from "@/types/borrow";
+
+interface IGrouped {
+  isbn: string;
+  title: string;
+  totalQuantity: number;
+}
 
 const BorrowSummary = () => {
-  const { data, isLoading } = useGetBorrowSummaryQuery(undefined);
+  const { data, isLoading } = useGetBorrowSummaryQuery();
 
-  const summary: IBorrowSummary[] = data?.data || [];
+  const borrows: IBorrow[] = data?.data || [];
+
+  const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
+    const key = b.book.isbn;
+    if (!acc[key]) {
+      acc[key] = { isbn: key, title: b.book.title, totalQuantity: 0 };
+    }
+    acc[key].totalQuantity += b.quantity;
+    return acc;
+  }, {});
+
+  const summary = Object.values(grouped);
 
   if (isLoading) {
     return (
@@ -28,28 +45,20 @@ const BorrowSummary = () => {
     <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
       <h1 className="text-3xl pb-4 text-center">Borrow Summary</h1>
       <Table className="border">
-        <TableCaption className="pb-4">
-          A list of all borrow records.
-        </TableCaption>
+        <TableCaption className="pb-4">A list of all borrow records.</TableCaption>
         <TableHeader className="bg-muted">
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead className="text-center">ISBN</TableHead>
-            <TableHead className="text-center">
-              Total borrrowed Quantity
-            </TableHead>
+            <TableHead className="text-center">Total Borrowed</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {summary.map((records: IBorrowSummary) => (
-            <TableRow key={records.book.isbn}>
-              <TableCell>{records.book.title}</TableCell>
-              <TableCell className="text-center">
-                {records.book.isbn}
-              </TableCell>
-              <TableCell className="text-center">
-                {records.totalQuantity}
-              </TableCell>
+          {summary.map((record) => (
+            <TableRow key={record.isbn}>
+              <TableCell>{record.title}</TableCell>
+              <TableCell className="text-center">{record.isbn}</TableCell>
+              <TableCell className="text-center">{record.totalQuantity}</TableCell>
             </TableRow>
           ))}
         </TableBody>

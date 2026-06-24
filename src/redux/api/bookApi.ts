@@ -1,15 +1,32 @@
-import type { IApiResponse, IBook } from "@/types/book";
 import { baseApi } from "./baseApi";
+import type {
+  IApiResponse,
+  IBook,
+  IBookQueryParams,
+} from "@/types/book";
+
+export interface IBooksResponse {
+  success: boolean;
+  message: string;
+  data: IBook[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
 
 export const bookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // get books query
-    getBooks: builder.query<IApiResponse<IBook[]>, void>({
-      query: () => "/books",
+    getBooks: builder.query<IBooksResponse, IBookQueryParams | void>({
+      query: (params) => ({
+        url: "/books",
+        params: params || {},
+      }),
       providesTags: ["book"],
     }),
 
-    // create book
     createBook: builder.mutation<IApiResponse<IBook>, Record<string, unknown>>({
       query: (bookData) => ({
         url: "/books",
@@ -19,16 +36,11 @@ export const bookApi = baseApi.injectEndpoints({
       invalidatesTags: ["book"],
     }),
 
-    // get book
     getBook: builder.query<IApiResponse<IBook>, string>({
-      query: (bookId) => ({
-        url: `/books/${bookId}`,
-        method: "GET",
-      }),
+      query: (bookId) => `/books/${bookId}`,
       providesTags: ["book"],
     }),
 
-    // update book
     editBook: builder.mutation<
       IApiResponse<IBook>,
       { bookId: string; bookData: Record<string, unknown> }
@@ -41,7 +53,6 @@ export const bookApi = baseApi.injectEndpoints({
       invalidatesTags: ["book"],
     }),
 
-    // delete book
     deleteBook: builder.mutation<IApiResponse<void>, string>({
       query: (bookId) => ({
         url: `/books/${bookId}`,

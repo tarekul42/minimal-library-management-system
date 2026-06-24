@@ -21,4 +21,5 @@ export interface IBookFormProps {
   onSubmit: (values: BookFormData) => void | Promise<void>;
   isLoading: boolean;
   submitButtonText: string;
+  authorOptions?: { value: string; label: string }[];
 }

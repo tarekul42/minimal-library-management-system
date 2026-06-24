@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { IBook } from "@/types/book";
+import { GENRE_LABELS } from "@/types/book";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import Book from "../Book/Book";
@@ -14,8 +15,13 @@ import Borrow from "../Borrow/Borrow";
 import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import Banner from "./Banner";
-
 import { Spinner } from "@/components/ui/spinner";
+
+const getAuthorName = (author: unknown): string => {
+  if (!author) return "Unknown";
+  if (typeof author === "string") return author;
+  return (author as { name: string }).name;
+};
 
 const Home = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
@@ -59,8 +65,12 @@ const Home = () => {
               >
                 <CardContent className="space-y-3">
                   <CardTitle>{singleData.title}</CardTitle>
-                  <CardDescription>Author: {singleData.author}</CardDescription>
-                  <CardDescription>Genre: {singleData.genre}</CardDescription>
+                  <CardDescription>
+                    Author: {getAuthorName(singleData.author)}
+                  </CardDescription>
+                  <CardDescription>
+                    Genre: {GENRE_LABELS[singleData.genre] || singleData.genre}
+                  </CardDescription>
                   <CardDescription>ISBN: {singleData.isbn}</CardDescription>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
@@ -75,6 +85,7 @@ const Home = () => {
                     variant="outline"
                     className="w-full bg-gray-900 border-gray-800 cursor-pointer"
                     onClick={() => handleBorrowBook(singleData._id)}
+                    disabled={!singleData.available}
                   >
                     Borrow now
                     <ArrowRight className="ml-2" />
@@ -89,7 +100,6 @@ const Home = () => {
           </Button>
         </Link>
       </div>
-      {/* Book Modal */}
       <Book
         open={modalType === "view"}
         onOpenChange={(isOpen) => !isOpen && handleCloseModal()}

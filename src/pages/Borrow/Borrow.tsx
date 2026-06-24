@@ -38,6 +38,12 @@ import { useGetBookQuery } from "@/redux/api/bookApi";
 import { borrowBookSchema } from "@/schema/borrowBookSchema";
 import { useNavigate } from "react-router";
 
+const getAuthorName = (author: unknown): string => {
+  if (!author) return "Unknown";
+  if (typeof author === "string") return author;
+  return (author as { name: string }).name;
+};
+
 const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,
   onOpenChange,
@@ -112,7 +118,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
                     <CardTitle>
                       Author:{" "}
                       <span className="text-sm font-semibold text-gray-400">
-                        {bookData.author}
+                        {getAuthorName(bookData.author)}
                       </span>
                     </CardTitle>
                     <CardTitle>

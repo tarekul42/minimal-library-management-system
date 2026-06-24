@@ -57,6 +57,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["book", "borrow"],
+  tagTypes: ["book", "borrow", "author", "category"],
   endpoints: () => ({}),
 });

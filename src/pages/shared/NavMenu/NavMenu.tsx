@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, LogOut, BookOpen, Library } from "lucide-react";
+import { Menu, User, LogOut, BookOpen, Library, Users, Shield } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 const NavMenu = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
   const { logout } = useAuth();
+  const isAdminOrLibrarian = user?.role === "admin" || user?.role === "librarian";
 
   return (
     <div className="bg-gray-900 text-gray-300 px-6 sm:px-8 lg:px-10">
@@ -30,6 +31,10 @@ const NavMenu = () => {
               <BookOpen className="h-4 w-4 inline mr-1" />
               Books
             </NavLink>
+            <NavLink className="navbarLink px-2 py-1" to="/authors">
+              <Users className="h-4 w-4 inline mr-1" />
+              Authors
+            </NavLink>
             <NavLink className="navbarLink px-2 py-1" to="/borrow-summary">
               Borrows
             </NavLink>
@@ -44,21 +49,24 @@ const NavMenu = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-gray-950 text-gray-300" align="end">
                   <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer">Profile</Link>
+                    <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/settings" className="cursor-pointer">Settings</Link>
+                    <Link to="/settings">Settings</Link>
                   </DropdownMenuItem>
-                  {(user?.role === "admin" || user?.role === "librarian") && (
+                  {isAdminOrLibrarian && (
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        <Link to="/admin" className="cursor-pointer">Admin Dashboard</Link>
+                        <Link to="/admin" className="flex items-center gap-2">
+                          <Shield className="h-4 w-4" />
+                          Admin Dashboard
+                        </Link>
                       </DropdownMenuItem>
                     </>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-400">
+                  <DropdownMenuItem onClick={logout} className="text-red-400 cursor-pointer">
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
                   </DropdownMenuItem>
@@ -86,17 +94,25 @@ const NavMenu = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-gray-950 text-gray-300 mx-2">
                 <DropdownMenuItem asChild>
-                  <NavLink className="px-2 py-1" to="/books">Books</NavLink>
+                  <NavLink to="/books">Books</NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <NavLink className="px-2 py-1" to="/borrow-summary">Borrows</NavLink>
+                  <NavLink to="/authors">Authors</NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/borrow-summary">Borrows</NavLink>
                 </DropdownMenuItem>
                 {isAuthenticated ? (
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <NavLink className="px-2 py-1" to="/profile">Profile</NavLink>
+                      <NavLink to="/profile">Profile</NavLink>
                     </DropdownMenuItem>
+                    {isAdminOrLibrarian && (
+                      <DropdownMenuItem asChild>
+                        <NavLink to="/admin">Admin</NavLink>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem onClick={logout} className="text-red-400">
                       Sign Out
                     </DropdownMenuItem>
@@ -105,10 +121,10 @@ const NavMenu = () => {
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <NavLink className="px-2 py-1" to="/login">Sign In</NavLink>
+                      <NavLink to="/login">Sign In</NavLink>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <NavLink className="px-2 py-1" to="/register">Sign Up</NavLink>
+                      <NavLink to="/register">Sign Up</NavLink>
                     </DropdownMenuItem>
                   </>
                 )}

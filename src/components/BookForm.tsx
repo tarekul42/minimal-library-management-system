@@ -19,14 +19,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { bookFormFields } from "@/config/formFields";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
 
+const getOptions = (
+  field: IFormFieldConfig,
+  authorOptions?: { value: string; label: string }[],
+) => {
+  if (field.name === "author" && authorOptions) return authorOptions;
+  return field.options;
+};
+
 export const BookForm = ({
   form,
   onSubmit,
   isLoading,
   submitButtonText,
+  authorOptions,
 }: IBookFormProps) => {
   const renderFormField = (fieldConfig: IFormFieldConfig) => {
-    const { name, label, placeholder, type, options, min } = fieldConfig;
+    const { name, label, placeholder, type, min } = fieldConfig;
+    const options = getOptions(fieldConfig, authorOptions);
 
     return (
       <FormField
@@ -56,7 +66,7 @@ export const BookForm = ({
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
-                      )
+                      ),
                     )}
                   </SelectContent>
                 </Select>
@@ -70,7 +80,7 @@ export const BookForm = ({
                   {...field}
                   onChange={(e) =>
                     type === "number"
-                      ? field.onChange(Number(e.target.value))
+                      ? field.onChange(e.target.value === "" ? "" : Number(e.target.value))
                       : field.onChange(e.target.value)
                   }
                 />
@@ -88,7 +98,6 @@ export const BookForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {bookFormFields.map(renderFormField)}
 
-        {/* Submit Button */}
         <Button
           type="submit"
           disabled={isLoading}

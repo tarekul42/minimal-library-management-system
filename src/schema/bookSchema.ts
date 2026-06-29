@@ -16,10 +16,10 @@ export const bookSchema = z.object({
   isbn: z.string().min(1, "ISBN is required"),
   description: z.string().max(2000).optional(),
   coverImage: z.string().optional(),
-  pages: z.coerce.number().int().positive().optional(),
+  pages: z.number().int().positive().optional(),
   publisher: z.string().max(200).optional(),
-  publishedYear: z.coerce.number().int().min(1000).max(2030).optional(),
-  copies: z.coerce.number().int().min(0, "Copies must be at least 0"),
+  publishedYear: z.number().int().min(1000).max(2030).optional(),
+  copies: z.number().int().min(0, "Copies must be at least 0"),
   tags: z.string().optional(),
   shelfLocation: z.string().optional(),
 });

@@ -7,7 +7,7 @@ export const borrowBookSchema = (
 ) => {
   return z
     .object({
-      quantity: z.coerce
+      quantity: z
         .number()
         .min(1, { message: messages.quantity.min })
         .max(availableCopies, {

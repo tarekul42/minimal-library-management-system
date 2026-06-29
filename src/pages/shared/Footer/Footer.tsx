@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Globe, Camera, Briefcase, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -35,16 +35,16 @@ export default function Footer() {
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
             <Link to="#">
-              <Facebook className="text-xl" />
+              <Globe className="text-xl" />
             </Link>
             <Link to="#">
-              <Twitter className="text-xl" />
+              <MessageCircle className="text-xl" />
             </Link>
             <Link to="#">
-              <Instagram className="text-xl" />
+              <Camera className="text-xl" />
             </Link>
             <Link to="#">
-              <Linkedin className="text-xl" />
+              <Briefcase className="text-xl" />
             </Link>
           </div>
         </div>

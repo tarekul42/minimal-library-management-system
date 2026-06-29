@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
-import type { IBook } from "@/types/book";
+import type { IBook, IBookQueryParams } from "@/types/book";
 import { GENRE_LABELS } from "@/types/book";
 import { Eye, FilePenLine, ShoppingCart, Trash2, Plus, Search } from "lucide-react";
 import Book from "./Book";
@@ -37,11 +37,11 @@ const Books = () => {
   const [genre, setGenre] = useState<string>("all");
   const [page, setPage] = useState(1);
 
-  const params: Record<string, unknown> = { page, limit: 10 };
+  const params: IBookQueryParams = { page, limit: 10 };
   if (search) params.search = search;
-  if (genre && genre !== "all") params.genre = genre;
+  if (genre && genre !== "all") params.genre = genre as IBookQueryParams["genre"];
 
-  const { data, isLoading, isError } = useGetBooksQuery(params as any);
+  const { data, isLoading, isError } = useGetBooksQuery(params);
 
   const books: IBook[] = data?.data || [];
   const meta = data?.meta;

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
-import { setAccessToken, logout } from "../features/authSlice";
+import { setTokens, logout } from "../features/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL,
@@ -12,6 +12,14 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+interface IRefreshResponse {
+  success: boolean;
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+  };
+}
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -34,14 +42,12 @@ const baseQueryWithReauth: BaseQueryFn<
         extraOptions,
       );
 
-      const responseData = refreshResult.data as any;
+      const responseData = refreshResult.data as IRefreshResponse | undefined;
       const tokens = responseData?.data;
 
-      if (tokens?.accessToken) {
-        api.dispatch(setAccessToken(tokens.accessToken));
-        if (tokens.refreshToken) {
-          localStorage.setItem("refreshToken", tokens.refreshToken);
-        }
+      if (tokens?.accessToken && tokens?.refreshToken) {
+        api.dispatch(setTokens(tokens));
+        localStorage.setItem("refreshToken", tokens.refreshToken);
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());

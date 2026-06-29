@@ -43,16 +43,6 @@ export interface IBookQueryParams {
   sortOrder?: "asc" | "desc";
 }
 
-export interface IPaginatedResponse<T> {
-  data: T[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
 export interface IApiResponse<T> {
   success: boolean;
   message: string;

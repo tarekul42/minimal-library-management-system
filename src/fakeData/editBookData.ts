@@ -7,7 +7,4 @@ export const genreOptions = [
   { value: "FANTASY", label: "Fantasy" },
 ];
 
-export const availabilityOptions = [
-  { value: "true", label: "Available" },
-  { value: "false", label: "Not Available" },
-];
+

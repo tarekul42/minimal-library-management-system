@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft, Search } from "lucide-react";
-import type { IBook } from "@/types/book";
+import type { IBook, IBookQueryParams } from "@/types/book";
 import { GENRE_LABELS } from "@/types/book";
 
 const AdminBooks = () => {
@@ -27,10 +27,10 @@ const AdminBooks = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const params: Record<string, unknown> = { page, limit: 10 };
+  const params: IBookQueryParams = { page, limit: 10 };
   if (search) params.search = search;
 
-  const { data, isLoading } = useGetBooksQuery(params as any);
+  const { data, isLoading } = useGetBooksQuery(params);
   const [deleteBook] = useDeleteBookMutation();
 
   const books: IBook[] = data?.data || [];

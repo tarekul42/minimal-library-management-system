@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { ArrowLeft, RotateCcw, AlertTriangle, Activity } from "lucide-react";
+import type { IBorrow } from "@/types/borrow";
 
 type Tab = "all" | "active" | "overdue";
 
@@ -111,7 +112,7 @@ const AdminBorrows = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {(borrows || []).map((b: any) => (
+            {(borrows || []).map((b: IBorrow) => (
               <TableRow key={b._id}>
                 <TableCell>{b.user?.name || "N/A"}</TableCell>
                 <TableCell className="font-medium">{b.book?.title}</TableCell>

@@ -14,12 +14,12 @@ export const borrowApi = baseApi.injectEndpoints({
     }),
 
     getBorrowSummary: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow",
+      query: () => "/borrow/me",
       providesTags: ["borrow"],
     }),
 
     getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow",
+      query: () => "/borrow/me",
       providesTags: ["borrow"],
     }),
 

@@ -23,6 +23,7 @@ import AdminAuthors from "@/pages/Admin/AdminAuthors";
 import AdminCategories from "@/pages/Admin/AdminCategories";
 import AdminBorrows from "@/pages/Admin/AdminBorrows";
 import AdminFines from "@/pages/Admin/AdminFines";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import AdminRoute from "@/components/shared/AdminRoute";
 import { createBrowserRouter, Outlet } from "react-router";
 
@@ -34,8 +35,8 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "/books", element: <Books /> },
       { path: "/books/:bookId", element: <BookDetail /> },
-      { path: "/create-book", element: <CreateBook /> },
-      { path: "/borrow-summary", element: <BorrowSummary /> },
+      { path: "/create-book", element: <AdminRoute><CreateBook /></AdminRoute> },
+      { path: "/borrow-summary", element: <ProtectedRoute><BorrowSummary /></ProtectedRoute> },
       { path: "/my-borrows", element: <MyBorrows /> },
       { path: "/fines", element: <Fines /> },
       { path: "/login", element: <Login /> },

@@ -19,6 +19,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { bookFormFields } from "@/config/formFields";
+import { useAppSelector } from "@/redux/hook";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
@@ -43,6 +44,8 @@ export const BookForm = ({
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const token = useAppSelector((s) => s.auth.accessToken);
+
   const uploadFile = async (file: File): Promise<string | null> => {
     const formData = new FormData();
     formData.append("file", file);
@@ -51,6 +54,7 @@ export const BookForm = ({
       setUploading(true);
       const res = await fetch(`${VITE_API_URL}/uploads/cover`, {
         method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData,
       });
       const json = await res.json();

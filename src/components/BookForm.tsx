@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,8 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Spinner } from "@/components/ui/spinner";
 import { bookFormFields } from "@/config/formFields";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
+import { toast } from "sonner";
+import { Upload } from "lucide-react";
+
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const getOptions = (
   field: IFormFieldConfig,
@@ -34,6 +40,34 @@ export const BookForm = ({
   submitButtonText,
   authorOptions,
 }: IBookFormProps) => {
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setUploading(true);
+      const res = await fetch(`${VITE_API_URL}/uploads/cover`, {
+        method: "POST",
+        body: formData,
+      });
+      const json = await res.json();
+      if (json.success && json.data?.url) {
+        toast.success("Image uploaded");
+        return json.data.url;
+      }
+      toast.error(json.message || "Upload failed");
+      return null;
+    } catch {
+      toast.error("Upload failed");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const renderFormField = (fieldConfig: IFormFieldConfig) => {
     const { name, label, placeholder, type, min } = fieldConfig;
     const options = getOptions(fieldConfig, authorOptions);
@@ -47,7 +81,33 @@ export const BookForm = ({
           <FormItem>
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              {type === "select" ? (
+              {type === "file" ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      disabled={uploading}
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const url = await uploadFile(file);
+                          if (url) field.onChange(url);
+                        }
+                      }}
+                      className="flex-1"
+                    />
+                    {uploading && <Spinner size={20} />}
+                  </div>
+                  {field.value && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Upload className="h-3 w-3" />
+                      <span className="truncate max-w-[300px]">{field.value as string}</span>
+                    </div>
+                  )}
+                </div>
+              ) : type === "select" ? (
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value as string}
@@ -100,7 +160,7 @@ export const BookForm = ({
 
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || uploading}
           className="w-full text-foreground"
         >
           {isLoading ? "Processing..." : submitButtonText}

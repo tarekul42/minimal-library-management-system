@@ -33,6 +33,12 @@ export const bookFormFields: IFormFieldConfig[] = [
     type: "textarea",
   },
   {
+    name: "coverImage",
+    label: "Cover Image",
+    placeholder: "Upload a cover image",
+    type: "file",
+  },
+  {
     name: "pages",
     label: "Pages",
     placeholder: "Number of pages",

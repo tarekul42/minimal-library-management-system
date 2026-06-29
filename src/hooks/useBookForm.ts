@@ -15,6 +15,7 @@ export const useBookForm = (book?: IBook) => {
     genre: book?.genre || "FICTION",
     isbn: book?.isbn || "",
     description: book?.description || "",
+    coverImage: book?.coverImage || "",
     pages: book?.pages,
     publisher: book?.publisher || "",
     publishedYear: book?.publishedYear,

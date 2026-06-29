@@ -15,6 +15,7 @@ export const bookSchema = z.object({
   genre: genreSchema,
   isbn: z.string().min(1, "ISBN is required"),
   description: z.string().max(2000).optional(),
+  coverImage: z.string().optional(),
   pages: z.coerce.number().int().positive().optional(),
   publisher: z.string().max(200).optional(),
   publishedYear: z.coerce.number().int().min(1000).max(2030).optional(),

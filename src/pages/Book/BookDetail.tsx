@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router";
 import { useGetBookQuery } from "@/redux/api/bookApi";
 import { useGetBookReviewsQuery, useCreateReviewMutation } from "@/redux/api/reviewApi";
 import { useAddToWishlistMutation, useRemoveFromWishlistMutation, useGetWishlistQuery } from "@/redux/api/wishlistApi";
+import { useCreateReservationMutation } from "@/redux/api/reservationApi";
 import { useAppSelector } from "@/redux/hook";
 import { GENRE_LABELS } from "@/types/book";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useState } from "react";
 import {
-  ArrowLeft, Calendar, BookOpen, Hash, MapPin, Tag, Star, Library, Heart, MessageSquare,
+  ArrowLeft, Calendar, BookOpen, Hash, MapPin, Tag, Star, Library, Heart, MessageSquare, Clock,
 } from "lucide-react";
 import type { IReview } from "@/types/review";
 
@@ -27,6 +28,7 @@ const BookDetail = () => {
   const [createReview] = useCreateReviewMutation();
   const [addToWishlist] = useAddToWishlistMutation();
   const [removeFromWishlist] = useRemoveFromWishlistMutation();
+  const [createReservation] = useCreateReservationMutation();
 
   const book = data?.data;
   const reviews: IReview[] = reviewsData?.data || [];
@@ -45,6 +47,17 @@ const BookDetail = () => {
       }
     } catch {
       toast.error("Failed to update wishlist");
+    }
+  };
+
+  const handleReserve = async () => {
+    if (!user) { toast.error("Sign in to reserve"); return; }
+    try {
+      await createReservation({ bookId: bookId! }).unwrap();
+      toast.success("Book reserved! You're in the queue.");
+    } catch (err: unknown) {
+      const msg = (err as { data?: { message?: string } })?.data?.message || "Failed to reserve";
+      toast.error(msg);
     }
   };
 
@@ -105,6 +118,16 @@ const BookDetail = () => {
             <Heart className={`h-4 w-4 mr-2 ${inWishlist ? "fill-current" : ""}`} />
             {inWishlist ? "In Wishlist" : "Add to Wishlist"}
           </Button>
+          {!book.available && (
+            <Button
+              variant="outline"
+              className="w-full mt-2"
+              onClick={handleReserve}
+            >
+              <Clock className="h-4 w-4 mr-2" />
+              Reserve
+            </Button>
+          )}
         </div>
 
         <div className="md:col-span-2 space-y-6">

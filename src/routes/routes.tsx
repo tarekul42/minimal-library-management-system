@@ -7,6 +7,7 @@ import MyBorrows from "@/pages/Borrow/MyBorrows";
 import Fines from "@/pages/Fines/Fines";
 import WishlistPage from "@/pages/Wishlist/WishlistPage";
 import Notifications from "@/pages/Notifications/Notifications";
+import MyReservations from "@/pages/Reservations/MyReservations";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "/settings", element: <Settings /> },
       { path: "/wishlist", element: <WishlistPage /> },
+      { path: "/my-reservations", element: <MyReservations /> },
       { path: "/notifications", element: <Notifications /> },
       { path: "/authors", element: <Authors /> },
       { path: "/authors/:authorId", element: <AuthorDetail /> },

@@ -37,12 +37,7 @@ import { useBorrowBookMutation } from "@/redux/api/borrowApi";
 import { useGetBookQuery } from "@/redux/api/bookApi";
 import { borrowBookSchema } from "@/schema/borrowBookSchema";
 import { useNavigate } from "react-router";
-
-const getAuthorName = (author: unknown): string => {
-  if (!author) return "Unknown";
-  if (typeof author === "string") return author;
-  return (author as { name: string }).name;
-};
+import { getAuthorName } from "@/lib/utils";
 
 const Borrow: React.FC<IBorrowBookModalProps> = ({
   open,

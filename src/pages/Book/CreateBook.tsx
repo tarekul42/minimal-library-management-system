@@ -6,6 +6,7 @@ import { useBookForm } from "@/hooks/useBookForm";
 import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
+import { splitTags } from "@/lib/utils";
 
 const CreateBook = () => {
   const [createBook, { isLoading }] = useCreateBookMutation();
@@ -19,9 +20,7 @@ const CreateBook = () => {
     try {
       await createBook({
         ...values,
-        tags: values.tags
-          ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
-          : [],
+        tags: splitTags(values.tags),
       }).unwrap();
       toast.success("Book created successfully");
       form.reset();

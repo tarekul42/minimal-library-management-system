@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 import { setTokens, logout } from "../features/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_URL,
+  baseUrl: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
@@ -63,6 +63,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["book", "borrow", "author", "category", "fine", "dashboard", "review", "wishlist", "notification", "reservation"],
+  tagTypes: ["book", "borrow", "author", "category", "fine", "dashboard", "review", "wishlist", "notification", "reservation", "user"],
   endpoints: () => ({}),
 });

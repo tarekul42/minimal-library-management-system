@@ -21,7 +21,7 @@ import {
 import DeleteBook from "./DeleteBook";
 import Borrow from "../Borrow/Borrow";
 import type { IBook, IBookQueryParams } from "@/types/book";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS, GENRE_OPTIONS } from "@/config/constants";
 import { Eye, FilePenLine, ShoppingCart, Trash2, Plus, Search } from "lucide-react";
 import Book from "./Book";
 import EditBook from "./EditBook";
@@ -29,8 +29,7 @@ import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import { Spinner } from "@/components/ui/spinner";
 import { Badge } from "@/components/ui/badge";
-
-const GENRE_OPTIONS = Object.entries(GENRE_LABELS).map(([value, label]) => ({ value, label }));
+import { getAuthorName } from "@/lib/utils";
 
 const Books = () => {
   const [search, setSearch] = useState("");
@@ -55,12 +54,6 @@ const Books = () => {
     handleDeleteBook,
     handleCloseModal,
   } = useBookModals();
-
-  const getAuthorName = (author: unknown): string => {
-    if (!author) return "Unknown";
-    if (typeof author === "string") return author;
-    return (author as { name: string }).name;
-  };
 
   return (
     <>

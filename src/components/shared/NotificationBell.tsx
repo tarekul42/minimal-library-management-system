@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGetMyNotificationsQuery } from "@/redux/api/notificationApi";
 import { useNavigate } from "react-router";
 import {
@@ -10,14 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 
 const NotificationBell = () => {
-  const { data } = useGetMyNotificationsQuery(undefined, { pollingInterval: 60000 });
+  const [open, setOpen] = useState(false);
+  const { data } = useGetMyNotificationsQuery(undefined, { pollingInterval: open ? 60000 : 0 });
   const navigate = useNavigate();
   const notifications = data?.data || [];
   const unread = notifications.filter((n) => !n.read);
   const latest = notifications.slice(0, 5);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />

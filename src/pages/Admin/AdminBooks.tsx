@@ -16,22 +16,23 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft, Search } from "lucide-react";
 import type { IBook, IBookQueryParams } from "@/types/book";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
+import { getAuthorName } from "@/lib/utils";
 
 const AdminBooks = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  if (!user || (user.role !== "admin" && user.role !== "librarian")) {
-    return <Navigate to="/login" replace />;
-  }
-
   const params: IBookQueryParams = { page, limit: 10 };
   if (search) params.search = search;
 
   const { data, isLoading } = useGetBooksQuery(params);
   const [deleteBook] = useDeleteBookMutation();
+
+  if (!user || (user.role !== "admin" && user.role !== "librarian")) {
+    return <Navigate to="/login" replace />;
+  }
 
   const books: IBook[] = data?.data || [];
   const meta = data?.meta;
@@ -44,12 +45,6 @@ const AdminBooks = () => {
     } catch {
       toast.error("Failed to delete book");
     }
-  };
-
-  const getAuthorName = (author: unknown): string => {
-    if (!author) return "Unknown";
-    if (typeof author === "string") return author;
-    return (author as { name: string }).name;
   };
 
   return (

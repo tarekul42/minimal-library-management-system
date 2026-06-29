@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useUpdateUserMutation } from "@/redux/api/userApi";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -28,6 +29,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 const Profile = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
   const [isSaving, setIsSaving] = useState(false);
+  const [updateProfile] = useUpdateUserMutation();
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -42,11 +44,10 @@ const Profile = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const onSubmit = async (_values: ProfileFormData) => {
+  const onSubmit = async (values: ProfileFormData) => {
     setIsSaving(true);
     try {
-      // TODO: connect to PUT /api/users/me endpoint
-      await new Promise((r) => setTimeout(r, 500));
+      await updateProfile(values).unwrap();
       toast.success("Profile updated successfully");
     } catch {
       toast.error("Failed to update profile");

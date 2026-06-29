@@ -9,6 +9,7 @@ import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
 import { Skeleton } from "@/components/ui/skeleton";
+import { splitTags } from "@/lib/utils";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,
@@ -29,9 +30,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
     try {
       const updateData = {
         ...values,
-        tags: values.tags
-          ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
-          : [],
+        tags: splitTags(values.tags),
       };
       await editBook({ bookId: bookId!, bookData: updateData }).unwrap();
       form.reset();

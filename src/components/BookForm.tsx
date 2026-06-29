@@ -24,7 +24,7 @@ import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const getOptions = (
   field: IFormFieldConfig,

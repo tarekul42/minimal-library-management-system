@@ -35,14 +35,14 @@ const AdminBorrows = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [tab, setTab] = useState<Tab>("all");
 
+  const { data: allData, isLoading: allLoading } = useGetAllBorrowsQuery(undefined, { skip: tab !== "all" });
+  const { data: activeData, isLoading: activeLoading } = useGetActiveBorrowsQuery(undefined, { skip: tab !== "active" });
+  const { data: overdueData, isLoading: overdueLoading } = useGetOverdueBorrowsQuery(undefined, { skip: tab !== "overdue" });
+  const [returnBook] = useReturnBookMutation();
+
   if (!user || (user.role !== "admin" && user.role !== "librarian")) {
     return <Navigate to="/login" replace />;
   }
-
-  const { data: allData, isLoading: allLoading } = useGetAllBorrowsQuery();
-  const { data: activeData, isLoading: activeLoading } = useGetActiveBorrowsQuery();
-  const { data: overdueData, isLoading: overdueLoading } = useGetOverdueBorrowsQuery();
-  const [returnBook] = useReturnBookMutation();
 
   const getData = () => {
     switch (tab) {

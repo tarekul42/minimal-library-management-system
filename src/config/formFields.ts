@@ -1,4 +1,4 @@
-import { genreOptions } from "@/fakeData/editBookData";
+import { GENRE_OPTIONS } from "@/config/constants";
 import type { IFormFieldConfig } from "@/types/form";
 
 export const bookFormFields: IFormFieldConfig[] = [
@@ -18,7 +18,7 @@ export const bookFormFields: IFormFieldConfig[] = [
     name: "genre",
     label: "Genre",
     type: "select",
-    options: genreOptions,
+    options: GENRE_OPTIONS,
   },
   {
     name: "isbn",

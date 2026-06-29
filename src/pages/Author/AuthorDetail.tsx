@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { ArrowLeft, User, BookOpen } from "lucide-react";
 import type { IBook } from "@/types/book";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
 
 const AuthorDetail = () => {
   const { authorId } = useParams<{ authorId: string }>();

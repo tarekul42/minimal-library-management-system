@@ -7,11 +7,33 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, LogOut, BookOpen, Library, Users, Shield, BookMarked, DollarSign, Heart, Clock } from "lucide-react";
+import { Menu, User, LogOut, BookOpen, Library, Users, Shield, BookMarked, DollarSign, Heart, Clock, Bell } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import NotificationBell from "@/components/shared/NotificationBell";
+
+interface NavItem {
+  to: string;
+  label: string;
+  icon?: LucideIcon;
+  requiresAuth: boolean;
+}
+
+const publicNavItems: NavItem[] = [
+  { to: "/books", label: "Books", icon: BookOpen, requiresAuth: false },
+  { to: "/authors", label: "Authors", icon: Users, requiresAuth: false },
+  { to: "/borrow-summary", label: "Borrows", requiresAuth: false },
+];
+
+const authNavItems: NavItem[] = [
+  { to: "/my-borrows", label: "My Books", icon: BookMarked, requiresAuth: true },
+  { to: "/fines", label: "Fines", icon: DollarSign, requiresAuth: true },
+  { to: "/wishlist", label: "Wishlist", icon: Heart, requiresAuth: true },
+  { to: "/my-reservations", label: "Reservations", icon: Clock, requiresAuth: true },
+  { to: "/notifications", label: "Notifications", icon: Bell, requiresAuth: true },
+];
 
 const NavMenu = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
@@ -28,42 +50,21 @@ const NavMenu = () => {
 
         <div className="ml-auto flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-2">
-            <NavLink className="navbarLink px-2 py-1" to="/books">
-              <BookOpen className="h-4 w-4 inline mr-1" />
-              Books
-            </NavLink>
-            <NavLink className="navbarLink px-2 py-1" to="/authors">
-              <Users className="h-4 w-4 inline mr-1" />
-              Authors
-            </NavLink>
-            <NavLink className="navbarLink px-2 py-1" to="/borrow-summary">
-              Borrows
-            </NavLink>
+            {publicNavItems.map((item) => (
+              <NavLink key={item.to} className="navbarLink px-2 py-1" to={item.to}>
+                {item.icon && <item.icon className="h-4 w-4 inline mr-1" />}
+                {item.label}
+              </NavLink>
+            ))}
 
-            {isAuthenticated && (
-              <>
-                <NavLink className="navbarLink px-2 py-1" to="/my-borrows">
-                  <BookMarked className="h-4 w-4 inline mr-1" />
-                  My Books
-                </NavLink>
-                <NavLink className="navbarLink px-2 py-1" to="/fines">
-                  <DollarSign className="h-4 w-4 inline mr-1" />
-                  Fines
-                </NavLink>
-                <NavLink className="navbarLink px-2 py-1" to="/wishlist">
-                  <Heart className="h-4 w-4 inline mr-1" />
-                  Wishlist
-                </NavLink>
-                <NavLink className="navbarLink px-2 py-1" to="/my-reservations">
-                  <Clock className="h-4 w-4 inline mr-1" />
-                  Reservations
-                </NavLink>
-              </>
-            )}
+            {isAuthenticated && authNavItems.map((item) => (
+              <NavLink key={item.to} className="navbarLink px-2 py-1" to={item.to}>
+                {item.icon && <item.icon className="h-4 w-4 inline mr-1" />}
+                {item.label}
+              </NavLink>
+            ))}
 
-            {isAuthenticated ? (
-              <NotificationBell />
-            ) : null}
+            {isAuthenticated ? <NotificationBell /> : null}
 
             {isAuthenticated ? (
               <DropdownMenu>
@@ -119,34 +120,11 @@ const NavMenu = () => {
                 <Menu className="h-6 w-6" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-gray-950 text-gray-300 mx-2">
-                <DropdownMenuItem asChild>
-                  <NavLink to="/books">Books</NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/authors">Authors</NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/borrow-summary">Borrows</NavLink>
-                </DropdownMenuItem>
-                {isAuthenticated && (
-                  <>
-                    <DropdownMenuItem asChild>
-                      <NavLink to="/my-borrows">My Books</NavLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <NavLink to="/fines">Fines</NavLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <NavLink to="/wishlist">Wishlist</NavLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <NavLink to="/my-reservations">Reservations</NavLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <NavLink to="/notifications">Notifications</NavLink>
-                    </DropdownMenuItem>
-                  </>
-                )}
+                {[...publicNavItems, ...(isAuthenticated ? authNavItems : [])].map((item) => (
+                  <DropdownMenuItem key={item.to} asChild>
+                    <NavLink to={item.to}>{item.label}</NavLink>
+                  </DropdownMenuItem>
+                ))}
                 {isAuthenticated ? (
                   <>
                     <DropdownMenuSeparator />

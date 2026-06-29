@@ -4,7 +4,7 @@ import { useGetBookReviewsQuery, useCreateReviewMutation } from "@/redux/api/rev
 import { useAddToWishlistMutation, useRemoveFromWishlistMutation, useGetWishlistQuery } from "@/redux/api/wishlistApi";
 import { useCreateReservationMutation } from "@/redux/api/reservationApi";
 import { useAppSelector } from "@/redux/hook";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,6 +15,7 @@ import {
   ArrowLeft, Calendar, BookOpen, Hash, MapPin, Tag, Star, Library, Heart, MessageSquare, Clock,
 } from "lucide-react";
 import type { IReview } from "@/types/review";
+import { getApiError } from "@/lib/utils";
 
 const BookDetail = () => {
   const { bookId } = useParams<{ bookId: string }>();
@@ -56,8 +57,7 @@ const BookDetail = () => {
       await createReservation({ bookId: bookId! }).unwrap();
       toast.success("Book reserved! You're in the queue.");
     } catch (err: unknown) {
-      const msg = (err as { data?: { message?: string } })?.data?.message || "Failed to reserve";
-      toast.error(msg);
+      toast.error(getApiError(err));
     }
   };
 

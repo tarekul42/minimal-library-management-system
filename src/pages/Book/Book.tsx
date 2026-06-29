@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { IBookModalProps } from "@/types/book";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
 import { useGetBookQuery } from "@/redux/api/bookApi";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, BookOpen, Hash, Layers, Tag, MapPin } from "lucide-react";

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Heart, Trash2, Library, BookOpen } from "lucide-react";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
 import type { IWishlistItem } from "@/types/wishlist";
 
 const WishlistPage = () => {

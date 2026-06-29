@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { IBook } from "@/types/book";
-import { GENRE_LABELS } from "@/types/book";
+import { GENRE_LABELS } from "@/config/constants";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import Book from "../Book/Book";
@@ -16,12 +16,7 @@ import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import Banner from "./Banner";
 import { Spinner } from "@/components/ui/spinner";
-
-const getAuthorName = (author: unknown): string => {
-  if (!author) return "Unknown";
-  if (typeof author === "string") return author;
-  return (author as { name: string }).name;
-};
+import { getAuthorName } from "@/lib/utils";
 
 const Home = () => {
   const { data, isLoading, isError } = useGetBooksQuery(undefined);

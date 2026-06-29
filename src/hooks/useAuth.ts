@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCredentials, logout } from "@/redux/features/authSlice";
 import { useLoginMutation, useRegisterMutation, useLogoutMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
 import type { ILoginCredentials, IRegisterCredentials } from "@/types/auth";
 
 export const useAuth = () => {
@@ -15,20 +16,30 @@ export const useAuth = () => {
 
   const login = useCallback(
     async (credentials: ILoginCredentials) => {
-      const result = await loginMutation(credentials).unwrap();
-      dispatch(setCredentials(result));
-      localStorage.setItem("refreshToken", result.refreshToken);
-      navigate("/");
+      try {
+        const result = await loginMutation(credentials).unwrap();
+        dispatch(setCredentials(result));
+        localStorage.setItem("refreshToken", result.refreshToken);
+        navigate("/");
+      } catch (err: unknown) {
+        const message = (err as { data?: { message?: string } })?.data?.message || "Login failed";
+        toast.error(message);
+      }
     },
     [loginMutation, dispatch, navigate],
   );
 
   const register = useCallback(
     async (credentials: IRegisterCredentials) => {
-      const result = await registerMutation(credentials).unwrap();
-      dispatch(setCredentials(result));
-      localStorage.setItem("refreshToken", result.refreshToken);
-      navigate("/");
+      try {
+        const result = await registerMutation(credentials).unwrap();
+        dispatch(setCredentials(result));
+        localStorage.setItem("refreshToken", result.refreshToken);
+        navigate("/");
+      } catch (err: unknown) {
+        const message = (err as { data?: { message?: string } })?.data?.message || "Registration failed";
+        toast.error(message);
+      }
     },
     [registerMutation, dispatch, navigate],
   );

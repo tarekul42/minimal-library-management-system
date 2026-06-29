@@ -1,4 +1,4 @@
-import { useGetBorrowSummaryQuery } from "@/redux/api/borrowApi";
+import { useGetMyBorrowsQuery } from "@/redux/api/borrowApi";
 import {
   Table,
   TableBody,
@@ -18,9 +18,13 @@ interface IGrouped {
 }
 
 const BorrowSummary = () => {
-  const { data, isLoading } = useGetBorrowSummaryQuery();
+  const { data, isLoading, isError } = useGetMyBorrowsQuery();
 
   const borrows: IBorrow[] = data?.data || [];
+
+  if (isError) {
+    return <p className="text-red-400 p-4">Failed to load borrow summary.</p>;
+  }
 
   const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
     const key = b.book.isbn;

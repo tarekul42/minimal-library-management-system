@@ -2,7 +2,7 @@ import { Navigate, Link } from "react-router";
 import { useState } from "react";
 import { useAppSelector } from "@/redux/hook";
 import {
-  useGetBorrowSummaryQuery,
+  useGetAllBorrowsQuery,
   useGetActiveBorrowsQuery,
   useGetOverdueBorrowsQuery,
   useReturnBookMutation,
@@ -39,7 +39,7 @@ const AdminBorrows = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const { data: allData, isLoading: allLoading } = useGetBorrowSummaryQuery();
+  const { data: allData, isLoading: allLoading } = useGetAllBorrowsQuery();
   const { data: activeData, isLoading: activeLoading } = useGetActiveBorrowsQuery();
   const { data: overdueData, isLoading: overdueLoading } = useGetOverdueBorrowsQuery();
   const [returnBook] = useReturnBookMutation();

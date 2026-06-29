@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navigate, Link } from "react-router";
 import { useAppSelector } from "@/redux/hook";
-import type { RootState } from "@/redux/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,7 +30,7 @@ async function downloadReport(url: string, filename: string, token: string): Pro
 
 const Reports = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const token = useAppSelector((s: RootState) => s.auth.accessToken);
+  const token = useAppSelector((s) => s.auth.accessToken);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -69,8 +68,8 @@ const Reports = () => {
       description: "All borrow records with user and book details",
       hasDateRange: true,
       hasStatus: true,
-      csv: () => handleExport("borrows-csv", buildUrl("/api/reports/borrows", "csv"), "borrows-report.csv"),
-      pdf: () => handleExport("borrows-pdf", buildUrl("/api/reports/borrows", "pdf"), "borrows-report.pdf"),
+      csv: () => handleExport("borrows-csv", buildUrl("/reports/borrows", "csv"), "borrows-report.csv"),
+      pdf: () => handleExport("borrows-pdf", buildUrl("/reports/borrows", "pdf"), "borrows-report.pdf"),
     },
     {
       key: "fines",
@@ -78,8 +77,8 @@ const Reports = () => {
       description: "All fine records with payment status",
       hasDateRange: true,
       hasStatus: false,
-      csv: () => handleExport("fines-csv", buildUrl("/api/reports/fines", "csv"), "fines-report.csv"),
-      pdf: () => handleExport("fines-pdf", buildUrl("/api/reports/fines", "pdf"), "fines-report.pdf"),
+      csv: () => handleExport("fines-csv", buildUrl("/reports/fines", "csv"), "fines-report.csv"),
+      pdf: () => handleExport("fines-pdf", buildUrl("/reports/fines", "pdf"), "fines-report.pdf"),
     },
     {
       key: "books",
@@ -87,8 +86,8 @@ const Reports = () => {
       description: "Complete book catalog with availability and ratings",
       hasDateRange: false,
       hasStatus: false,
-      csv: () => handleExport("books-csv", "/api/reports/books?format=csv", "books-report.csv"),
-      pdf: () => handleExport("books-pdf", "/api/reports/books?format=pdf", "books-report.pdf"),
+      csv: () => handleExport("books-csv", "/reports/books?format=csv", "books-report.csv"),
+      pdf: () => handleExport("books-pdf", "/reports/books?format=pdf", "books-report.pdf"),
     },
     {
       key: "popular",
@@ -96,8 +95,8 @@ const Reports = () => {
       description: "Most borrowed books ranking",
       hasDateRange: false,
       hasStatus: false,
-      csv: () => handleExport("popular-csv", "/api/reports/popular?format=csv", "popular-books-report.csv"),
-      pdf: () => handleExport("popular-pdf", "/api/reports/popular?format=pdf", "popular-books-report.pdf"),
+      csv: () => handleExport("popular-csv", "/reports/popular?format=csv", "popular-books-report.csv"),
+      pdf: () => handleExport("popular-pdf", "/reports/popular?format=pdf", "popular-books-report.pdf"),
     },
   ];
 

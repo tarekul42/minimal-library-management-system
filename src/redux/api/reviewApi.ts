@@ -18,7 +18,7 @@ export const reviewApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["review"],
+      invalidatesTags: ["review", "book"],
     }),
   }),
 });

@@ -15,7 +15,7 @@ const WishlistPage = () => {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  const { data, isLoading } = useGetWishlistQuery();
+  const { data, isLoading, isError } = useGetWishlistQuery();
   const [removeFromWishlist] = useRemoveFromWishlistMutation();
   const items: IWishlistItem[] = data?.data || [];
 
@@ -37,6 +37,8 @@ const WishlistPage = () => {
 
       {isLoading ? (
         <Spinner size={48} />
+      ) : isError ? (
+        <p className="text-red-400">Failed to load wishlist.</p>
       ) : items.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Library className="h-12 w-12 mx-auto mb-4 opacity-50" />

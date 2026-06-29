@@ -8,11 +8,13 @@ interface IAuthState {
   isAuthenticated: boolean;
 }
 
+const storedRefreshToken = typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
+
 const initialState: IAuthState = {
   user: null,
   accessToken: null,
-  refreshToken: null,
-  isAuthenticated: false,
+  refreshToken: storedRefreshToken,
+  isAuthenticated: !!storedRefreshToken,
 };
 
 const authSlice = createSlice({
@@ -32,9 +34,6 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
     },
-    setAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
-    },
     setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
@@ -50,5 +49,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, setAccessToken, setTokens, logout } = authSlice.actions;
+export const { setCredentials, setTokens, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -24,8 +24,16 @@ const getAuthorName = (author: unknown): string => {
 };
 
 const Home = () => {
-  const { data, isLoading } = useGetBooksQuery(undefined);
+  const { data, isLoading, isError } = useGetBooksQuery(undefined);
   const books: IBook[] = data?.data || [];
+
+  if (isError) {
+    return (
+      <div className="flex-1 flex justify-center items-center text-red-400">
+        <p>Failed to load books. Please try again later.</p>
+      </div>
+    );
+  }
 
   const {
     modalType,

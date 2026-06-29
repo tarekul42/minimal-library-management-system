@@ -80,17 +80,14 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
         quantity: values.quantity,
         dueDate: values.dueDate.toISOString(),
       };
-      console.log("sending payload", borrowData);
 
       await borrowBook(borrowData).unwrap();
       form.reset();
 
-      console.log("Book borrowed successfully!");
       toast.success("Book borrowed successfully!");
       onOpenChange(false);
       navigate("/borrow-summary");
-    } catch (error) {
-      console.error("Error updating book:", error);
+    } catch {
       toast.error(
         "Failed to borrow book. Please check your input and try again.",
       );

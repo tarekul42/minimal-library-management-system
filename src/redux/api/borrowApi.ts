@@ -13,13 +13,13 @@ export const borrowApi = baseApi.injectEndpoints({
       invalidatesTags: ["borrow", "book"],
     }),
 
-    getBorrowSummary: builder.query<IApiResponse<IBorrow[]>, void>({
+    getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
       query: () => "/borrow/me",
       providesTags: ["borrow"],
     }),
 
-    getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow/me",
+    getAllBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrow",
       providesTags: ["borrow"],
     }),
 
@@ -50,8 +50,8 @@ export const borrowApi = baseApi.injectEndpoints({
 
 export const {
   useBorrowBookMutation,
-  useGetBorrowSummaryQuery,
   useGetMyBorrowsQuery,
+  useGetAllBorrowsQuery,
   useGetBorrowQuery,
   useReturnBookMutation,
   useGetActiveBorrowsQuery,

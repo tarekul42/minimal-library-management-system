@@ -23,7 +23,8 @@ import AdminAuthors from "@/pages/Admin/AdminAuthors";
 import AdminCategories from "@/pages/Admin/AdminCategories";
 import AdminBorrows from "@/pages/Admin/AdminBorrows";
 import AdminFines from "@/pages/Admin/AdminFines";
-import { createBrowserRouter } from "react-router";
+import AdminRoute from "@/components/shared/AdminRoute";
+import { createBrowserRouter, Outlet } from "react-router";
 
 export const router = createBrowserRouter([
   {
@@ -46,14 +47,19 @@ export const router = createBrowserRouter([
       { path: "/notifications", element: <Notifications /> },
       { path: "/authors", element: <Authors /> },
       { path: "/authors/:authorId", element: <AuthorDetail /> },
-      { path: "/admin", element: <AdminDashboard /> },
-      { path: "/admin/dashboard", element: <Dashboard /> },
-      { path: "/admin/reports", element: <Reports /> },
-      { path: "/admin/books", element: <AdminBooks /> },
-      { path: "/admin/authors", element: <AdminAuthors /> },
-      { path: "/admin/categories", element: <AdminCategories /> },
-      { path: "/admin/borrows", element: <AdminBorrows /> },
-      { path: "/admin/fines", element: <AdminFines /> },
+      {
+        element: <AdminRoute><Outlet /></AdminRoute>,
+        children: [
+          { path: "/admin", element: <AdminDashboard /> },
+          { path: "/admin/dashboard", element: <Dashboard /> },
+          { path: "/admin/reports", element: <Reports /> },
+          { path: "/admin/books", element: <AdminBooks /> },
+          { path: "/admin/authors", element: <AdminAuthors /> },
+          { path: "/admin/categories", element: <AdminCategories /> },
+          { path: "/admin/borrows", element: <AdminBorrows /> },
+          { path: "/admin/fines", element: <AdminFines /> },
+        ],
+      },
     ],
   },
 ]);

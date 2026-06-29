@@ -58,7 +58,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
   } = useGetBookQuery(bookId!, { skip: !bookId });
   const bookData = book?.data;
 
-  const schema = borrowBookSchema(bookData?.copies || 0, validationMessages);
+  const schema = borrowBookSchema(bookData?.availableCopies || 0, validationMessages);
   type BorrowFormData = z.infer<typeof schema>;
 
   const form = useForm<BorrowFormData>({
@@ -124,7 +124,7 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
                     <CardTitle>
                       Copies:{" "}
                       <span className="text-sm font-semibold text-gray-400">
-                        {bookData.copies}
+                        {bookData.availableCopies}
                       </span>
                     </CardTitle>
                   </CardContent>

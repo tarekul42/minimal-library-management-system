@@ -12,3 +12,14 @@ export interface IPopularBook {
   isbn: string;
   borrowCount: number;
 }
+
+export interface IBorrowTrend {
+  year: number;
+  month: number;
+  count: number;
+}
+
+export interface IGenreDistribution {
+  genre: string;
+  count: number;
+}

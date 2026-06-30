@@ -62,7 +62,8 @@ const AdminBorrows = () => {
     try {
       await returnBook(id).unwrap();
       toast.success("Book returned");
-    } catch {
+    } catch (err) {
+      console.error("Failed to return book:", err);
       toast.error("Failed to return book");
     }
   };

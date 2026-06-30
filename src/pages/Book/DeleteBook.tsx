@@ -31,7 +31,8 @@ const DeleteBook: React.FC<DeleteBookModalProps> = ({
       await deleteBook(bookId!).unwrap();
       toast.success("Book deleted successfully!");
       onOpenChange(false);
-    } catch {
+    } catch (err) {
+      console.error("Error deleting book:", err);
       toast.error("Error deleting book!");
     }
   };

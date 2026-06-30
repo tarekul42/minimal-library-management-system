@@ -23,6 +23,7 @@ export const useAuth = () => {
         localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
+        console.error("Login failed:", err);
         toast.error(getApiError(err, "Login failed"));
       }
     },
@@ -37,6 +38,7 @@ export const useAuth = () => {
         localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
+        console.error("Registration failed:", err);
         toast.error(getApiError(err, "Registration failed"));
       }
     },
@@ -46,8 +48,8 @@ export const useAuth = () => {
   const handleLogout = useCallback(async () => {
     try {
       await logoutMutation().unwrap();
-    } catch {
-      // ignore
+    } catch (err) {
+      console.error("Logout failed:", err);
     }
     dispatch(logout());
     localStorage.removeItem("refreshToken");

@@ -64,7 +64,8 @@ export const BookForm = ({
       }
       toast.error(json.message || "Upload failed");
       return null;
-    } catch {
+    } catch (err) {
+      console.error("Upload failed:", err);
       toast.error("Upload failed");
       return null;
     } finally {
@@ -142,11 +143,13 @@ export const BookForm = ({
                   min={min}
                   placeholder={placeholder}
                   {...field}
-                  onChange={(e) =>
-                    type === "number"
-                      ? field.onChange(e.target.value === "" ? "" : Number(e.target.value))
-                      : field.onChange(e.target.value)
-                  }
+                  onChange={(e) => {
+                    if (type !== "number") { field.onChange(e.target.value); return; }
+                    const val = e.target.value;
+                    if (val === "") { field.onChange(""); return; }
+                    const num = Number(val);
+                    field.onChange(Number.isNaN(num) ? field.value : num);
+                  }}
                 />
               )}
             </FormControl>

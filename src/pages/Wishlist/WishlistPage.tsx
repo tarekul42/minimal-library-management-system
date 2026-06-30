@@ -23,7 +23,8 @@ const WishlistPage = () => {
     try {
       await removeFromWishlist(bookId).unwrap();
       toast.success("Removed from wishlist");
-    } catch {
+    } catch (err) {
+      console.error("Failed to remove from wishlist:", err);
       toast.error("Failed to remove");
     }
   };

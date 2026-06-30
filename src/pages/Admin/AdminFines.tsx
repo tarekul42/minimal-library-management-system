@@ -35,7 +35,8 @@ const AdminFines = () => {
     try {
       await payFine(id).unwrap();
       toast.success("Fine marked as paid");
-    } catch {
+    } catch (err) {
+      console.error("Failed to process payment:", err);
       toast.error("Failed to process payment");
     }
   };

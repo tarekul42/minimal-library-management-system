@@ -36,7 +36,8 @@ const EditBook: React.FC<IEditBookModalProps> = ({
       form.reset();
       toast.success("Book updated successfully!");
       onOpenChange(false);
-    } catch {
+    } catch (err) {
+      console.error("Error updating book:", err);
       toast.error("Error updating book!");
     }
   };

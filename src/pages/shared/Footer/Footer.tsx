@@ -34,18 +34,18 @@ export default function Footer() {
           </div>
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
-            <Link to="#" aria-label="Website">
+            <span aria-label="Website">
               <Globe className="text-xl" aria-hidden="true" />
-            </Link>
-            <Link to="#" aria-label="Chat">
+            </span>
+            <span aria-label="Chat">
               <MessageCircle className="text-xl" aria-hidden="true" />
-            </Link>
-            <Link to="#" aria-label="Gallery">
+            </span>
+            <span aria-label="Gallery">
               <Camera className="text-xl" aria-hidden="true" />
-            </Link>
-            <Link to="#" aria-label="Portfolio">
+            </span>
+            <span aria-label="Portfolio">
               <Briefcase className="text-xl" aria-hidden="true" />
-            </Link>
+            </span>
           </div>
         </div>
       </footer>

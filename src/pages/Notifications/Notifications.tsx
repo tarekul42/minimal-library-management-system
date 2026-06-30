@@ -35,7 +35,8 @@ const Notifications = () => {
     try {
       await markAllRead().unwrap();
       toast.success("All marked as read");
-    } catch {
+    } catch (err) {
+      console.error("Failed to mark all as read:", err);
       toast.error("Failed to mark all as read");
     }
   };
@@ -43,8 +44,8 @@ const Notifications = () => {
   const handleMarkRead = async (id: string) => {
     try {
       await markRead(id).unwrap();
-    } catch {
-      // ignore
+    } catch (err) {
+      console.error("Failed to mark notification as read:", err);
     }
   };
 

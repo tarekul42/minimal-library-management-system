@@ -1,9 +1,13 @@
 import { baseApi } from "./baseApi";
+import type { BookFormData } from "@/schema/bookSchema";
 import type {
   IApiResponse,
   IBook,
   IBookQueryParams,
 } from "@/types/book";
+
+type CreateBookInput = Omit<BookFormData, "tags"> & { tags: string[] };
+type UpdateBookInput = Partial<CreateBookInput>;
 
 export interface IBooksResponse {
   success: boolean;
@@ -27,7 +31,7 @@ export const bookApi = baseApi.injectEndpoints({
       providesTags: ["book"],
     }),
 
-    createBook: builder.mutation<IApiResponse<IBook>, Record<string, unknown>>({
+    createBook: builder.mutation<IApiResponse<IBook>, CreateBookInput>({
       query: (bookData) => ({
         url: "/books",
         method: "POST",
@@ -43,7 +47,7 @@ export const bookApi = baseApi.injectEndpoints({
 
     editBook: builder.mutation<
       IApiResponse<IBook>,
-      { bookId: string; bookData: Record<string, unknown> }
+      { bookId: string; bookData: UpdateBookInput }
     >({
       query: ({ bookId, bookData }) => ({
         url: `/books/${bookId}`,

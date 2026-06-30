@@ -28,7 +28,8 @@ const Fines = () => {
     try {
       await payFine(id).unwrap();
       toast.success("Fine paid successfully");
-    } catch {
+    } catch (err) {
+      console.error("Failed to process payment:", err);
       toast.error("Failed to process payment");
     }
   };

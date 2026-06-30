@@ -39,7 +39,8 @@ const MyBorrows = () => {
     try {
       await returnBook(id).unwrap();
       toast.success("Book returned successfully");
-    } catch {
+    } catch (err) {
+      console.error("Failed to return book:", err);
       toast.error("Failed to return book");
     }
   };

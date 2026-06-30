@@ -43,7 +43,8 @@ const AdminBooks = () => {
     try {
       await deleteBook(id).unwrap();
       toast.success("Book deleted");
-    } catch {
+    } catch (err) {
+      console.error("Failed to delete book:", err);
       toast.error("Failed to delete book");
     }
   };

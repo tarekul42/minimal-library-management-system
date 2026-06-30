@@ -7,30 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, FileText, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { useDownloadReportMutation } from "@/redux/api/reportsApi";
 
 type ExportStatus = Record<string, "idle" | "loading" | "error">;
 
-async function downloadReport(url: string, filename: string, token: string): Promise<void> {
-  const res = await fetch(`${API_URL}${url}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw new Error("Failed to download report");
-  const blob = await res.blob();
-  const blobUrl = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = blobUrl;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-}
-
 const Reports = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const token = useAppSelector((s) => s.auth.accessToken);
+  const [downloadReport] = useDownloadReportMutation();
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -52,9 +35,10 @@ const Reports = () => {
   const handleExport = async (key: string, url: string, filename: string) => {
     setExporting((prev) => ({ ...prev, [key]: "loading" }));
     try {
-      await downloadReport(url, filename, token!);
+      await downloadReport({ url, filename }).unwrap();
       toast.success(`${filename} downloaded`);
-    } catch {
+    } catch (err) {
+      console.error("Report download failed:", err);
       toast.error(`Failed to download ${filename}`);
     } finally {
       setExporting((prev) => ({ ...prev, [key]: "idle" }));

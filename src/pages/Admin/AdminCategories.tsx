@@ -47,7 +47,8 @@ const AdminCategories = () => {
       toast.success("Category created");
       setName("");
       setDescription("");
-    } catch {
+    } catch (err) {
+      console.error("Failed to create category:", err);
       toast.error("Failed to create category");
     }
   };
@@ -57,7 +58,8 @@ const AdminCategories = () => {
     try {
       await deleteCategory(id).unwrap();
       toast.success("Category deleted");
-    } catch {
+    } catch (err) {
+      console.error("Failed to delete category:", err);
       toast.error("Failed to delete category");
     }
   };

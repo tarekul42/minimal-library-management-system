@@ -25,7 +25,8 @@ const CreateBook = () => {
       toast.success("Book created successfully");
       form.reset();
       navigate("/books");
-    } catch {
+    } catch (err) {
+      console.error("Failed to create book:", err);
       toast.error("Failed to create book");
     }
   }

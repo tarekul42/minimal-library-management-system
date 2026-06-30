@@ -82,7 +82,8 @@ const Borrow: React.FC<IBorrowBookModalProps> = ({
       toast.success("Book borrowed successfully!");
       onOpenChange(false);
       navigate("/borrow-summary");
-    } catch {
+    } catch (err) {
+      console.error("Failed to borrow book:", err);
       toast.error(
         "Failed to borrow book. Please check your input and try again.",
       );

@@ -42,7 +42,8 @@ const AdminAuthors = () => {
       toast.success("Author created");
       setName("");
       setBio("");
-    } catch {
+    } catch (err) {
+      console.error("Failed to create author:", err);
       toast.error("Failed to create author");
     }
   };
@@ -52,7 +53,8 @@ const AdminAuthors = () => {
     try {
       await deleteAuthor(id).unwrap();
       toast.success("Author deleted");
-    } catch {
+    } catch (err) {
+      console.error("Failed to delete author:", err);
       toast.error("Failed to delete author");
     }
   };

@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUpdateUserMutation } from "@/redux/api/userApi";
 
 const profileSchema = z.object({
@@ -40,6 +40,14 @@ const Profile = () => {
     },
   });
 
+  useEffect(() => {
+    form.reset({
+      name: user?.name || "",
+      phone: user?.phone || "",
+      address: user?.address || "",
+    });
+  }, [user, form]);
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -49,7 +57,8 @@ const Profile = () => {
     try {
       await updateProfile(values).unwrap();
       toast.success("Profile updated successfully");
-    } catch {
+    } catch (err) {
+      console.error("Failed to update profile:", err);
       toast.error("Failed to update profile");
     } finally {
       setIsSaving(false);

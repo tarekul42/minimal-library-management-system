@@ -25,7 +25,8 @@ const MyReservations = () => {
     try {
       await cancelReservation(id).unwrap();
       toast.success("Reservation cancelled");
-    } catch {
+    } catch (err) {
+      console.error("Failed to cancel reservation:", err);
       toast.error("Failed to cancel reservation");
     }
   };

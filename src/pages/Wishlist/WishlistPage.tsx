@@ -13,11 +13,10 @@ import type { IWishlistItem } from "@/types/wishlist";
 
 const WishlistPage = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-
   const { data, isLoading, isError, refetch } = useGetWishlistQuery();
   const [removeFromWishlist] = useRemoveFromWishlistMutation();
+
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   const items: IWishlistItem[] = data?.data || [];
 
   const handleRemove = async (bookId: string) => {

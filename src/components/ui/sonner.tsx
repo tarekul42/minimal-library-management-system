@@ -9,12 +9,8 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 function ToasterInner(props: ToasterProps) {
-  let theme: ToasterProps["theme"] = "dark";
-  try {
-    theme = (useTheme().theme as ToasterProps["theme"]) ?? "dark";
-  } catch {
-    // next-themes ThemeProvider not available; default to dark
-  }
+  const { theme: resolvedTheme } = useTheme();
+  const theme: ToasterProps["theme"] = (resolvedTheme as ToasterProps["theme"]) ?? "dark";
 
   return (
     <Sonner

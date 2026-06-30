@@ -22,11 +22,11 @@ const typeLabel: Record<string, string> = {
 
 const Notifications = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-
   const { data, isLoading, isError, refetch } = useGetMyNotificationsQuery();
   const [markRead] = useMarkNotificationReadMutation();
   const [markAllRead] = useMarkAllNotificationsReadMutation();
+
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   const notifications: INotification[] = data?.data || [];
   const unreadCount = notifications.filter((n) => !n.read).length;

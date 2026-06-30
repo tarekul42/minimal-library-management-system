@@ -26,14 +26,13 @@ const AdminCategories = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { data, isLoading, isError, refetch } = useGetCategoriesQuery();
+  const [createCategory] = useCreateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   if (!user || user.role !== "admin") {
     return <Navigate to="/login" replace />;
   }
-
-  const { data, isLoading, isError, refetch } = useGetCategoriesQuery();
-  const [createCategory] = useCreateCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
   const categories: ICategory[] = data?.data || [];
 
   const handleCreate = async () => {

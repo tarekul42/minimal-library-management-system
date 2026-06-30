@@ -12,8 +12,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
-
 export function DatePicker({
   onChange,
   defaultValue,
@@ -21,13 +19,9 @@ export function DatePicker({
   onChange: (e: Date | undefined) => void;
   defaultValue?: string;
 }) {
-  const [date, setDate] = React.useState<Date>();
-
-  useEffect(() => {
-    if (defaultValue) {
-      setDate(new Date(defaultValue));
-    }
-  }, [defaultValue]);
+  const [date, setDate] = React.useState<Date | undefined>(
+    () => (defaultValue ? new Date(defaultValue) : undefined),
+  );
 
   const handleSelect = (e: Date | undefined) => {
     onChange(e);

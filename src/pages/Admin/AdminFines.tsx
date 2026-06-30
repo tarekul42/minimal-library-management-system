@@ -21,13 +21,12 @@ import type { IFine } from "@/types/fine";
 
 const AdminFines = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { data, isLoading, isError, refetch } = useGetAllFinesQuery();
+  const [payFine] = usePayFineMutation();
 
   if (!user || user.role !== "admin") {
     return <Navigate to="/login" replace />;
   }
-
-  const { data, isLoading, isError, refetch } = useGetAllFinesQuery();
-  const [payFine] = usePayFineMutation();
 
   const fines: IFine[] = data?.data || [];
   const totalUnpaid = fines.filter((f) => !f.paid).reduce((s, f) => s + f.amount, 0);

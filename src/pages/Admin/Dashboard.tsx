@@ -29,25 +29,22 @@ const Dashboard = () => {
   const { data: genreData, isLoading: genreLoading, isError: genreError, refetch: refetchGenre } = useGetGenreDistributionQuery();
 
   const stats = statsData?.data;
-  const popularBooks = popularData?.data || [];
-  const trends = trendsData?.data || [];
-  const genres = genreData?.data || [];
 
-  const chartData = useMemo(() => popularBooks.map((b) => ({
+  const chartData = useMemo(() => (popularData?.data || []).map((b) => ({
     title: b.title.length > 20 ? b.title.slice(0, 20) + "..." : b.title,
     borrows: b.borrowCount,
-  })), [popularBooks]);
+  })), [popularData]);
 
-  const trendChartData = useMemo(() => trends.map((t) => ({
+  const trendChartData = useMemo(() => (trendsData?.data || []).map((t) => ({
     month: `${MONTHS[t.month - 1]} ${t.year}`,
     borrows: t.count,
-  })), [trends]);
+  })), [trendsData]);
 
-  const genreChartData = useMemo(() => genres.map((g, i) => ({
+  const genreChartData = useMemo(() => (genreData?.data || []).map((g, i) => ({
     name: g.genre,
     value: g.count,
     fill: COLORS[i % COLORS.length],
-  })), [genres]);
+  })), [genreData]);
 
   return (
     <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0 space-y-8">

@@ -22,9 +22,8 @@ interface IGrouped {
 const BorrowSummary = () => {
   const { data, isLoading, isError, refetch } = useGetMyBorrowsQuery();
 
-  const borrows: IBorrow[] = data?.data || [];
-
   const summary = useMemo(() => {
+    const borrows: IBorrow[] = data?.data || [];
     const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
       const key = b.book.isbn;
       if (!acc[key]) {
@@ -34,7 +33,7 @@ const BorrowSummary = () => {
       return acc;
     }, {});
     return Object.values(grouped);
-  }, [borrows]);
+  }, [data]);
 
   if (isLoading) {
     return (

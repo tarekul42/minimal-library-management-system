@@ -26,14 +26,13 @@ const AdminAuthors = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
+  const [createAuthor] = useCreateAuthorMutation();
+  const [deleteAuthor] = useDeleteAuthorMutation();
 
   if (!user || (user.role !== "admin" && user.role !== "librarian")) {
     return <Navigate to="/login" replace />;
   }
-
-  const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
-  const [createAuthor] = useCreateAuthorMutation();
-  const [deleteAuthor] = useDeleteAuthorMutation();
   const authors: IAuthor[] = data?.data || [];
 
   const handleCreate = async () => {

@@ -34,24 +34,24 @@ export default function Footer() {
           </div>
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
-            <Link to="#">
-              <Globe className="text-xl" />
+            <Link to="#" aria-label="Website">
+              <Globe className="text-xl" aria-hidden="true" />
             </Link>
-            <Link to="#">
-              <MessageCircle className="text-xl" />
+            <Link to="#" aria-label="Chat">
+              <MessageCircle className="text-xl" aria-hidden="true" />
             </Link>
-            <Link to="#">
-              <Camera className="text-xl" />
+            <Link to="#" aria-label="Gallery">
+              <Camera className="text-xl" aria-hidden="true" />
             </Link>
-            <Link to="#">
-              <Briefcase className="text-xl" />
+            <Link to="#" aria-label="Portfolio">
+              <Briefcase className="text-xl" aria-hidden="true" />
             </Link>
           </div>
         </div>
       </footer>
       {/* footer 2: Copyright */}
       <footer className="text-center flex items-center justify-center text-gray-500 p-2 sm:p-3 lg:p-4 text-sm bg-black">
-        &copy; 2025 All rights reserved by Library.
+        &copy; {new Date().getFullYear()} All rights reserved by Library.
       </footer>
     </>
   );

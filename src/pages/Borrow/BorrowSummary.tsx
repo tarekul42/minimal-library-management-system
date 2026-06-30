@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useGetMyBorrowsQuery } from "@/redux/api/borrowApi";
 import {
   Table,
@@ -26,16 +27,17 @@ const BorrowSummary = () => {
     return <p className="text-red-400 p-4">Failed to load borrow summary.</p>;
   }
 
-  const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
-    const key = b.book.isbn;
-    if (!acc[key]) {
-      acc[key] = { isbn: key, title: b.book.title, totalQuantity: 0 };
-    }
-    acc[key].totalQuantity += b.quantity;
-    return acc;
-  }, {});
-
-  const summary = Object.values(grouped);
+  const summary = useMemo(() => {
+    const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
+      const key = b.book.isbn;
+      if (!acc[key]) {
+        acc[key] = { isbn: key, title: b.book.title, totalQuantity: 0 };
+      }
+      acc[key].totalQuantity += b.quantity;
+      return acc;
+    }, {});
+    return Object.values(grouped);
+  }, [borrows]);
 
   if (isLoading) {
     return (

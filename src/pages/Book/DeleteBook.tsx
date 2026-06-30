@@ -51,7 +51,7 @@ const DeleteBook: React.FC<DeleteBookModalProps> = ({
                   cannot be undone.
                 </CardTitle>
               </CardContent>
-              <DialogDescription />
+              <DialogDescription>This action cannot be undone.</DialogDescription>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button

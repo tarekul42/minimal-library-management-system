@@ -5,6 +5,7 @@ import { setCredentials, logout } from "@/redux/features/authSlice";
 import { useLoginMutation, useRegisterMutation, useLogoutMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
 import type { ILoginCredentials, IRegisterCredentials } from "@/types/auth";
+import { getApiError } from "@/lib/utils";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -22,8 +23,7 @@ export const useAuth = () => {
         localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
-        const message = (err as { data?: { message?: string } })?.data?.message || "Login failed";
-        toast.error(message);
+        toast.error(getApiError(err, "Login failed"));
       }
     },
     [loginMutation, dispatch, navigate],
@@ -37,8 +37,7 @@ export const useAuth = () => {
         localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
-        const message = (err as { data?: { message?: string } })?.data?.message || "Registration failed";
-        toast.error(message);
+        toast.error(getApiError(err, "Registration failed"));
       }
     },
     [registerMutation, dispatch, navigate],

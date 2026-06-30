@@ -21,7 +21,6 @@ export function DatePicker({
   onChange: (e: Date | undefined) => void;
   defaultValue?: string;
 }) {
-  console.log(defaultValue);
   const [date, setDate] = React.useState<Date>();
 
   useEffect(() => {
@@ -31,7 +30,6 @@ export function DatePicker({
   }, [defaultValue]);
 
   const handleSelect = (e: Date | undefined) => {
-    console.log("Handle Date Picker clicked");
     onChange(e);
     setDate(e);
   };

@@ -2,6 +2,16 @@ import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs, type Fetch
 import type { RootState } from "../store";
 import { setTokens, logout } from "../features/authSlice";
 
+interface IRefreshResponse {
+  success: boolean;
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+  };
+}
+
+let refreshPromise: Promise<IRefreshResponse | undefined> | null = null;
+
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
   prepareHeaders: (headers, { getState }) => {
@@ -13,14 +23,6 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-interface IRefreshResponse {
-  success: boolean;
-  data?: {
-    accessToken: string;
-    refreshToken: string;
-  };
-}
-
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
@@ -29,31 +31,39 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error?.status === 401) {
-    const refreshToken = (api.getState() as RootState).auth.refreshToken;
+    const state = api.getState() as RootState;
+    const refreshToken = state.auth.refreshToken;
 
-    if (refreshToken) {
-      const refreshResult = await baseQuery(
-        {
-          url: "/auth/refresh",
-          method: "POST",
-          body: { refreshToken },
-        },
-        api,
-        extraOptions,
-      );
+    if (!refreshToken) {
+      api.dispatch(logout());
+      return result;
+    }
 
-      const responseData = refreshResult.data as IRefreshResponse | undefined;
+    try {
+      if (!refreshPromise) {
+        refreshPromise = (async () => {
+          const res = await baseQuery(
+            { url: "/auth/refresh", method: "POST", body: { refreshToken } },
+            api,
+            extraOptions,
+          );
+          return res.data as IRefreshResponse | undefined;
+        })();
+      }
+
+      const responseData = await refreshPromise;
       const tokens = responseData?.data;
 
       if (tokens?.accessToken && tokens?.refreshToken) {
         api.dispatch(setTokens(tokens));
-        localStorage.setItem("refreshToken", tokens.refreshToken);
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());
       }
-    } else {
+    } catch {
       api.dispatch(logout());
+    } finally {
+      refreshPromise = null;
     }
   }
 

@@ -14,9 +14,9 @@ export function getAuthorName(author: unknown): string {
   return "Unknown";
 }
 
-export function getApiError(err: unknown): string {
+export function getApiError(err: unknown, fallback?: string): string {
   const data = (err as { data?: { message?: string } })?.data;
-  return data?.message ?? "An unexpected error occurred";
+  return data?.message ?? fallback ?? "An unexpected error occurred";
 }
 
 export function splitTags(tags: string | undefined): string[] {

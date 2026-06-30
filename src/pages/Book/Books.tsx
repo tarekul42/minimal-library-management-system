@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import {
   Table,
@@ -36,9 +36,12 @@ const Books = () => {
   const [genre, setGenre] = useState<string>("all");
   const [page, setPage] = useState(1);
 
-  const params: IBookQueryParams = { page, limit: 10 };
-  if (search) params.search = search;
-  if (genre && genre !== "all") params.genre = genre as IBookQueryParams["genre"];
+  const params = useMemo<IBookQueryParams>(() => {
+    const p: IBookQueryParams = { page, limit: 10 };
+    if (search) p.search = search;
+    if (genre && genre !== "all") p.genre = genre as IBookQueryParams["genre"];
+    return p;
+  }, [page, search, genre]);
 
   const { data, isLoading, isError } = useGetBooksQuery(params);
 

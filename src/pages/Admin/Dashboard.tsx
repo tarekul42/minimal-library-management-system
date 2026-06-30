@@ -4,10 +4,13 @@ import { Spinner } from "@/components/ui/spinner";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { BookOpen, Users, BookMarked, AlertTriangle, DollarSign } from "lucide-react";
 import type { IDashboardStats } from "@/types/dashboard";
+import { useMemo } from "react";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#14b8a6", "#f97316"];
+
+const TOOLTIP_STYLE: React.CSSProperties = { backgroundColor: "#1f2937", border: "1px solid #374151", borderRadius: "8px", color: "#e5e7eb" };
 
 const statCards: { key: keyof IDashboardStats; label: string; icon: typeof BookOpen; color: string; prefix?: string }[] = [
   { key: "totalBooks", label: "Books", icon: BookOpen, color: "text-blue-400" },
@@ -28,21 +31,21 @@ const Dashboard = () => {
   const trends = trendsData?.data || [];
   const genres = genreData?.data || [];
 
-  const chartData = popularBooks.map((b) => ({
+  const chartData = useMemo(() => popularBooks.map((b) => ({
     title: b.title.length > 20 ? b.title.slice(0, 20) + "..." : b.title,
     borrows: b.borrowCount,
-  }));
+  })), [popularBooks]);
 
-  const trendChartData = trends.map((t) => ({
+  const trendChartData = useMemo(() => trends.map((t) => ({
     month: `${MONTHS[t.month - 1]} ${t.year}`,
     borrows: t.count,
-  }));
+  })), [trends]);
 
-  const genreChartData = genres.map((g, i) => ({
+  const genreChartData = useMemo(() => genres.map((g, i) => ({
     name: g.genre,
     value: g.count,
     fill: COLORS[i % COLORS.length],
-  }));
+  })), [genres]);
 
   return (
     <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0 space-y-8">
@@ -81,13 +84,11 @@ const Dashboard = () => {
             {popularLoading ? (
               <Spinner size={24} />
             ) : chartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData} margin={{ left: -10 }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={chartData} margin={{ left: -10 }} role="img" aria-label="Popular books bar chart">
                   <XAxis dataKey="title" tick={{ fill: "#9ca3af", fontSize: 12 }} />
                   <YAxis tick={{ fill: "#9ca3af" }} />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #374151", borderRadius: "8px", color: "#e5e7eb" }}
-                  />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} />
                   <Bar dataKey="borrows" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -105,13 +106,11 @@ const Dashboard = () => {
             {trendsLoading ? (
               <Spinner size={24} />
             ) : trendChartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={trendChartData} margin={{ left: -10 }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={trendChartData} margin={{ left: -10 }} role="img" aria-label="Borrow trends line chart">
                   <XAxis dataKey="month" tick={{ fill: "#9ca3af", fontSize: 11 }} />
                   <YAxis tick={{ fill: "#9ca3af" }} />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #374151", borderRadius: "8px", color: "#e5e7eb" }}
-                  />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} />
                   <Line type="monotone" dataKey="borrows" stroke="#3b82f6" strokeWidth={2} dot={{ fill: "#3b82f6" }} />
                 </LineChart>
               </ResponsiveContainer>
@@ -132,15 +131,13 @@ const Dashboard = () => {
               <Spinner size={24} />
             ) : genreChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
+                <PieChart role="img" aria-label="Genre distribution pie chart">
                   <Pie data={genreChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}>
                     {genreChartData.map((entry, i) => (
                       <Cell key={i} fill={entry.fill} />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #374151", borderRadius: "8px", color: "#e5e7eb" }}
-                  />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} />
                 </PieChart>
               </ResponsiveContainer>
             ) : (

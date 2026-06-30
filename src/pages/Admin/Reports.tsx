@@ -25,7 +25,7 @@ async function downloadReport(url: string, filename: string, token: string): Pro
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(blobUrl);
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 }
 
 const Reports = () => {

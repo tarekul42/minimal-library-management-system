@@ -55,9 +55,9 @@ const Home = () => {
           </h1>
           <Banner />
         </div>
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold p-1 sm:p-2 lg:p-4">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold p-1 sm:p-2 lg:p-4">
           Our Available Books
-        </h1>
+        </h2>
 
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center gap-4 py-2 md:py-3 lg:py-4">
           {books &&

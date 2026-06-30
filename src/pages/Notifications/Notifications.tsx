@@ -76,6 +76,9 @@ const Notifications = () => {
           {notifications.map((n) => (
             <div
               key={n._id}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (!n.read) handleMarkRead(n._id); } }}
               className={`p-4 rounded-lg border cursor-pointer transition-colors ${
                 n.read
                   ? "bg-gray-900/50 border-gray-800"

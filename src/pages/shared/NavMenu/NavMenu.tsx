@@ -116,7 +116,7 @@ const NavMenu = () => {
 
           <div className="block sm:hidden">
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger aria-label="Navigation menu">
                 <Menu className="h-6 w-6" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-gray-950 text-gray-300 mx-2">

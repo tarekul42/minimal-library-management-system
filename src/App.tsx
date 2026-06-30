@@ -8,11 +8,11 @@ function App() {
     <>
       <div className="bg-gray-950 text-gray-50 min-h-screen flex flex-col">
         <NavMenu />
-        <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
+        <main className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
-        </div>
+        </main>
         <Footer />
       </div>
     </>

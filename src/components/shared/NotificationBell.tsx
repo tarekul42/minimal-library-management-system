@@ -21,8 +21,8 @@ const NotificationBell = () => {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="relative" aria-label={`Notifications${unread.length > 0 ? ` (${unread.length} unread)` : ""}`}>
+          <Bell className="h-5 w-5" aria-hidden="true" />
           {unread.length > 0 && (
             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] font-bold flex items-center justify-center">
               {unread.length > 9 ? "9+" : unread.length}

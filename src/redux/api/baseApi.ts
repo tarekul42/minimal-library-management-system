@@ -1,19 +1,17 @@
 import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
-import { setTokens, logout } from "../features/authSlice";
+import { setCredentials, logout } from "../features/authSlice";
 
 interface IRefreshResponse {
   success: boolean;
-  data?: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  data?: { user: import("@/types/auth").IUser; accessToken: string };
 }
 
 let refreshPromise: Promise<IRefreshResponse | undefined> | null = null;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
@@ -31,31 +29,23 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error?.status === 401) {
-    const state = api.getState() as RootState;
-    const refreshToken = state.auth.refreshToken;
-
-    if (!refreshToken) {
-      api.dispatch(logout());
-      return result;
+    if (!refreshPromise) {
+      refreshPromise = (async () => {
+        const res = await baseQuery(
+          { url: "/auth/refresh", method: "POST" },
+          api,
+          extraOptions,
+        );
+        return res.data as IRefreshResponse | undefined;
+      })();
     }
 
     try {
-      if (!refreshPromise) {
-        refreshPromise = (async () => {
-          const res = await baseQuery(
-            { url: "/auth/refresh", method: "POST", body: { refreshToken } },
-            api,
-            extraOptions,
-          );
-          return res.data as IRefreshResponse | undefined;
-        })();
-      }
-
       const responseData = await refreshPromise;
-      const tokens = responseData?.data;
+      const accessToken = responseData?.data?.accessToken;
 
-      if (tokens?.accessToken && tokens?.refreshToken) {
-        api.dispatch(setTokens(tokens));
+      if (accessToken && responseData?.data?.user) {
+        api.dispatch(setCredentials({ user: responseData.data.user, accessToken }));
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());

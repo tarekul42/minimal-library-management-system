@@ -20,7 +20,6 @@ export const useAuth = () => {
       try {
         const result = await loginMutation(credentials).unwrap();
         dispatch(setCredentials(result));
-        localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
         console.error("Login failed:", err);
@@ -35,7 +34,6 @@ export const useAuth = () => {
       try {
         const result = await registerMutation(credentials).unwrap();
         dispatch(setCredentials(result));
-        localStorage.setItem("refreshToken", result.refreshToken);
         navigate("/");
       } catch (err: unknown) {
         console.error("Registration failed:", err);
@@ -52,7 +50,6 @@ export const useAuth = () => {
       console.error("Logout failed:", err);
     }
     dispatch(logout());
-    localStorage.removeItem("refreshToken");
     navigate("/login");
   }, [logoutMutation, dispatch, navigate]);
 

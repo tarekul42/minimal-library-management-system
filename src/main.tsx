@@ -7,12 +7,15 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "./components/ui/sonner.tsx";
+import { AuthInit } from "./components/AuthInit.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-        <RouterProvider router={router} />
+        <AuthInit>
+          <RouterProvider router={router} />
+        </AuthInit>
         <Toaster richColors />
       </ThemeProvider>
     </Provider>

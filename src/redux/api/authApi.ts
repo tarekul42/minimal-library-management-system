@@ -1,38 +1,43 @@
 import { baseApi } from "./baseApi";
-import type { IAuthResponse, ILoginCredentials, IRegisterCredentials } from "@/types/auth";
+import type { ILoginCredentials, IRegisterCredentials } from "@/types/auth";
 import type { IApiResponse } from "@/types/book";
+
+interface IAuthData {
+  user: import("@/types/auth").IUser;
+  accessToken: string;
+}
+
+interface IRefreshData {
+  user: import("@/types/auth").IUser;
+  accessToken: string;
+}
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<IAuthResponse, ILoginCredentials>({
+    login: builder.mutation<IAuthData, ILoginCredentials>({
       query: (credentials) => ({
         url: "/auth/login",
         method: "POST",
         body: credentials,
       }),
-      transformResponse: (response: IApiResponse<IAuthResponse>) => response.data,
+      transformResponse: (response: IApiResponse<IAuthData>) => response.data,
     }),
 
-    register: builder.mutation<IAuthResponse, IRegisterCredentials>({
+    register: builder.mutation<IAuthData, IRegisterCredentials>({
       query: (credentials) => ({
         url: "/auth/register",
         method: "POST",
         body: credentials,
       }),
-      transformResponse: (response: IApiResponse<IAuthResponse>) => response.data,
+      transformResponse: (response: IApiResponse<IAuthData>) => response.data,
     }),
 
-    refreshToken: builder.mutation<
-      { accessToken: string; refreshToken: string },
-      string
-    >({
-      query: (refreshToken) => ({
+    refreshToken: builder.mutation<IRefreshData, void>({
+      query: () => ({
         url: "/auth/refresh",
         method: "POST",
-        body: { refreshToken },
       }),
-      transformResponse: (response: IApiResponse<{ accessToken: string; refreshToken: string }>) =>
-        response.data,
+      transformResponse: (response: IApiResponse<IRefreshData>) => response.data,
     }),
 
     logout: builder.mutation<void, void>({

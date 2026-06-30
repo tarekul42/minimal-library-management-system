@@ -4,17 +4,13 @@ import type { IUser } from "@/types/auth";
 interface IAuthState {
   user: IUser | null;
   accessToken: string | null;
-  refreshToken: string | null;
   isAuthenticated: boolean;
 }
-
-const storedRefreshToken = typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
 
 const initialState: IAuthState = {
   user: null,
   accessToken: null,
-  refreshToken: storedRefreshToken,
-  isAuthenticated: !!storedRefreshToken,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -26,27 +22,22 @@ const authSlice = createSlice({
       action: PayloadAction<{
         user: IUser;
         accessToken: string;
-        refreshToken: string;
       }>,
     ) => {
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
     },
-    setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload;
     },
     logout: (state) => {
       state.user = null;
       state.accessToken = null;
-      state.refreshToken = null;
       state.isAuthenticated = false;
-      localStorage.removeItem("refreshToken");
     },
   },
 });
 
-export const { setCredentials, setTokens, logout } = authSlice.actions;
+export const { setCredentials, setAccessToken, logout } = authSlice.actions;
 export default authSlice.reducer;

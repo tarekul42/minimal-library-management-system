@@ -14,6 +14,7 @@ import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { BookOpen, RotateCcw } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import type { IBorrow } from "@/types/borrow";
 
 const statusBadge = (status: string) => {
@@ -41,7 +42,7 @@ const MyBorrows = () => {
       toast.success("Book returned successfully");
     } catch (err) {
       console.error("Failed to return book:", err);
-      toast.error("Failed to return book");
+      toast.error(getApiError(err, "Failed to return book"));
     }
   };
 

@@ -11,6 +11,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Bell, CheckCheck } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import type { INotification } from "@/types/notification";
 
 const typeLabel: Record<string, string> = {
@@ -37,7 +38,7 @@ const Notifications = () => {
       toast.success("All marked as read");
     } catch (err) {
       console.error("Failed to mark all as read:", err);
-      toast.error("Failed to mark all as read");
+      toast.error(getApiError(err, "Failed to mark all as read"));
     }
   };
 

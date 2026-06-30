@@ -15,9 +15,11 @@ import {
 export function DatePicker({
   onChange,
   defaultValue,
+  disablePast = true,
 }: {
   onChange: (e: Date | undefined) => void;
   defaultValue?: string;
+  disablePast?: boolean;
 }) {
   const [date, setDate] = React.useState<Date | undefined>(
     () => (defaultValue ? new Date(defaultValue) : undefined),
@@ -47,6 +49,7 @@ export function DatePicker({
           mode="single"
           selected={date}
           onSelect={(e) => handleSelect(e)}
+          disabled={disablePast ? (date: Date) => date < new Date() : undefined}
         />
       </PopoverContent>
     </Popover>

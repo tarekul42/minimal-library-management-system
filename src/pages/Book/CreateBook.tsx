@@ -6,7 +6,7 @@ import { useBookForm } from "@/hooks/useBookForm";
 import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
-import { splitTags } from "@/lib/utils";
+import { getApiError, splitTags } from "@/lib/utils";
 
 const CreateBook = () => {
   const [createBook, { isLoading }] = useCreateBookMutation();
@@ -27,7 +27,7 @@ const CreateBook = () => {
       navigate("/books");
     } catch (err) {
       console.error("Failed to create book:", err);
-      toast.error("Failed to create book");
+      toast.error(getApiError(err, "Failed to create book"));
     }
   }
 

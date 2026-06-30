@@ -20,6 +20,7 @@ import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import type { IAuthor } from "@/types/author";
 
 const AdminAuthors = () => {
@@ -44,7 +45,7 @@ const AdminAuthors = () => {
       setBio("");
     } catch (err) {
       console.error("Failed to create author:", err);
-      toast.error("Failed to create author");
+      toast.error(getApiError(err, "Failed to create author"));
     }
   };
 
@@ -55,7 +56,7 @@ const AdminAuthors = () => {
       toast.success("Author deleted");
     } catch (err) {
       console.error("Failed to delete author:", err);
-      toast.error("Failed to delete author");
+      toast.error(getApiError(err, "Failed to delete author"));
     }
   };
 

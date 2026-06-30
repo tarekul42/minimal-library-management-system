@@ -10,7 +10,6 @@ export interface ICategory {
 
 export interface ICreateCategoryInput {
   name: string;
-  slug?: string;
   description?: string;
   parent?: string;
 }

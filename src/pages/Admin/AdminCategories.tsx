@@ -20,6 +20,7 @@ import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import type { ICategory } from "@/types/category";
 
 const AdminCategories = () => {
@@ -38,10 +39,8 @@ const AdminCategories = () => {
   const handleCreate = async () => {
     if (!name.trim()) return;
     try {
-      const slug = name.trim().toLowerCase().replace(/\s+/g, "-");
       await createCategory({
         name: name.trim(),
-        slug,
         description: description.trim() || undefined,
       }).unwrap();
       toast.success("Category created");
@@ -49,7 +48,7 @@ const AdminCategories = () => {
       setDescription("");
     } catch (err) {
       console.error("Failed to create category:", err);
-      toast.error("Failed to create category");
+      toast.error(getApiError(err, "Failed to create category"));
     }
   };
 
@@ -60,7 +59,7 @@ const AdminCategories = () => {
       toast.success("Category deleted");
     } catch (err) {
       console.error("Failed to delete category:", err);
-      toast.error("Failed to delete category");
+      toast.error(getApiError(err, "Failed to delete category"));
     }
   };
 

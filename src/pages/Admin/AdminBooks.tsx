@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft, Search } from "lucide-react";
 import type { IBook, IBookQueryParams } from "@/types/book";
 import { GENRE_LABELS } from "@/config/constants";
-import { getAuthorName } from "@/lib/utils";
+import { getApiError, getAuthorName } from "@/lib/utils";
 
 const AdminBooks = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -45,7 +45,7 @@ const AdminBooks = () => {
       toast.success("Book deleted");
     } catch (err) {
       console.error("Failed to delete book:", err);
-      toast.error("Failed to delete book");
+      toast.error(getApiError(err, "Failed to delete book"));
     }
   };
 

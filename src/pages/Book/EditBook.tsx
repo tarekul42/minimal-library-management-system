@@ -9,7 +9,7 @@ import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
 import { Skeleton } from "@/components/ui/skeleton";
-import { splitTags } from "@/lib/utils";
+import { getApiError, splitTags } from "@/lib/utils";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,
@@ -38,7 +38,7 @@ const EditBook: React.FC<IEditBookModalProps> = ({
       onOpenChange(false);
     } catch (err) {
       console.error("Error updating book:", err);
-      toast.error("Error updating book!");
+      toast.error(getApiError(err, "Error updating book"));
     }
   };
 

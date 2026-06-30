@@ -6,6 +6,7 @@ import { CardSkeleton } from "@/components/ui/card-skeleton";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, XCircle, Clock, CheckCircle, Calendar } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IReservation } from "@/types/reservation";
 
@@ -27,7 +28,7 @@ const MyReservations = () => {
       toast.success("Reservation cancelled");
     } catch (err) {
       console.error("Failed to cancel reservation:", err);
-      toast.error("Failed to cancel reservation");
+      toast.error(getApiError(err, "Failed to cancel reservation"));
     }
   };
 

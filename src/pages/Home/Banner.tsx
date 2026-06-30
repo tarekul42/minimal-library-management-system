@@ -15,6 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "@/redux/hook";
 
 const libraryActions = [
   {
@@ -48,10 +49,12 @@ const libraryActions = [
 ];
 
 const Banner = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center gap-4 py-2 md:py-3 lg:py-4">
-      {libraryActions.map((action, index) => (
+      {libraryActions.map((action, index) =>
+        action.to === "/create-book" && user?.role !== "admin" ? null : (
         <Card
           key={index}
           className="w-full max-w-sm bg-gray-900 border-0 text-gray-300"
@@ -78,7 +81,7 @@ const Banner = () => {
             </Button>
           </CardFooter>
         </Card>
-      ))}
+        ))}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { CardSkeleton } from "@/components/ui/card-skeleton";
 import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Heart, Trash2, Library, BookOpen } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import { GENRE_LABELS } from "@/config/constants";
 import type { IWishlistItem } from "@/types/wishlist";
 
@@ -25,7 +26,7 @@ const WishlistPage = () => {
       toast.success("Removed from wishlist");
     } catch (err) {
       console.error("Failed to remove from wishlist:", err);
-      toast.error("Failed to remove");
+      toast.error(getApiError(err, "Failed to remove from wishlist"));
     }
   };
 

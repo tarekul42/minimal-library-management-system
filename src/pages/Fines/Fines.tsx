@@ -15,6 +15,7 @@ import { ErrorRetry } from "@/components/ui/error-retry";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { DollarSign } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import type { IFine } from "@/types/fine";
 
 const Fines = () => {
@@ -30,7 +31,7 @@ const Fines = () => {
       toast.success("Fine paid successfully");
     } catch (err) {
       console.error("Failed to process payment:", err);
-      toast.error("Failed to process payment");
+      toast.error(getApiError(err, "Failed to process payment"));
     }
   };
 

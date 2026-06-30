@@ -44,7 +44,6 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.isAuthenticated = false;
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
     },
   },
 });

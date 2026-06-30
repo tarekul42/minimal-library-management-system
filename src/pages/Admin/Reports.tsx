@@ -5,7 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, FileText, Download, Loader2 } from "lucide-react";
+import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import { useDownloadReportMutation } from "@/redux/api/reportsApi";
 
@@ -39,7 +41,7 @@ const Reports = () => {
       toast.success(`${filename} downloaded`);
     } catch (err) {
       console.error("Report download failed:", err);
-      toast.error(`Failed to download ${filename}`);
+      toast.error(getApiError(err, `Failed to download ${filename}`));
     } finally {
       setExporting((prev) => ({ ...prev, [key]: "idle" }));
     }
@@ -60,7 +62,7 @@ const Reports = () => {
       title: "Fines Report",
       description: "All fine records with payment status",
       hasDateRange: true,
-      hasStatus: false,
+      hasStatus: true,
       csv: () => handleExport("fines-csv", buildUrl("/reports/fines", "csv"), "fines-report.csv"),
       pdf: () => handleExport("fines-pdf", buildUrl("/reports/fines", "pdf"), "fines-report.pdf"),
     },
@@ -109,15 +111,7 @@ const Reports = () => {
               <Label className="text-xs text-muted-foreground">To</Label>
               <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-44 bg-gray-800 border-gray-700" />
             </div>
-            <div>
-              <Label className="text-xs text-muted-foreground">Status</Label>
-              <select value={status} onChange={(e) => setStatus(e.target.value)} className="w-36 h-10 rounded-md border border-gray-700 bg-gray-800 px-3 text-sm text-gray-300">
-                <option value="">All</option>
-                <option value="active">Active</option>
-                <option value="returned">Returned</option>
-                <option value="overdue">Overdue</option>
-              </select>
-            </div>
+
             {(from || to || status) && (
               <Button variant="ghost" size="sm" onClick={() => { setFrom(""); setTo(""); setStatus(""); }}>
                 Clear
@@ -135,6 +129,20 @@ const Reports = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">{r.description}</p>
+              {r.hasStatus && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Status</Label>
+                  <Select value={status} onValueChange={setStatus}>
+                    <SelectTrigger className="w-36"><SelectValue placeholder="All" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="returned">Returned</SelectItem>
+                      <SelectItem value="overdue">Overdue</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={r.csv} disabled={exporting[`${r.key}-csv`] === "loading"}>
                   {exporting[`${r.key}-csv`] === "loading" ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Download className="h-4 w-4 mr-1" />}

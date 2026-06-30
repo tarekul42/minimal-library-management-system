@@ -10,14 +10,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { DollarSign } from "lucide-react";
 import type { IFine } from "@/types/fine";
 
 const Fines = () => {
-  const { data, isLoading } = useGetMyFinesQuery();
+  const { data, isLoading, isError, refetch } = useGetMyFinesQuery();
   const [payFine] = usePayFineMutation();
 
   const fines: IFine[] = data?.data || [];
@@ -34,8 +35,16 @@ const Fines = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <Spinner size={48} />
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <TableSkeleton rows={3} cols={5} />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <ErrorRetry message="Failed to load fines" onRetry={refetch} />
       </div>
     );
   }

@@ -9,7 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import type { IBorrow } from "@/types/borrow";
 
 interface IGrouped {
@@ -19,13 +20,9 @@ interface IGrouped {
 }
 
 const BorrowSummary = () => {
-  const { data, isLoading, isError } = useGetMyBorrowsQuery();
+  const { data, isLoading, isError, refetch } = useGetMyBorrowsQuery();
 
   const borrows: IBorrow[] = data?.data || [];
-
-  if (isError) {
-    return <p className="text-red-400 p-4">Failed to load borrow summary.</p>;
-  }
 
   const summary = useMemo(() => {
     const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
@@ -41,8 +38,16 @@ const BorrowSummary = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <Spinner size={48} />
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <TableSkeleton rows={4} cols={3} />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <ErrorRetry message="Failed to load borrow summary" onRetry={refetch} />
       </div>
     );
   }

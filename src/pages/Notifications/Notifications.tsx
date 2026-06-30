@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Bell, CheckCheck } from "lucide-react";
 import type { INotification } from "@/types/notification";
@@ -23,7 +24,7 @@ const Notifications = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  const { data, isLoading } = useGetMyNotificationsQuery();
+  const { data, isLoading, isError, refetch } = useGetMyNotificationsQuery();
   const [markRead] = useMarkNotificationReadMutation();
   const [markAllRead] = useMarkAllNotificationsReadMutation();
 
@@ -66,6 +67,8 @@ const Notifications = () => {
 
       {isLoading ? (
         <Spinner size={48} />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load notifications" onRetry={refetch} />
       ) : notifications.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />

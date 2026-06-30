@@ -75,7 +75,7 @@ const BookDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="max-w-4xl mx-auto p-6 sm:p-8 lg:p-10 space-y-6">
         <Skeleton className="h-8 w-48" /> <Skeleton className="h-64 w-full" />
         <Skeleton className="h-6 w-3/4" /> <Skeleton className="h-4 w-1/2" />
         <Skeleton className="h-20 w-full" />
@@ -96,7 +96,7 @@ const BookDetail = () => {
   const authorId = typeof book.author === "string" ? "" : book.author?._id;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 sm:p-8 lg:p-10">
       <Link to="/books" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="h-4 w-4 mr-1" /> Back to Books
       </Link>
@@ -152,7 +152,7 @@ const BookDetail = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div className="flex items-center gap-2"><Hash className="h-4 w-4 text-muted-foreground" /><span>ISBN: {book.isbn}</span></div>
             {book.pages && <div className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-muted-foreground" /><span>{book.pages} pages</span></div>}
             {book.publisher && <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-muted-foreground" /><span>{book.publisher}{book.publishedYear ? `, ${book.publishedYear}` : ""}</span></div>}

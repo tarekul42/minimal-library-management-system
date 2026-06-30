@@ -2,26 +2,27 @@ import { Link } from "react-router";
 import { useGetAuthorsQuery } from "@/redux/api/authorApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { CardSkeleton } from "@/components/ui/card-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { User, Plus } from "lucide-react";
 import type { IAuthor } from "@/types/author";
 
 const Authors = () => {
-  const { data, isLoading, isError } = useGetAuthorsQuery();
+  const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
   const authors: IAuthor[] = data?.data || [];
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <Spinner size={48} />
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <CardSkeleton count={6} />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="flex justify-center items-center flex-1 text-destructive">
-        <p>Failed to load authors.</p>
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <ErrorRetry message="Failed to load authors" onRetry={refetch} />
       </div>
     );
   }

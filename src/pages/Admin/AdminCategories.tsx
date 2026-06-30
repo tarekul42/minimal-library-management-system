@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import type { ICategory } from "@/types/category";
@@ -30,7 +31,7 @@ const AdminCategories = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const { data, isLoading } = useGetCategoriesQuery();
+  const { data, isLoading, isError, refetch } = useGetCategoriesQuery();
   const [createCategory] = useCreateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
   const categories: ICategory[] = data?.data || [];
@@ -78,7 +79,9 @@ const AdminCategories = () => {
       </div>
 
       {isLoading ? (
-        <Spinner size={32} />
+        <TableSkeleton rows={3} cols={2} />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load categories" onRetry={refetch} />
       ) : (
         <Table className="border max-w-lg">
           <TableHeader className="bg-muted">

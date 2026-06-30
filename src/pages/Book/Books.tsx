@@ -27,7 +27,8 @@ import Book from "./Book";
 import EditBook from "./EditBook";
 import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { Badge } from "@/components/ui/badge";
 import { getAuthorName } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ const Books = () => {
     return p;
   }, [page, search, genre]);
 
-  const { data, isLoading, isError } = useGetBooksQuery(params);
+  const { data, isLoading, isError, refetch } = useGetBooksQuery(params);
 
   const books: IBook[] = data?.data || [];
   const meta = data?.meta;
@@ -61,12 +62,12 @@ const Books = () => {
   return (
     <>
       {isLoading ? (
-        <div className="flex-1 flex justify-center items-center">
-          <Spinner size={48} />
+        <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+          <TableSkeleton />
         </div>
       ) : isError ? (
-        <div className="flex justify-center items-center h-[100vh] text-destructive">
-          <p>Failed to load books. Please try again later.</p>
+        <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+          <ErrorRetry message="Failed to load books" onRetry={refetch} />
         </div>
       ) : (
         <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">

@@ -15,20 +15,13 @@ import Borrow from "../Borrow/Borrow";
 import { useBookModals } from "@/hooks/useBookModals";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import Banner from "./Banner";
-import { Spinner } from "@/components/ui/spinner";
+import { CardSkeleton } from "@/components/ui/card-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { getAuthorName } from "@/lib/utils";
 
 const Home = () => {
-  const { data, isLoading, isError } = useGetBooksQuery(undefined);
+  const { data, isLoading, isError, refetch } = useGetBooksQuery(undefined);
   const books: IBook[] = data?.data || [];
-
-  if (isError) {
-    return (
-      <div className="flex-1 flex justify-center items-center text-red-400">
-        <p>Failed to load books. Please try again later.</p>
-      </div>
-    );
-  }
 
   const {
     modalType,
@@ -40,10 +33,14 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <Spinner size={48} />
+      <div className="flex-1 flex items-center justify-center p-6">
+        <CardSkeleton />
       </div>
     );
+  }
+
+  if (isError) {
+    return <ErrorRetry message="Failed to load books" onRetry={refetch} />;
   }
 
   return (

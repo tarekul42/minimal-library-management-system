@@ -57,7 +57,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-1 items-start justify-center p-4 pt-8">
+    <div className="flex flex-1 items-start justify-center p-4 sm:p-6 lg:p-8 pt-8">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-xl">

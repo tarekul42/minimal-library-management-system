@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import type { IAuthor } from "@/types/author";
@@ -30,7 +31,7 @@ const AdminAuthors = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const { data, isLoading } = useGetAuthorsQuery();
+  const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
   const [createAuthor] = useCreateAuthorMutation();
   const [deleteAuthor] = useDeleteAuthorMutation();
   const authors: IAuthor[] = data?.data || [];
@@ -73,7 +74,9 @@ const AdminAuthors = () => {
       </div>
 
       {isLoading ? (
-        <Spinner size={32} />
+        <TableSkeleton rows={3} cols={2} />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load authors" onRetry={refetch} />
       ) : (
         <Table className="border max-w-lg">
           <TableHeader className="bg-muted">

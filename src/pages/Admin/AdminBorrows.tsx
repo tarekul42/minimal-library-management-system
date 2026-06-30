@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { ArrowLeft, RotateCcw, AlertTriangle, Activity } from "lucide-react";
 import type { IBorrow } from "@/types/borrow";
@@ -35,9 +36,9 @@ const AdminBorrows = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [tab, setTab] = useState<Tab>("all");
 
-  const { data: allData, isLoading: allLoading } = useGetAllBorrowsQuery(undefined, { skip: tab !== "all" });
-  const { data: activeData, isLoading: activeLoading } = useGetActiveBorrowsQuery(undefined, { skip: tab !== "active" });
-  const { data: overdueData, isLoading: overdueLoading } = useGetOverdueBorrowsQuery(undefined, { skip: tab !== "overdue" });
+  const { data: allData, isLoading: allLoading, isError: allError, refetch: allRefetch } = useGetAllBorrowsQuery(undefined, { skip: tab !== "all" });
+  const { data: activeData, isLoading: activeLoading, isError: activeError, refetch: activeRefetch } = useGetActiveBorrowsQuery(undefined, { skip: tab !== "active" });
+  const { data: overdueData, isLoading: overdueLoading, isError: overdueError, refetch: overdueRefetch } = useGetOverdueBorrowsQuery(undefined, { skip: tab !== "overdue" });
   const [returnBook] = useReturnBookMutation();
 
   if (!user || (user.role !== "admin" && user.role !== "librarian")) {
@@ -47,15 +48,15 @@ const AdminBorrows = () => {
   const getData = () => {
     switch (tab) {
       case "active":
-        return { data: activeData?.data, loading: activeLoading };
+        return { data: activeData?.data, loading: activeLoading, error: activeError, refetch: activeRefetch };
       case "overdue":
-        return { data: overdueData?.data, loading: overdueLoading };
+        return { data: overdueData?.data, loading: overdueLoading, error: overdueError, refetch: overdueRefetch };
       default:
-        return { data: allData?.data, loading: allLoading };
+        return { data: allData?.data, loading: allLoading, error: allError, refetch: allRefetch };
     }
   };
 
-  const { data: borrows, loading: isLoading } = getData();
+  const { data: borrows, loading: isLoading, error: isError, refetch } = getData();
 
   const handleReturn = async (id: string) => {
     try {
@@ -90,7 +91,9 @@ const AdminBorrows = () => {
       </div>
 
       {isLoading ? (
-        <Spinner size={32} />
+        <TableSkeleton rows={5} cols={7} />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load borrows" onRetry={refetch} />
       ) : (
         <Table className="border">
           <TableCaption>

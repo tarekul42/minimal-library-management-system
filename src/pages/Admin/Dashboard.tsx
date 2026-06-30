@@ -1,6 +1,8 @@
 import { useGetDashboardStatsQuery, useGetPopularBooksQuery, useGetBorrowTrendsQuery, useGetGenreDistributionQuery } from "@/redux/api/dashboardApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { DashboardSkeleton } from "@/components/ui/dashboard-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { BookOpen, Users, BookMarked, AlertTriangle, DollarSign } from "lucide-react";
 import type { IDashboardStats } from "@/types/dashboard";
@@ -21,10 +23,10 @@ const statCards: { key: keyof IDashboardStats; label: string; icon: typeof BookO
 ];
 
 const Dashboard = () => {
-  const { data: statsData, isLoading: statsLoading, isError: statsError } = useGetDashboardStatsQuery();
-  const { data: popularData, isLoading: popularLoading } = useGetPopularBooksQuery();
-  const { data: trendsData, isLoading: trendsLoading } = useGetBorrowTrendsQuery();
-  const { data: genreData, isLoading: genreLoading } = useGetGenreDistributionQuery();
+  const { data: statsData, isLoading: statsLoading, isError: statsError, refetch: refetchStats } = useGetDashboardStatsQuery();
+  const { data: popularData, isLoading: popularLoading, isError: popularError, refetch: refetchPopular } = useGetPopularBooksQuery();
+  const { data: trendsData, isLoading: trendsLoading, isError: trendsError, refetch: refetchTrends } = useGetBorrowTrendsQuery();
+  const { data: genreData, isLoading: genreLoading, isError: genreError, refetch: refetchGenre } = useGetGenreDistributionQuery();
 
   const stats = statsData?.data;
   const popularBooks = popularData?.data || [];
@@ -52,9 +54,9 @@ const Dashboard = () => {
       <h1 className="text-3xl font-bold">Dashboard</h1>
 
       {statsLoading ? (
-        <Spinner size={32} />
+        <DashboardSkeleton />
       ) : statsError ? (
-        <p className="text-red-400">Failed to load dashboard stats.</p>
+        <ErrorRetry message="Failed to load dashboard stats" onRetry={refetchStats} />
       ) : stats ? (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {statCards.map((s) => (
@@ -82,7 +84,9 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="px-0 pb-0">
             {popularLoading ? (
-              <Spinner size={24} />
+              <div className="h-[300px] flex items-center justify-center"><Spinner size={24} /></div>
+            ) : popularError ? (
+              <ErrorRetry message="Failed to load popular books" onRetry={refetchPopular} />
             ) : chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={chartData} margin={{ left: -10 }} role="img" aria-label="Popular books bar chart">
@@ -104,7 +108,9 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="px-0 pb-0">
             {trendsLoading ? (
-              <Spinner size={24} />
+              <div className="h-[300px] flex items-center justify-center"><Spinner size={24} /></div>
+            ) : trendsError ? (
+              <ErrorRetry message="Failed to load trends" onRetry={refetchTrends} />
             ) : trendChartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={trendChartData} margin={{ left: -10 }} role="img" aria-label="Borrow trends line chart">
@@ -128,7 +134,9 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="px-0 pb-0 flex justify-center">
             {genreLoading ? (
-              <Spinner size={24} />
+              <div className="h-[300px] flex items-center justify-center"><Spinner size={24} /></div>
+            ) : genreError ? (
+              <ErrorRetry message="Failed to load genre distribution" onRetry={refetchGenre} />
             ) : genreChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart role="img" aria-label="Genre distribution pie chart">

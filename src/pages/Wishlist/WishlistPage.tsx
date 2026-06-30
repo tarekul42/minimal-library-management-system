@@ -4,7 +4,8 @@ import { useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/components/ui/spinner";
+import { CardSkeleton } from "@/components/ui/card-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Heart, Trash2, Library, BookOpen } from "lucide-react";
 import { GENRE_LABELS } from "@/config/constants";
@@ -15,7 +16,7 @@ const WishlistPage = () => {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  const { data, isLoading, isError } = useGetWishlistQuery();
+  const { data, isLoading, isError, refetch } = useGetWishlistQuery();
   const [removeFromWishlist] = useRemoveFromWishlistMutation();
   const items: IWishlistItem[] = data?.data || [];
 
@@ -36,9 +37,9 @@ const WishlistPage = () => {
       </h1>
 
       {isLoading ? (
-        <Spinner size={48} />
+        <CardSkeleton count={3} />
       ) : isError ? (
-        <p className="text-red-400">Failed to load wishlist.</p>
+        <ErrorRetry message="Failed to load wishlist" onRetry={refetch} />
       ) : items.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Library className="h-12 w-12 mx-auto mb-4 opacity-50" />

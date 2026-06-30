@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { Plus, Trash2, ArrowLeft, Search } from "lucide-react";
 import type { IBook, IBookQueryParams } from "@/types/book";
@@ -27,7 +28,7 @@ const AdminBooks = () => {
   const params: IBookQueryParams = { page, limit: 10 };
   if (search) params.search = search;
 
-  const { data, isLoading } = useGetBooksQuery(params);
+  const { data, isLoading, isError, refetch } = useGetBooksQuery(params);
   const [deleteBook] = useDeleteBookMutation();
 
   if (!user || (user.role !== "admin" && user.role !== "librarian")) {
@@ -67,7 +68,9 @@ const AdminBooks = () => {
       </div>
 
       {isLoading ? (
-        <Spinner size={32} />
+        <TableSkeleton />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load books" onRetry={refetch} />
       ) : (
         <>
           <Table className="border">

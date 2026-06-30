@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Navigation links */}
-          <div className="w-full md:w-1/2 lg:w-1/3 grid grid-cols-2 justify-items-center gap-3 mb-6 md:mb-0">
+          <div className="w-full md:w-1/2 lg:w-1/3 grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-3 mb-6 md:mb-0">
             <Link className="underline hover:bg-gray-900" to="/">
               Home
             </Link>

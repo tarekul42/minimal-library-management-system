@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ArrowLeft, DollarSign } from "lucide-react";
@@ -25,7 +26,7 @@ const AdminFines = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const { data, isLoading } = useGetAllFinesQuery();
+  const { data, isLoading, isError, refetch } = useGetAllFinesQuery();
   const [payFine] = usePayFineMutation();
 
   const fines: IFine[] = data?.data || [];
@@ -61,7 +62,9 @@ const AdminFines = () => {
       )}
 
       {isLoading ? (
-        <Spinner size={32} />
+        <TableSkeleton rows={5} cols={6} />
+      ) : isError ? (
+        <ErrorRetry message="Failed to load fines" onRetry={refetch} />
       ) : (
         <Table className="border">
           <TableCaption>All fine records</TableCaption>

@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/components/ui/spinner";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { ErrorRetry } from "@/components/ui/error-retry";
 import { toast } from "sonner";
 import { BookOpen, RotateCcw } from "lucide-react";
 import type { IBorrow } from "@/types/borrow";
@@ -29,7 +30,7 @@ const statusBadge = (status: string) => {
 };
 
 const MyBorrows = () => {
-  const { data, isLoading } = useGetMyBorrowsQuery();
+  const { data, isLoading, isError, refetch } = useGetMyBorrowsQuery();
   const [returnBook] = useReturnBookMutation();
 
   const borrows: IBorrow[] = data?.data || [];
@@ -45,8 +46,16 @@ const MyBorrows = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <Spinner size={48} />
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <TableSkeleton />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0">
+        <ErrorRetry message="Failed to load borrows" onRetry={refetch} />
       </div>
     );
   }

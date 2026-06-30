@@ -19,7 +19,7 @@ const AuthorDetail = () => {
 
   if (authorLoading) {
     return (
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="max-w-4xl mx-auto p-6 sm:p-8 lg:p-10 space-y-6">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-32 w-full" />
         <Skeleton className="h-6 w-64" />
@@ -39,7 +39,7 @@ const AuthorDetail = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 sm:p-8 lg:p-10">
       <Link to="/authors" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="h-4 w-4 mr-1" />
         Back to Authors

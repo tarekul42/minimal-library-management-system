@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320" viewBox="0 0 240 320" fill="none">
+  <rect width="240" height="320" rx="8" fill="hsl(var(--muted))"/>
+  <g transform="translate(60,100)">
+    <rect x="10" y="20" width="100" height="100" rx="4" fill="hsl(var(--muted-foreground) / 0.2)" stroke="hsl(var(--muted-foreground) / 0.3)" stroke-width="2"/>
+    <line x1="30" y1="40" x2="90" y2="40" stroke="hsl(var(--muted-foreground) / 0.3)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="30" y1="55" x2="80" y2="55" stroke="hsl(var(--muted-foreground) / 0.2)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="30" y1="70" x2="70" y2="70" stroke="hsl(var(--muted-foreground) / 0.2)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="30" y1="85" x2="75" y2="85" stroke="hsl(var(--muted-foreground) / 0.2)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <circle cx="120" cy="220" r="20" fill="hsl(var(--primary) / 0.15)"/>
+  <path d="M112 220 L120 212 L128 220 L125 223 L120 218 L115 223 Z" fill="hsl(var(--primary) / 0.5)"/>
+</svg>

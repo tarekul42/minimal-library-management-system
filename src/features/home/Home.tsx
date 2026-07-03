@@ -1,14 +1,27 @@
-import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
+import { Hero } from "./sections/Hero";
+import { StatsBar } from "./sections/StatsBar";
+import { FeaturedBooks } from "./sections/FeaturedBooks";
+import { Categories } from "./sections/Categories";
+import { HowItWorks } from "./sections/HowItWorks";
+import { PopularAuthors } from "./sections/PopularAuthors";
+import { Testimonials } from "./sections/Testimonials";
+import { LatestBlog } from "./sections/LatestBlog";
+import { Faq } from "./sections/Faq";
+import { CtaBand } from "./sections/CtaBand";
 
-export default function Stub() {
+export default function Home() {
   return (
-    <Section>
-      <Container className="py-24 text-center">
-        <h1 className="text-2xl font-semibold">Coming soon</h1>
-        <p className="text-muted-foreground">This page will be implemented in a later phase.</p>
-      </Container>
-    </Section>
+    <>
+      <Hero />
+      <StatsBar />
+      <FeaturedBooks />
+      <Categories />
+      <HowItWorks />
+      <PopularAuthors />
+      <Testimonials />
+      <LatestBlog />
+      <Faq />
+      <CtaBand />
+    </>
   );
 }
-

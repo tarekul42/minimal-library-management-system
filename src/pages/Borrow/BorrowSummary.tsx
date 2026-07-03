@@ -14,7 +14,7 @@ import { ErrorRetry } from "@/components/ui/error-retry";
 import type { IBorrow } from "@/types/borrow";
 
 interface IGrouped {
-  _id: string;
+  isbn: string;
   title: string;
   totalQuantity: number;
 }
@@ -25,9 +25,9 @@ const BorrowSummary = () => {
   const summary = useMemo(() => {
     const borrows: IBorrow[] = data?.data || [];
     const grouped = borrows.reduce<Record<string, IGrouped>>((acc, b) => {
-      const key = b.book._id;
+      const key = b.book.isbn;
       if (!acc[key]) {
-        acc[key] = { _id: key, title: b.book.title, totalQuantity: 0 };
+        acc[key] = { isbn: key, title: b.book.title, totalQuantity: 0 };
       }
       acc[key].totalQuantity += b.quantity;
       return acc;
@@ -65,9 +65,9 @@ const BorrowSummary = () => {
         </TableHeader>
         <TableBody>
           {summary.map((record) => (
-            <TableRow key={record._id}>
+            <TableRow key={record.isbn}>
               <TableCell>{record.title}</TableCell>
-              <TableCell className="text-center">{record._id}</TableCell>
+              <TableCell className="text-center">{record.isbn}</TableCell>
               <TableCell className="text-center">{record.totalQuantity}</TableCell>
             </TableRow>
           ))}

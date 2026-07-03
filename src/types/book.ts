@@ -1,10 +1,6 @@
-export type Genre =
-  | "FICTION"
-  | "NON_FICTION"
-  | "SCIENCE"
-  | "HISTORY"
-  | "BIOGRAPHY"
-  | "FANTASY";
+import { GENRE_VALUES } from "@/schema/bookSchema";
+
+export type Genre = (typeof GENRE_VALUES)[number];
 
 export interface IAuthorRef {
   _id: string;

@@ -21,10 +21,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { bookFormFields } from "@/config/formFields";
 import { useAppSelector } from "@/redux/hook";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
+import type { BookFormData } from "@/schema/bookSchema";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const UPLOAD_FIELD_NAME = "file";
 
 const getOptions = (
   field: IFormFieldConfig,
@@ -42,17 +44,24 @@ export const BookForm = ({
   authorOptions,
 }: IBookFormProps) => {
   const [uploading, setUploading] = useState(false);
+
+  const handleSubmit = (data: BookFormData) => {
+    const sanitized = Object.fromEntries(
+      Object.entries(data).map(([key, val]) => [key, val === "" ? undefined : val])
+    ) as BookFormData;
+    onSubmit(sanitized);
+  };
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const token = useAppSelector((s) => s.auth.accessToken);
 
   const uploadFile = async (file: File): Promise<string | null> => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append(UPLOAD_FIELD_NAME, file);
 
     try {
       setUploading(true);
-      const res = await fetch(`${VITE_API_URL}/uploads/cover`, {
+      const res = await fetch(`${VITE_API_URL}/uploads`, {
         method: "POST",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData,
@@ -162,7 +171,7 @@ export const BookForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         {bookFormFields.map(renderFormField)}
 
         <Button

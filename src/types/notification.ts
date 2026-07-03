@@ -7,4 +7,5 @@ export interface INotification {
   read: boolean;
   readAt?: string;
   createdAt: string;
+  updatedAt: string;
 }

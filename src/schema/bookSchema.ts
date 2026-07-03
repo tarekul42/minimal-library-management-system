@@ -1,16 +1,15 @@
 import { z } from "zod";
-import type { Genre } from "@/types/book";
 
-const genreValues: [Genre, ...Genre[]] = [
+export const GENRE_VALUES = [
   "FICTION",
   "NON_FICTION",
   "SCIENCE",
   "HISTORY",
   "BIOGRAPHY",
   "FANTASY",
-];
+] as const;
 
-const genreSchema = z.enum(genreValues);
+const genreSchema = z.enum(GENRE_VALUES);
 
 const currentYear = new Date().getFullYear();
 

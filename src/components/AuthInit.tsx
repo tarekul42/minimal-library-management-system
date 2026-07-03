@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useRefreshTokenMutation } from "@/redux/api/authApi";
 import { setCredentials } from "@/redux/features/authSlice";
+import { logout } from "@/redux/features/authSlice";
 
 export function AuthInit({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
@@ -20,7 +21,9 @@ export function AuthInit({ children }: { children: React.ReactNode }) {
       .then((data) => {
         dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
       })
-      .catch(() => {});
+      .catch(() => {
+        dispatch(logout());
+      });
   }, [accessToken, dispatch, trigger]);
 
   return <>{children}</>;

@@ -12,6 +12,7 @@ import type { LucideIcon } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import NotificationBell from "@/components/shared/NotificationBell";
 
 interface NavItem {
@@ -63,6 +64,8 @@ const NavMenu = () => {
                 {item.label}
               </NavLink>
             ))}
+
+            <ThemeToggle />
 
             {isAuthenticated ? <NotificationBell /> : null}
 

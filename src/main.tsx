@@ -12,7 +12,7 @@ import { AuthInit } from "./components/AuthInit.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <AuthInit>
           <RouterProvider router={router} />
         </AuthInit>

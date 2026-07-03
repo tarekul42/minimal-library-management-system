@@ -7,12 +7,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 import { BookOpen, Users, BookMarked, AlertTriangle, DollarSign } from "lucide-react";
 import type { IDashboardStats } from "@/types/dashboard";
 import { useMemo } from "react";
+import { useTheme } from "next-themes";
+import { chartColors, tooltipStyle } from "@/lib/chart-utils";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#14b8a6", "#f97316"];
-
-const TOOLTIP_STYLE: React.CSSProperties = { backgroundColor: "#1f2937", border: "1px solid #374151", borderRadius: "8px", color: "#e5e7eb" };
 
 const statCards: { key: keyof IDashboardStats; label: string; icon: typeof BookOpen; color: string; prefix?: string }[] = [
   { key: "totalBooks", label: "Books", icon: BookOpen, color: "text-blue-400" },
@@ -27,6 +25,12 @@ const Dashboard = () => {
   const { data: popularData, isLoading: popularLoading, isError: popularError, refetch: refetchPopular } = useGetPopularBooksQuery();
   const { data: trendsData, isLoading: trendsLoading, isError: trendsError, refetch: refetchTrends } = useGetBorrowTrendsQuery();
   const { data: genreData, isLoading: genreLoading, isError: genreError, refetch: refetchGenre } = useGetGenreDistributionQuery();
+  const { resolvedTheme } = useTheme();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const chartVars = useMemo(() => chartColors(), [resolvedTheme]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const tooltipStyles = useMemo(() => tooltipStyle(), [resolvedTheme]);
 
   const stats = statsData?.data;
 
@@ -43,8 +47,8 @@ const Dashboard = () => {
   const genreChartData = useMemo(() => (genreData?.data || []).map((g, i) => ({
     name: g.genre,
     value: g.count,
-    fill: COLORS[i % COLORS.length],
-  })), [genreData]);
+    fill: [chartVars.chart1, chartVars.chart2, chartVars.chart3, chartVars.chart4, chartVars.chart5, chartVars.chart1, chartVars.chart2, chartVars.chart3][i % 8],
+  })), [genreData, chartVars]);
 
   return (
     <div className="w-full p-6 sm:p-8 lg:p-10 xl:py-10 xl:px-0 space-y-8">
@@ -87,10 +91,10 @@ const Dashboard = () => {
             ) : chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={chartData} margin={{ left: -10 }} role="img" aria-label="Popular books bar chart">
-                  <XAxis dataKey="title" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-                  <YAxis tick={{ fill: "#9ca3af" }} />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} />
-                  <Bar dataKey="borrows" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <XAxis dataKey="title" tick={{ fill: chartVars.muted, fontSize: 12 }} />
+                  <YAxis tick={{ fill: chartVars.muted }} />
+                  <Tooltip contentStyle={tooltipStyles} />
+                  <Bar dataKey="borrows" fill={chartVars.chart1} radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -111,10 +115,10 @@ const Dashboard = () => {
             ) : trendChartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={trendChartData} margin={{ left: -10 }} role="img" aria-label="Borrow trends line chart">
-                  <XAxis dataKey="month" tick={{ fill: "#9ca3af", fontSize: 11 }} />
-                  <YAxis tick={{ fill: "#9ca3af" }} />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} />
-                  <Line type="monotone" dataKey="borrows" stroke="#3b82f6" strokeWidth={2} dot={{ fill: "#3b82f6" }} />
+                  <XAxis dataKey="month" tick={{ fill: chartVars.muted, fontSize: 11 }} />
+                  <YAxis tick={{ fill: chartVars.muted }} />
+                  <Tooltip contentStyle={tooltipStyles} />
+                  <Line type="monotone" dataKey="borrows" stroke={chartVars.chart1} strokeWidth={2} dot={{ fill: chartVars.chart1 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
@@ -142,7 +146,7 @@ const Dashboard = () => {
                       <Cell key={i} fill={entry.fill} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={TOOLTIP_STYLE} />
+                  <Tooltip contentStyle={tooltipStyles} />
                 </PieChart>
               </ResponsiveContainer>
             ) : (

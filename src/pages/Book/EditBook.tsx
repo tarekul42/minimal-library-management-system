@@ -3,41 +3,42 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { IEditBookModalProps } from "@/types/editBook";
 import { useEditBookMutation, useGetBookQuery } from "@/redux/api/bookApi";
+import { useGetAuthorsQuery } from "@/redux/api/authorApi";
 import { useBookForm } from "@/hooks/useBookForm";
 import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getApiError, splitTags } from "@/lib/utils";
 
 const EditBook: React.FC<IEditBookModalProps> = ({
   open,
   onOpenChange,
   bookId,
 }) => {
-  const {
-    data: book,
-    isLoading,
-    isError,
-  } = useGetBookQuery(bookId!, { skip: !bookId });
+  const { data: book, isLoading, isError } = useGetBookQuery(bookId!, {
+    skip: !bookId,
+  });
+  const { data: authorsData } = useGetAuthorsQuery();
   const [editBook, { isLoading: isUpdating }] = useEditBookMutation();
   const bookData = book?.data;
+  const authors = authorsData?.data || [];
+  const authorOptions = authors.map((a) => ({ value: a._id, label: a.name }));
   const form = useBookForm(bookData);
 
   const onSubmit = async (values: BookFormData) => {
     try {
       const updateData = {
         ...values,
-        available: values.availability === "available",
-        genre: bookData!.genre,
+        tags: splitTags(values.tags),
       };
-
       await editBook({ bookId: bookId!, bookData: updateData }).unwrap();
       form.reset();
       toast.success("Book updated successfully!");
       onOpenChange(false);
-    } catch (error) {
-      console.error("Error updating book:", error);
-      toast.error("Error updating book!");
+    } catch (err) {
+      console.error("Error updating book:", err);
+      toast.error(getApiError(err, "Error updating book"));
     }
   };
 
@@ -78,15 +79,11 @@ const EditBook: React.FC<IEditBookModalProps> = ({
             onSubmit={onSubmit}
             isLoading={isUpdating}
             submitButtonText="Save Changes"
+            authorOptions={authorOptions}
           />
-
           <DialogFooter>
             <DialogClose asChild>
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isUpdating}
-              >
+              <Button type="button" variant="outline" disabled={isUpdating}>
                 Cancel
               </Button>
             </DialogClose>

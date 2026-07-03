@@ -1,25 +1,33 @@
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useCreateBookMutation } from "@/redux/api/bookApi";
+import { useGetAuthorsQuery } from "@/redux/api/authorApi";
 import { useBookForm } from "@/hooks/useBookForm";
 import type { BookFormData } from "@/schema/bookSchema";
 import { FormContainer } from "@/components/FormContainer";
 import { BookForm } from "@/components/BookForm";
+import { getApiError, splitTags } from "@/lib/utils";
 
 const CreateBook = () => {
   const [createBook, { isLoading }] = useCreateBookMutation();
+  const { data: authorsData } = useGetAuthorsQuery();
   const navigate = useNavigate();
   const form = useBookForm();
+  const authors = authorsData?.data || [];
+  const authorOptions = authors.map((a) => ({ value: a._id, label: a.name }));
 
   async function onSubmit(values: BookFormData) {
     try {
-      await createBook(values).unwrap();
+      await createBook({
+        ...values,
+        tags: splitTags(values.tags),
+      }).unwrap();
       toast.success("Book created successfully");
       form.reset();
       navigate("/books");
-    } catch (error) {
-      console.error("Error creating book", error);
-      toast.error("Failed to create book");
+    } catch (err) {
+      console.error("Failed to create book:", err);
+      toast.error(getApiError(err, "Failed to create book"));
     }
   }
 
@@ -35,6 +43,7 @@ const CreateBook = () => {
           onSubmit={onSubmit}
           isLoading={isLoading}
           submitButtonText="Submit"
+          authorOptions={authorOptions}
         />
       </FormContainer>
     </div>

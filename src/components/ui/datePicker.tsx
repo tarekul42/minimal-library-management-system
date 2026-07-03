@@ -12,26 +12,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
-
 export function DatePicker({
   onChange,
   defaultValue,
+  disablePast = true,
 }: {
   onChange: (e: Date | undefined) => void;
   defaultValue?: string;
+  disablePast?: boolean;
 }) {
-  console.log(defaultValue);
-  const [date, setDate] = React.useState<Date>();
-
-  useEffect(() => {
-    if (defaultValue) {
-      setDate(new Date(defaultValue));
-    }
-  }, [defaultValue]);
+  const [date, setDate] = React.useState<Date | undefined>(
+    () => (defaultValue ? new Date(defaultValue) : undefined),
+  );
 
   const handleSelect = (e: Date | undefined) => {
-    console.log("Handle Date Picker clicked");
     onChange(e);
     setDate(e);
   };
@@ -55,7 +49,7 @@ export function DatePicker({
           mode="single"
           selected={date}
           onSelect={(e) => handleSelect(e)}
-          initialFocus
+          disabled={disablePast ? (date: Date) => date < new Date() : undefined}
         />
       </PopoverContent>
     </Popover>

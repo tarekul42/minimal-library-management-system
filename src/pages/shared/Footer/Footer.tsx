@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Globe, Camera, Briefcase, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Navigation links */}
-          <div className="w-full md:w-1/2 lg:w-1/3 grid grid-cols-2 justify-items-center gap-3 mb-6 md:mb-0">
+          <div className="w-full md:w-1/2 lg:w-1/3 grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-3 mb-6 md:mb-0">
             <Link className="underline hover:bg-gray-900" to="/">
               Home
             </Link>
@@ -34,24 +34,24 @@ export default function Footer() {
           </div>
           {/* Social media icons */}
           <div className="flex space-x-4 lg:pr-6">
-            <Link to="#">
-              <Facebook className="text-xl" />
-            </Link>
-            <Link to="#">
-              <Twitter className="text-xl" />
-            </Link>
-            <Link to="#">
-              <Instagram className="text-xl" />
-            </Link>
-            <Link to="#">
-              <Linkedin className="text-xl" />
-            </Link>
+            <span aria-label="Website">
+              <Globe className="text-xl" aria-hidden="true" />
+            </span>
+            <span aria-label="Chat">
+              <MessageCircle className="text-xl" aria-hidden="true" />
+            </span>
+            <span aria-label="Gallery">
+              <Camera className="text-xl" aria-hidden="true" />
+            </span>
+            <span aria-label="Portfolio">
+              <Briefcase className="text-xl" aria-hidden="true" />
+            </span>
           </div>
         </div>
       </footer>
       {/* footer 2: Copyright */}
       <footer className="text-center flex items-center justify-center text-gray-500 p-2 sm:p-3 lg:p-4 text-sm bg-black">
-        &copy; 2025 All rights reserved by Library.
+        &copy; {new Date().getFullYear()} All rights reserved by Library.
       </footer>
     </>
   );

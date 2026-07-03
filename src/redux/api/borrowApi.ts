@@ -1,28 +1,59 @@
 import type { IApiResponse } from "@/types/book";
-import type { IBorrowSummary } from "@/types/borrowSummary";
+import type { IBorrow, ICreateBorrowInput } from "@/types/borrow";
 import { baseApi } from "./baseApi";
 
 export const borrowApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // borrow book
-    borrowBook: builder.mutation<
-      IApiResponse<void>,
-      { book: string; quantity: number; dueDate: string }
-    >({
-      query: (bookData) => ({
+    borrowBook: builder.mutation<IApiResponse<IBorrow>, ICreateBorrowInput>({
+      query: (body) => ({
         url: "/borrow",
         method: "POST",
-        body: bookData,
+        body,
       }),
       invalidatesTags: ["borrow", "book"],
     }),
 
-    // get borrow summary
-    getBorrowSummary: builder.query<IApiResponse<IBorrowSummary[]>, void>({
+    getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrow/me",
+      providesTags: ["borrow"],
+    }),
+
+    getAllBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
       query: () => "/borrow",
+      providesTags: ["borrow"],
+    }),
+
+    getBorrow: builder.query<IApiResponse<IBorrow>, string>({
+      query: (id) => `/borrow/${id}`,
+      providesTags: ["borrow"],
+    }),
+
+    returnBook: builder.mutation<IApiResponse<IBorrow>, string>({
+      query: (id) => ({
+        url: `/borrow/${id}/return`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["borrow", "book"],
+    }),
+
+    getActiveBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrow/active",
+      providesTags: ["borrow"],
+    }),
+
+    getOverdueBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrow/overdue",
       providesTags: ["borrow"],
     }),
   }),
 });
 
-export const { useBorrowBookMutation, useGetBorrowSummaryQuery } = borrowApi;
+export const {
+  useBorrowBookMutation,
+  useGetMyBorrowsQuery,
+  useGetAllBorrowsQuery,
+  useGetBorrowQuery,
+  useReturnBookMutation,
+  useGetActiveBorrowsQuery,
+  useGetOverdueBorrowsQuery,
+} = borrowApi;

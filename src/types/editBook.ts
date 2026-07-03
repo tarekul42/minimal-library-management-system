@@ -1,5 +1,3 @@
-export interface IEditBookModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  bookId: string | null;
-}
+import type { IModalBaseProps } from "./modals";
+
+export type IEditBookModalProps = IModalBaseProps;

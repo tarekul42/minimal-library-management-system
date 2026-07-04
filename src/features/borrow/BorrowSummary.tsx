@@ -93,7 +93,7 @@ export default function BorrowSummary() {
           ) : (
             <Card className="mt-10 overflow-hidden p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm" aria-label="Currently borrowed books">
                   <thead className="bg-muted/50 text-muted-foreground">
                     <tr>
                       <th className="px-4 py-3 text-left font-medium">Book</th>

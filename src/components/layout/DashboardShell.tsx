@@ -93,6 +93,12 @@ export function DashboardShell({ role }: DashboardShellProps) {
 
       {/* Main column */}
       <div className="flex flex-1 flex-col">
+        <a
+          href="#dashboard-main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:border focus:border-border focus:rounded-md focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         {/* Dashboard topbar */}
         <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-md sm:px-6">
           <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open sidebar" onClick={() => setMobileOpen(true)}>
@@ -137,7 +143,7 @@ export function DashboardShell({ role }: DashboardShellProps) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main id="dashboard-main" className="flex-1 p-4 sm:p-6 lg:p-8" tabIndex={-1}>
           <Outlet />
         </main>
       </div>

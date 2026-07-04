@@ -21,10 +21,10 @@ export default function Overview() {
   const COLORS = [c.chart1, c.chart2, c.chart3, c.chart4, c.chart5];
 
   const { data: statsData, isLoading, isError, refetch } = useGetDashboardStatsQuery();
-  const { data: popularData } = useGetPopularBooksQuery();
-  const { data: trendsData } = useGetBorrowTrendsQuery();
-  const { data: genreData } = useGetGenreDistributionQuery();
-  const { data: recentBorrowsData } = useGetAllBorrowsQuery();
+  const { data: popularData, isError: popularError } = useGetPopularBooksQuery();
+  const { data: trendsData, isError: trendsError } = useGetBorrowTrendsQuery();
+  const { data: genreData, isError: genreError } = useGetGenreDistributionQuery();
+  const { data: recentBorrowsData, isError: recentError } = useGetAllBorrowsQuery();
 
   if (isLoading) return <DashboardSkeleton />;
   if (isError) return <ErrorState message="Failed to load dashboard" onRetry={refetch} />;
@@ -53,7 +53,9 @@ export default function Overview() {
         <Card className="p-0">
           <CardHeader className="p-6 pb-4"><CardTitle>Popular Books</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
-            {popular.length > 0 ? (
+            {popularError ? (
+              <p className="text-sm text-destructive">Failed to load popular books.</p>
+            ) : popular.length > 0 ? (
               <ResponsiveContainer width="100%" height={280} role="img" aria-label={`Bar chart showing popular books by borrow count: ${popular.map(b => `${b.title}: ${b.borrows} borrows`).join(", ")}`}>
                 <BarChart data={popular}>
                   <XAxis dataKey="title" tick={{ fill: c.muted, fontSize: 11 }} />
@@ -69,7 +71,9 @@ export default function Overview() {
         <Card className="p-0">
           <CardHeader className="p-6 pb-4"><CardTitle>Borrow Trends (12 months)</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
-            {trends.length > 0 ? (
+            {trendsError ? (
+              <p className="text-sm text-destructive">Failed to load borrow trends.</p>
+            ) : trends.length > 0 ? (
               <ResponsiveContainer width="100%" height={280} role="img" aria-label={`Line chart showing borrow trends over the last 12 months: ${trends.map(t => `${t.month}: ${t.borrows} borrows`).join(", ")}`}>
                 <LineChart data={trends}>
                   <XAxis dataKey="month" tick={{ fill: c.muted, fontSize: 11 }} />
@@ -85,7 +89,9 @@ export default function Overview() {
         <Card className="p-0">
           <CardHeader className="p-6 pb-4"><CardTitle>Genre Distribution</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
-            {genres.length > 0 ? (
+            {genreError ? (
+              <p className="text-sm text-destructive">Failed to load genre data.</p>
+            ) : genres.length > 0 ? (
               <ResponsiveContainer width="100%" height={280} role="img" aria-label={`Pie chart showing genre distribution: ${genres.map(g => `${g.name}: ${g.value}`).join(", ")}`}>
                 <PieChart>
                   <Pie data={genres} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}>
@@ -102,8 +108,10 @@ export default function Overview() {
       <Card className="p-0">
         <CardHeader className="p-6 pb-4"><CardTitle>Recent borrows</CardTitle></CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          {recentError ? (
+            <p className="px-6 py-8 text-sm text-destructive text-center">Failed to load recent borrows.</p>
+          ) : (<div className="overflow-x-auto">
+            <table className="w-full text-sm" aria-label="Recent borrows">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="px-6 py-3 text-left font-medium">User</th>
@@ -127,7 +135,7 @@ export default function Overview() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div>)}
         </CardContent>
       </Card>
     </div>

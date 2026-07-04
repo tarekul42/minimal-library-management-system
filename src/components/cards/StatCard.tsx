@@ -25,7 +25,7 @@ export function StatCard({
 }: StatCardProps) {
   const isPositive = (delta ?? 0) >= 0;
   return (
-    <Card className="p-0">
+    <Card className="p-0 transition-all duration-200 hover:shadow-md">
       <CardContent className="flex items-start justify-between gap-4 p-5">
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>

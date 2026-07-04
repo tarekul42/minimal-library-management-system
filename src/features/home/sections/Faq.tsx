@@ -2,6 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 const faqs = [
   { q: "How long can I borrow a book for?", a: "Standard loans are 14 days. You can renew up to two times (28 days total) from your dashboard as long as no one else has reserved the title." },
@@ -17,6 +18,7 @@ export function Faq() {
     <Section>
       <Container className="max-w-3xl">
         <SectionHeader eyebrow="FAQ" title="Frequently asked questions" align="center" />
+        <AnimateOnScroll>
         <Accordion type="single" collapsible className="mt-10">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={`item-${i}`}>
@@ -25,6 +27,7 @@ export function Faq() {
             </AccordionItem>
           ))}
         </Accordion>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

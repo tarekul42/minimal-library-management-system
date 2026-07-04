@@ -5,9 +5,9 @@ import { ReviewSection } from "./ReviewSection";
 import { GENRE_LABELS } from "@/config/constants";
 import { getAuthorName } from "@/lib/utils";
 
-interface Props { book: IBook; reviews: IReview[] }
+interface Props { book: IBook; reviews: IReview[]; reviewsError?: boolean }
 
-export function BookDetailTabs({ book, reviews }: Props) {
+export function BookDetailTabs({ book, reviews, reviewsError }: Props) {
   return (
     <div className="mt-12">
       <Tabs defaultValue="overview">
@@ -39,7 +39,7 @@ export function BookDetailTabs({ book, reviews }: Props) {
           </dl>
         </TabsContent>
         <TabsContent value="reviews" className="py-6">
-          <ReviewSection bookId={book._id} reviews={reviews} />
+          <ReviewSection bookId={book._id} reviews={reviews} reviewsError={reviewsError} />
         </TabsContent>
       </Tabs>
     </div>

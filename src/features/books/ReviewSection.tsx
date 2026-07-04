@@ -7,16 +7,19 @@ import { toast } from "sonner";
 import { Star, MessageSquare } from "lucide-react";
 import type { IReview } from "@/types/review";
 
+import { ErrorState } from "@/components/feedback/ErrorState";
+
 interface ReviewSectionProps {
   bookId: string;
   reviews: IReview[];
+  reviewsError?: boolean;
 }
 
-export function ReviewSection({ bookId, reviews }: ReviewSectionProps) {
+export function ReviewSection({ bookId, reviews, reviewsError }: ReviewSectionProps) {
   const { user } = useAppSelector((state) => state.auth);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  const [createReview] = useCreateReviewMutation();
+  const [createReview, { isLoading: isCreating }] = useCreateReviewMutation();
 
   const handleSubmitReview = async () => {
     if (!user) { toast.error("Sign in to review"); return; }
@@ -42,23 +45,31 @@ export function ReviewSection({ bookId, reviews }: ReviewSectionProps) {
           <h3 className="font-medium">Write a Review</h3>
           <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((n) => (
-              <button key={n} type="button" onClick={() => setRating(n)} className="focus:outline-none">
+              <button key={n} type="button" onClick={() => setRating(n)} className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm">
                 <Star className={`h-5 w-5 ${n <= rating ? "fill-accent text-accent" : "text-muted-foreground"}`} />
               </button>
             ))}
             <span className="ml-2 text-sm text-muted-foreground">{rating}/5</span>
           </div>
-          <Textarea
-            placeholder="Share your thoughts about this book..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            rows={3}
-          />
-          <Button onClick={handleSubmitReview} disabled={!comment.trim()}>Submit Review</Button>
+          <div className="space-y-1">
+            <Textarea
+              placeholder="Share your thoughts about this book..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              rows={3}
+              aria-invalid={!comment.trim()}
+            />
+            {!comment.trim() && <p className="text-xs text-muted-foreground">Write a comment to submit your review.</p>}
+          </div>
+          <Button onClick={handleSubmitReview} disabled={isCreating || !comment.trim()}>
+            {isCreating ? "Submitting..." : "Submit Review"}
+          </Button>
         </div>
       )}
 
-      {reviews.length === 0 ? (
+      {reviewsError ? (
+        <ErrorState title="Failed to load reviews" message="Reviews could not be loaded at this time." />
+      ) : reviews.length === 0 ? (
         <p className="text-muted-foreground">No reviews yet.</p>
       ) : (
         <div className="space-y-4">

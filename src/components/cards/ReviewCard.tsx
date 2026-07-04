@@ -15,7 +15,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
     .slice(0, 2);
 
   return (
-    <div className="flex gap-4 rounded-lg border border-border p-4">
+    <div className="flex gap-4 rounded-lg border border-border p-4 transition-colors duration-150 hover:bg-muted/30">
       <Avatar className="h-10 w-10 shrink-0">
         <AvatarImage src={review.user.avatar} alt={review.user.name} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>

@@ -8,11 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Bell } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Bell, AlertCircle } from "lucide-react";
 
 const NotificationBell = () => {
   const [open, setOpen] = useState(false);
-  const { data } = useGetMyNotificationsQuery(undefined, { pollingInterval: open ? 60000 : 0 });
+  const { data, isLoading, isError } = useGetMyNotificationsQuery(undefined, { pollingInterval: open ? 60000 : 0 });
   const navigate = useNavigate();
   const notifications = data?.data || [];
   const unread = notifications.filter((n) => !n.read);
@@ -34,7 +35,18 @@ const NotificationBell = () => {
         <div className="px-3 py-2 text-sm font-medium border-b border-border">
           Notifications {unread.length > 0 && `(${unread.length} new)`}
         </div>
-        {latest.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-2 px-3 py-4">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+        ) : isError ? (
+          <div className="flex items-center justify-center gap-2 px-3 py-4 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4" />
+            Failed to load
+          </div>
+        ) : latest.length === 0 ? (
           <div className="px-3 py-4 text-sm text-muted-foreground text-center">No notifications</div>
         ) : (
           latest.map((n) => (

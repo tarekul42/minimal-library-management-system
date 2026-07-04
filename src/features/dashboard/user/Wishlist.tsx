@@ -61,7 +61,7 @@ export default function Wishlist() {
               <CardContent className="p-4">
                 <div className="aspect-[3/4] bg-muted rounded-md mb-3 overflow-hidden">
                   {item.book.coverImage ? (
-                    <img src={item.book.coverImage} alt={item.book.title} className="h-full w-full object-cover" />
+                    <img src={item.book.coverImage} alt={item.book.title} loading="lazy" className="h-full w-full object-cover" />
                   ) : (
                     <div className="flex h-full items-center justify-center text-muted-foreground text-sm">No cover</div>
                   )}

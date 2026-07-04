@@ -5,6 +5,7 @@ import { BlogCard } from "@/components/cards/BlogCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 const fallbackPosts = [
   { _id: "1", title: "10 Must-Read Fiction Releases of 2026", excerpt: "From genre-defining debuts to long-awaited sequels, here are the fiction titles our librarians can't stop talking about.", author: { name: "Eleanor Whitfield" }, publishedAt: "2026-06-12", readingTime: 7, coverImage: "/images/blog-1.svg" },
@@ -22,9 +23,11 @@ export function LatestBlog() {
           description="Reading lists, author interviews, and library news."
           action={<Button asChild variant="outline"><Link to="/blog">All posts <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>}
         />
+        <AnimateOnScroll>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {fallbackPosts.map((p) => <BlogCard key={p._id} post={p} />)}
         </div>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

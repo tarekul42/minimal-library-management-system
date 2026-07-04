@@ -58,7 +58,7 @@ export default function MyBorrows() {
       ) : (
         <Card className="p-0 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm" aria-label="My active borrows">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Book</th>

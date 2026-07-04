@@ -17,9 +17,9 @@ import { Seo } from "@/components/Seo";
 
 export default function ManageCategories() {
   const { data, isLoading, isError, refetch } = useGetCategoriesQuery();
-  const [createCategory] = useCreateCategoryMutation();
-  const [updateCategory] = useUpdateCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
+  const [createCategory, { isLoading: creating }] = useCreateCategoryMutation();
+  const [updateCategory, { isLoading: updating }] = useUpdateCategoryMutation();
+  const [deleteCategory, { isLoading: deleting }] = useDeleteCategoryMutation();
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<ICategory | null>(null);
@@ -27,13 +27,15 @@ export default function ManageCategories() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [nameError, setNameError] = useState("");
 
   const categories = data?.data ?? [];
 
-  const resetForm = () => { setName(""); setDescription(""); };
+  const resetForm = () => { setName(""); setDescription(""); setNameError(""); };
 
   const handleCreate = async () => {
-    if (!name.trim()) return;
+    if (!name.trim()) { setNameError("Name is required"); return; }
+    setNameError("");
     try {
       await createCategory({ name: name.trim(), description: description.trim() || undefined }).unwrap();
       toast.success("Category created");
@@ -45,7 +47,9 @@ export default function ManageCategories() {
   };
 
   const handleEdit = async () => {
-    if (!editTarget || !name.trim()) return;
+    if (!editTarget) return;
+    if (!name.trim()) { setNameError("Name is required"); return; }
+    setNameError("");
     try {
       await updateCategory({ id: editTarget._id, body: { name: name.trim(), description: description.trim() || undefined } }).unwrap();
       toast.success("Category updated");
@@ -70,6 +74,7 @@ export default function ManageCategories() {
   const openEdit = (cat: ICategory) => {
     setName(cat.name);
     setDescription(cat.description ?? "");
+    setNameError("");
     setEditTarget(cat);
   };
 
@@ -80,8 +85,8 @@ export default function ManageCategories() {
     {
       key: "actions", header: "Actions", align: "right", render: (c) => (
         <div className="inline-flex gap-1">
-          <Button size="icon" variant="ghost" onClick={() => openEdit(c)}><Pencil className="h-4 w-4" /></Button>
-          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(c)}><Trash2 className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => openEdit(c)} aria-label={`Edit ${c.name}`}><Pencil className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(c)} aria-label={`Delete ${c.name}`}><Trash2 className="h-4 w-4" /></Button>
         </div>
       ),
     },
@@ -112,7 +117,8 @@ export default function ManageCategories() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Category name" />
+              <Input id="name" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} placeholder="Category name" aria-invalid={!!nameError} />
+              {nameError && <p className="text-xs text-destructive">{nameError}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
@@ -121,7 +127,7 @@ export default function ManageCategories() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCreateOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreate}>Create</Button>
+            <Button onClick={handleCreate} disabled={creating}>{creating ? "Creating..." : "Create"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -132,7 +138,8 @@ export default function ManageCategories() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="edit-name">Name</Label>
-              <Input id="edit-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Category name" />
+              <Input id="edit-name" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} placeholder="Category name" aria-invalid={!!nameError} />
+              {nameError && <p className="text-xs text-destructive">{nameError}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-description">Description</Label>
@@ -141,7 +148,7 @@ export default function ManageCategories() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditTarget(null)}>Cancel</Button>
-            <Button onClick={handleEdit}>Save</Button>
+            <Button onClick={handleEdit} disabled={updating}>{updating ? "Saving..." : "Save"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -154,6 +161,7 @@ export default function ManageCategories() {
         confirmLabel="Delete category"
         destructive
         onConfirm={handleDelete}
+        loading={deleting}
       />
     </div>
     </>

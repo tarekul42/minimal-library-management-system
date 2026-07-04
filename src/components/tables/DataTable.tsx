@@ -56,13 +56,13 @@ export function DataTable<T>({
         {onSearchChange && (
           <div className="relative max-w-xs flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder={searchPlaceholder} value={search ?? ""} onChange={(e) => onSearchChange(e.target.value)} className="pl-9" />
+            <Input placeholder={searchPlaceholder} value={search ?? ""} onChange={(e) => onSearchChange(e.target.value)} className="pl-9" aria-label={searchPlaceholder} />
           </div>
         )}
         <div className="flex flex-wrap items-center gap-2">
           {filters.map((f) => (
             <Select key={f.label} value={f.value} onValueChange={f.onChange}>
-              <SelectTrigger className="w-[140px]"><SelectValue placeholder={f.label} /></SelectTrigger>
+              <SelectTrigger className="w-[140px]" aria-label={f.label}><SelectValue placeholder={f.label} /></SelectTrigger>
               <SelectContent>
                 {f.options.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
               </SelectContent>
@@ -74,31 +74,40 @@ export function DataTable<T>({
       {/* Table */}
       <Card className="p-0 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm" aria-label={searchPlaceholder.includes("Search") ? "Data table" : searchPlaceholder}>
             <thead className="bg-muted/50 text-muted-foreground">
               <tr>
-                {columns.map((col) => (
-                  <th
-                    key={col.key}
-                    className={cn(
-                      "px-4 py-3 font-medium",
-                      col.align === "right" && "text-right",
-                      col.align === "center" && "text-center",
-                      col.align !== "right" && col.align !== "center" && "text-left",
-                      col.sortable && "cursor-pointer select-none hover:text-foreground",
-                    )}
-                    onClick={() => toggleSort(col)}
-                  >
-                    <span className={cn("inline-flex items-center gap-1", col.align === "right" && "flex-row-reverse")}>
-                      {col.header}
-                      {col.sortable && (
-                        sort?.key === (col.sortKey ?? col.key)
-                          ? (sort.direction === "asc" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />)
-                          : <ArrowUpDown className="h-3 w-3 opacity-50" />
+                {columns.map((col) => {
+                  const isSorted = sort?.key === (col.sortKey ?? col.key);
+                  const ariaSort = isSorted ? (sort!.direction === "asc" ? "ascending" as const : "descending" as const) : undefined;
+                  return (
+                    <th
+                      key={col.key}
+                      className={cn(
+                        "px-4 py-3 font-medium",
+                        col.align === "right" && "text-right",
+                        col.align === "center" && "text-center",
+                        col.align !== "right" && col.align !== "center" && "text-left",
+                        col.sortable && "cursor-pointer select-none hover:text-foreground",
                       )}
-                    </span>
-                  </th>
-                ))}
+                      aria-sort={ariaSort}
+                      aria-label={col.sortable ? `${col.header}. Click to sort` : col.header}
+                      onClick={() => toggleSort(col)}
+                      onKeyDown={(e) => { if (col.sortable && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggleSort(col); } }}
+                      role={col.sortable ? "button" : undefined}
+                      tabIndex={col.sortable ? 0 : undefined}
+                    >
+                      <span className={cn("inline-flex items-center gap-1", col.align === "right" && "flex-row-reverse")}>
+                        {col.header}
+                        {col.sortable && (
+                          isSorted
+                            ? (sort!.direction === "asc" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />)
+                            : <ArrowUpDown className="h-3 w-3 opacity-50" />
+                        )}
+                      </span>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

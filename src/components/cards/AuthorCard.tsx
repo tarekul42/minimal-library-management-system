@@ -19,7 +19,7 @@ export function AuthorCard({ author, bookCount }: AuthorCardProps) {
     .slice(0, 2);
 
   return (
-    <Card className="flex flex-col items-center p-6 text-center">
+    <Card className="flex flex-col items-center p-6 text-center transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
       <Avatar className="mb-4 h-20 w-20">
         <AvatarImage src={author.photo} alt={author.name} />
         <AvatarFallback className="text-lg">{initials}</AvatarFallback>

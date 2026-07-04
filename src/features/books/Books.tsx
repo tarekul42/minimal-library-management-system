@@ -14,7 +14,7 @@ import { BooksFilters } from "./BooksFilters";
 import { BooksSort } from "./BooksSort";
 import { BooksPagination } from "./BooksPagination";
 import { BooksMobileFilters } from "./BooksMobileFilters";
-import { SearchX } from "lucide-react";
+import { SearchX, Loader2 } from "lucide-react";
 import { Seo } from "@/components/Seo";
 
 export default function Books() {
@@ -82,7 +82,7 @@ export default function Books() {
         <div className="space-y-6">
           <div className="flex items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              {meta ? `${meta.total} books` : "Loading..."}
+              {meta ? `${meta.total} books` : <span className="inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Loading...</span>}
             </p>
             <div className="flex items-center gap-2">
               <BooksMobileFilters

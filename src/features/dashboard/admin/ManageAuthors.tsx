@@ -17,9 +17,9 @@ import { Seo } from "@/components/Seo";
 
 export default function ManageAuthors() {
   const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
-  const [createAuthor] = useCreateAuthorMutation();
-  const [updateAuthor] = useUpdateAuthorMutation();
-  const [deleteAuthor] = useDeleteAuthorMutation();
+  const [createAuthor, { isLoading: creating }] = useCreateAuthorMutation();
+  const [updateAuthor, { isLoading: updating }] = useUpdateAuthorMutation();
+  const [deleteAuthor, { isLoading: deleting }] = useDeleteAuthorMutation();
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<IAuthor | null>(null);
@@ -27,13 +27,15 @@ export default function ManageAuthors() {
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [nameError, setNameError] = useState("");
 
   const authors = data?.data ?? [];
 
-  const resetForm = () => { setName(""); setBio(""); };
+  const resetForm = () => { setName(""); setBio(""); setNameError(""); };
 
   const handleCreate = async () => {
-    if (!name.trim()) return;
+    if (!name.trim()) { setNameError("Name is required"); return; }
+    setNameError("");
     try {
       await createAuthor({ name: name.trim(), bio: bio.trim() || undefined }).unwrap();
       toast.success("Author created");
@@ -45,7 +47,9 @@ export default function ManageAuthors() {
   };
 
   const handleEdit = async () => {
-    if (!editTarget || !name.trim()) return;
+    if (!editTarget) return;
+    if (!name.trim()) { setNameError("Name is required"); return; }
+    setNameError("");
     try {
       await updateAuthor({ id: editTarget._id, body: { name: name.trim(), bio: bio.trim() || undefined } }).unwrap();
       toast.success("Author updated");
@@ -70,6 +74,7 @@ export default function ManageAuthors() {
   const openEdit = (author: IAuthor) => {
     setName(author.name);
     setBio(author.bio ?? "");
+    setNameError("");
     setEditTarget(author);
   };
 
@@ -79,7 +84,7 @@ export default function ManageAuthors() {
       header: "Name",
       render: (a) => (
         <div className="flex items-center gap-3">
-          {a.photo && <img src={a.photo} alt="" className="h-9 w-9 rounded-full object-cover" />}
+          {a.photo && <img src={a.photo} alt={a.name} loading="lazy" className="h-9 w-9 rounded-full object-cover" />}
           <span className="font-medium">{a.name}</span>
         </div>
       ),
@@ -89,8 +94,8 @@ export default function ManageAuthors() {
     {
       key: "actions", header: "Actions", align: "right", render: (a) => (
         <div className="inline-flex gap-1">
-          <Button size="icon" variant="ghost" onClick={() => openEdit(a)}><Pencil className="h-4 w-4" /></Button>
-          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(a)}><Trash2 className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => openEdit(a)} aria-label={`Edit ${a.name}`}><Pencil className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(a)} aria-label={`Delete ${a.name}`}><Trash2 className="h-4 w-4" /></Button>
         </div>
       ),
     },
@@ -121,7 +126,8 @@ export default function ManageAuthors() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Author name" />
+              <Input id="name" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} placeholder="Author name" aria-invalid={!!nameError} />
+              {nameError && <p className="text-xs text-destructive">{nameError}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="bio">Biography</Label>
@@ -130,7 +136,7 @@ export default function ManageAuthors() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCreateOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreate}>Create</Button>
+            <Button onClick={handleCreate} disabled={creating}>{creating ? "Creating..." : "Create"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -141,7 +147,8 @@ export default function ManageAuthors() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="edit-name">Name</Label>
-              <Input id="edit-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Author name" />
+              <Input id="edit-name" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} placeholder="Author name" aria-invalid={!!nameError} />
+              {nameError && <p className="text-xs text-destructive">{nameError}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-bio">Biography</Label>
@@ -150,7 +157,7 @@ export default function ManageAuthors() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditTarget(null)}>Cancel</Button>
-            <Button onClick={handleEdit}>Save</Button>
+            <Button onClick={handleEdit} disabled={updating}>{updating ? "Saving..." : "Save"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -163,6 +170,7 @@ export default function ManageAuthors() {
         confirmLabel="Delete author"
         destructive
         onConfirm={handleDelete}
+        loading={deleting}
       />
     </div>
     </>

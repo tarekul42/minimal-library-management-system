@@ -16,6 +16,9 @@ function ToasterInner(props: ToasterProps) {
     <Sonner
       theme={theme}
       className="toaster group"
+      position="bottom-right"
+      closeButton
+      richColors
       icons={{
         success: <CircleCheckIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,

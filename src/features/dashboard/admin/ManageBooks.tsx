@@ -36,7 +36,7 @@ export default function ManageBooks() {
   }, [page, search, genre, availability]);
 
   const { data, isLoading, isError, refetch } = useGetBooksQuery(params);
-  const { data: authorsData } = useGetAuthorsQuery();
+  const { data: authorsData, isError: authorsError } = useGetAuthorsQuery();
   const [deleteBook, { isLoading: deleting }] = useDeleteBookMutation();
 
   const books = data?.data ?? [];
@@ -48,7 +48,7 @@ export default function ManageBooks() {
       header: "Book",
       render: (b) => (
         <div className="flex items-center gap-3">
-          <img src={b.coverImage || "/images/book-placeholder.svg"} alt="" className="h-12 w-9 rounded object-cover" />
+          <img src={b.coverImage || "/images/book-placeholder.svg"} alt={b.title} loading="lazy" className="h-12 w-9 rounded object-cover" />
           <div>
             <p className="font-medium">{b.title}</p>
             <p className="text-xs text-muted-foreground">{getAuthorName(b.author)}</p>
@@ -67,9 +67,9 @@ export default function ManageBooks() {
     {
       key: "actions", header: "Actions", align: "right", render: (b) => (
         <div className="inline-flex gap-1">
-          <Button size="icon" variant="ghost" onClick={() => setViewTarget(b._id)}><Eye className="h-4 w-4" /></Button>
-          <Button size="icon" variant="ghost" onClick={() => setEditTarget(b._id)}><Pencil className="h-4 w-4" /></Button>
-          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(b)}><Trash2 className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => setViewTarget(b._id)} aria-label={`View ${b.title}`}><Eye className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" onClick={() => setEditTarget(b._id)} aria-label={`Edit ${b.title}`}><Pencil className="h-4 w-4" /></Button>
+          <Button size="icon" variant="ghost" className="text-destructive" onClick={() => setDeleteTarget(b)} aria-label={`Delete ${b.title}`}><Trash2 className="h-4 w-4" /></Button>
         </div>
       ),
     },
@@ -115,6 +115,7 @@ export default function ManageBooks() {
         getRowId={(b) => b._id}
       />
 
+      {authorsError && <p className="text-xs text-destructive -mt-4">Could not load authors. Create and edit book forms will have an empty author list.</p>}
       <CreateBookModal open={createOpen} onOpenChange={setCreateOpen} authors={authorsData?.data ?? []} />
       {editTarget && <EditBookModal open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)} bookId={editTarget} authors={authorsData?.data ?? []} />}
       {viewTarget && <BookViewModal open={!!viewTarget} onOpenChange={(o) => !o && setViewTarget(null)} bookId={viewTarget} />}

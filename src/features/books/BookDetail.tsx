@@ -14,11 +14,11 @@ import type { IReview } from "@/types/review";
 export default function BookDetail() {
   const { bookId } = useParams<{ bookId: string }>();
   const { data, isLoading, isError, refetch } = useGetBookQuery(bookId!);
-  const { data: reviewsData } = useGetBookReviewsQuery(bookId!);
+  const { data: reviewsData, isError: reviewsError } = useGetBookReviewsQuery(bookId!);
   const book = data?.data;
   const reviews: IReview[] = reviewsData?.data ?? [];
 
-  const { data: relatedData } = useGetBooksQuery(
+  const { data: relatedData, isError: relatedError } = useGetBooksQuery(
     book ? { genre: book.genre as any, limit: 5 } : undefined,
     { skip: !book }
   );
@@ -35,8 +35,8 @@ export default function BookDetail() {
         { label: book.title },
       ]} />
       <BookDetailHero book={book} />
-      <BookDetailTabs book={book} reviews={reviews} />
-      <RelatedBooks books={related} />
+      <BookDetailTabs book={book} reviews={reviews} reviewsError={reviewsError} />
+      <RelatedBooks books={related} isError={relatedError} />
     </Container>
   );
 }

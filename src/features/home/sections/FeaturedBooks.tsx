@@ -10,6 +10,7 @@ import { ErrorState } from "@/components/feedback/ErrorState";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import { BookOpen } from "lucide-react";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 export function FeaturedBooks() {
   const { data, isLoading, isError, refetch } = useGetBooksQuery({ limit: 8, sortBy: "avgRating", sortOrder: "desc" });
@@ -28,6 +29,7 @@ export function FeaturedBooks() {
             </Button>
           }
         />
+        <AnimateOnScroll>
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, i) => <BookCardSkeleton key={i} />)
@@ -43,6 +45,7 @@ export function FeaturedBooks() {
             books.map((book) => <BookCard key={book._id} book={book} />)
           )}
         </div>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

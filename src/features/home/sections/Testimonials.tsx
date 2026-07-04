@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 const testimonials = [
   {
@@ -31,9 +32,10 @@ export function Testimonials() {
     <Section>
       <Container>
         <SectionHeader eyebrow="Testimonials" title="What our members say" align="center" />
+        <AnimateOnScroll>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
-            <Card key={t.name} className="p-0">
+            <Card key={t.name} className="p-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
               <CardContent className="space-y-4 p-6">
                 <Quote className="h-8 w-8 text-primary/30" />
                 <div className="flex gap-1">
@@ -55,6 +57,7 @@ export function Testimonials() {
             </Card>
           ))}
         </div>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

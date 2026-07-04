@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function EditBookModal({ open, onOpenChange, bookId, authors }: Props) {
-  const { data: bookData, isLoading: loadingBook } = useGetBookQuery(bookId, { skip: !open });
+  const { data: bookData, isLoading: loadingBook, isError: bookError } = useGetBookQuery(bookId, { skip: !open });
   const [editBook, { isLoading }] = useEditBookMutation();
   const form = useForm<BookFormData>({
     resolver: zodResolver(bookSchema),
@@ -73,6 +73,8 @@ export function EditBookModal({ open, onOpenChange, bookId, authors }: Props) {
         </DialogHeader>
         {loadingBook ? (
           <FormSkeleton />
+        ) : bookError ? (
+          <p className="text-sm text-destructive py-4 text-center">Failed to load book data. Please try again.</p>
         ) : (
           <BookForm form={form} onSubmit={onSubmit} isLoading={isLoading} submitButtonText="Save Changes" authorOptions={authorOptions} />
         )}

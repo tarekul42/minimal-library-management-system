@@ -33,6 +33,10 @@ export default function Settings() {
   };
 
   const handleSave = () => {
+    if (!settings.libraryName.trim()) { toast.error("Library name is required"); return; }
+    if (!settings.contactEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(settings.contactEmail)) { toast.error("Valid contact email is required"); return; }
+    if (settings.loanPeriod < 1) { toast.error("Loan period must be at least 1 day"); return; }
+    if (settings.maxBorrows < 1) { toast.error("Max borrows must be at least 1"); return; }
     toast.success("Settings saved (mock)");
   };
 
@@ -56,7 +60,7 @@ export default function Settings() {
             <CardContent className="p-6 pt-0 space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="lib-name">Library Name</Label>
-                <Input id="lib-name" value={settings.libraryName} onChange={(e) => update("libraryName", e.target.value)} />
+                <Input id="lib-name" value={settings.libraryName} onChange={(e) => update("libraryName", e.target.value)} required aria-required="true" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lib-desc">Description</Label>
@@ -65,11 +69,11 @@ export default function Settings() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="contact-email">Contact Email</Label>
-                  <Input id="contact-email" type="email" value={settings.contactEmail} onChange={(e) => update("contactEmail", e.target.value)} />
+                  <Input id="contact-email" type="email" value={settings.contactEmail} onChange={(e) => update("contactEmail", e.target.value)} required aria-required="true" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="contact-phone">Contact Phone</Label>
-                  <Input id="contact-phone" value={settings.contactPhone} onChange={(e) => update("contactPhone", e.target.value)} />
+                  <Input id="contact-phone" type="tel" value={settings.contactPhone} onChange={(e) => update("contactPhone", e.target.value)} />
                 </div>
               </div>
               <div className="space-y-2">
@@ -88,19 +92,19 @@ export default function Settings() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="loan-period">Loan Period (days)</Label>
-                  <Input id="loan-period" type="number" value={settings.loanPeriod} onChange={(e) => update("loanPeriod", Number(e.target.value))} />
+                  <Input id="loan-period" type="number" min="1" max="365" value={settings.loanPeriod} onChange={(e) => update("loanPeriod", Number(e.target.value))} required aria-required="true" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="renewal-limit">Renewal Limit</Label>
-                  <Input id="renewal-limit" type="number" value={settings.renewalLimit} onChange={(e) => update("renewalLimit", Number(e.target.value))} />
+                  <Input id="renewal-limit" type="number" min="0" max="99" value={settings.renewalLimit} onChange={(e) => update("renewalLimit", Number(e.target.value))} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="fine-per-day">Fine Per Day ($)</Label>
-                  <Input id="fine-per-day" type="number" step="0.01" value={settings.finePerDay} onChange={(e) => update("finePerDay", Number(e.target.value))} />
+                  <Input id="fine-per-day" type="number" min="0" step="0.01" value={settings.finePerDay} onChange={(e) => update("finePerDay", Number(e.target.value))} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="max-borrows">Max Borrows Per User</Label>
-                  <Input id="max-borrows" type="number" value={settings.maxBorrows} onChange={(e) => update("maxBorrows", Number(e.target.value))} />
+                  <Input id="max-borrows" type="number" min="1" max="100" value={settings.maxBorrows} onChange={(e) => update("maxBorrows", Number(e.target.value))} required aria-required="true" />
                 </div>
               </div>
               <Button onClick={handleSave}><Save className="mr-2 h-4 w-4" /> Save</Button>

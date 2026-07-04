@@ -4,9 +4,12 @@ import { Button } from "@/components/ui/button";
 import { BookCard } from "@/components/cards/BookCard";
 import type { IBook } from "@/types/book";
 
-interface Props { books: IBook[] }
+import { ErrorState } from "@/components/feedback/ErrorState";
 
-export function RelatedBooks({ books }: Props) {
+interface Props { books: IBook[]; isError?: boolean }
+
+export function RelatedBooks({ books, isError }: Props) {
+  if (isError) return <div className="mt-16"><ErrorState title="Could not load related books" message="The recommendation service is temporarily unavailable." /></div>;
   if (books.length === 0) return null;
   return (
     <section className="mt-16">

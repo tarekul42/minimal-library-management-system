@@ -74,7 +74,7 @@ export default function Profile() {
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="bg-primary/10 text-primary text-2xl">{initials}</AvatarFallback>
               </Avatar>
-              <Button size="icon" variant="outline" className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full">
+              <Button size="icon" variant="outline" className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full" aria-label="Change profile photo">
                 <Camera className="h-4 w-4" />
               </Button>
             </div>

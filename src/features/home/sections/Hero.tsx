@@ -77,7 +77,7 @@ export function Hero() {
               </div>
             </div>
           ) : (
-            <Carousel plugins={[Autoplay({ delay: 4000 })]} className="w-full">
+            <Carousel plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]} className="w-full">
               <CarouselContent>
                 {featured.map((book: IBook) => (
                   <CarouselItem key={book._id}>
@@ -87,7 +87,7 @@ export function Hero() {
                           <img
                             src={book.coverImage || "/images/book-placeholder.svg"}
                             alt={book.title}
-                            fetchPriority="high"
+                            loading="lazy"
                             className="h-full w-full object-cover"
                             onError={(e) => { e.currentTarget.src = "/images/book-placeholder.svg"; }}
                           />

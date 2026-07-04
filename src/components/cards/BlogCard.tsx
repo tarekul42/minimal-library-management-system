@@ -44,7 +44,7 @@ export function BlogCard({ post }: BlogCardProps) {
           </div>
         )}
         <Link to={`/blog/${post.slug ?? post._id}`}>
-          <h3 className="line-clamp-2 font-semibold leading-snug hover:text-primary">
+          <h3 className="line-clamp-2 font-semibold leading-snug transition-colors duration-150 hover:text-primary">
             {post.title}
           </h3>
         </Link>

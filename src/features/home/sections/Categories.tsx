@@ -4,6 +4,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { GENRE_OPTIONS } from "@/config/constants";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 const EMOJI: Record<string, string> = {
   FICTION: "\u{1F4D6}",
@@ -19,10 +20,11 @@ export function Categories() {
     <Section className="bg-muted/30">
       <Container>
         <SectionHeader eyebrow="Browse" title="Explore by category" description="Find your next favorite across six curated genres." align="center" />
+        <AnimateOnScroll>
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {GENRE_OPTIONS.map((g) => (
             <Link key={g.value} to={`/books?genre=${g.value}`}>
-              <Card className="h-full p-0 transition-colors hover:border-primary">
+              <Card className="h-full p-0 transition-all duration-200 hover:border-primary hover:shadow-sm">
                 <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
                   <span className="text-3xl" aria-hidden>{EMOJI[g.value]}</span>
                   <span className="text-sm font-medium">{g.label}</span>
@@ -31,6 +33,7 @@ export function Categories() {
             </Link>
           ))}
         </div>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

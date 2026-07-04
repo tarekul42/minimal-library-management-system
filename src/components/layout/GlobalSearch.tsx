@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Search } from "lucide-react";
+import { Search, Loader2, AlertCircle } from "lucide-react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
@@ -10,7 +10,7 @@ export function GlobalSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
-  const { data } = useGetBooksQuery(query ? { search: query, limit: 8 } as any : undefined);
+  const { data, isLoading, isError } = useGetBooksQuery(query ? { search: query, limit: 8 } as any : undefined);
   const results = data?.data ?? [];
 
   useEffect(() => {
@@ -32,8 +32,20 @@ export function GlobalSearch() {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search books, authors..." value={query} onValueChange={setQuery} />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          {results.length > 0 && (
+          {isLoading && query ? (
+            <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Searching...
+            </div>
+          ) : isError ? (
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              Search failed. Try again.
+            </div>
+          ) : (
+            <CommandEmpty>No results found.</CommandEmpty>
+          )}
+          {!isLoading && !isError && results.length > 0 && (
             <CommandGroup heading="Books">
               {results.map((book: IBook) => (
                 <CommandItem

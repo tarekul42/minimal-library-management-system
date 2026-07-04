@@ -2,6 +2,7 @@ import { useGetBookQuery } from "@/redux/api/bookApi";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 import { GENRE_LABELS } from "@/config/constants";
 import { getAuthorName } from "@/lib/utils";
 
@@ -12,14 +13,14 @@ interface Props {
 }
 
 export function BookViewModal({ open, onOpenChange, bookId }: Props) {
-  const { data, isLoading } = useGetBookQuery(bookId, { skip: !open });
+  const { data, isLoading, isError } = useGetBookQuery(bookId, { skip: !open });
   const book = data?.data;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>{isLoading ? "Loading..." : book?.title}</DialogTitle>
+          <DialogTitle>{isLoading ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Loading...</span> : book?.title}</DialogTitle>
         </DialogHeader>
         {isLoading ? (
           <div className="space-y-3">
@@ -27,11 +28,13 @@ export function BookViewModal({ open, onOpenChange, bookId }: Props) {
             <Skeleton className="h-4 w-1/2" />
             <Skeleton className="h-20 w-full" />
           </div>
+        ) : isError ? (
+          <p className="text-sm text-destructive py-4 text-center">Failed to load book data.</p>
         ) : book ? (
           <div className="space-y-4">
             <div className="flex gap-4">
               {book.coverImage && (
-                <img src={book.coverImage} alt={book.title} className="h-36 w-28 rounded object-cover" />
+                <img src={book.coverImage} alt={book.title} loading="lazy" className="h-36 w-28 rounded object-cover" />
               )}
               <div className="space-y-2 text-sm flex-1">
                 <div><span className="font-medium">Author:</span> {getAuthorName(book.author)}</div>

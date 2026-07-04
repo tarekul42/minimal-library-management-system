@@ -2,6 +2,7 @@ import { Search, BookMarked, RotateCcw } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
+import { AnimateOnScroll } from "@/components/AnimateOnScroll";
 
 const steps = [
   { icon: Search, title: "Browse", description: "Search 10,000+ titles by title, author, genre, or tag. Filter by availability to find what's on the shelf right now." },
@@ -14,9 +15,10 @@ export function HowItWorks() {
     <Section>
       <Container>
         <SectionHeader eyebrow="How it works" title="Borrow a book in three simple steps" align="center" />
+        <AnimateOnScroll>
         <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((s, i) => (
-            <div key={s.title} className="relative text-center">
+            <div key={s.title} className="relative text-center transition-all duration-200 hover:-translate-y-1">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <s.icon className="h-7 w-7" />
               </div>
@@ -26,6 +28,7 @@ export function HowItWorks() {
             </div>
           ))}
         </div>
+        </AnimateOnScroll>
       </Container>
     </Section>
   );

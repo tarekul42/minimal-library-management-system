@@ -106,12 +106,14 @@ export default function Help() {
                         <button
                           onClick={() => toggle(key)}
                           className="flex w-full items-center justify-between py-3 text-left text-sm font-medium hover:text-foreground"
+                          aria-expanded={isOpen}
+                          aria-controls={`faq-panel-${key}`}
                         >
                           <span>{item.q}</span>
                           {isOpen ? <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
                         </button>
                         {isOpen && (
-                          <div className="pb-3 text-sm text-muted-foreground">
+                          <div id={`faq-panel-${key}`} className="pb-3 text-sm text-muted-foreground" role="region">
                             <p>{item.a}</p>
                           </div>
                         )}

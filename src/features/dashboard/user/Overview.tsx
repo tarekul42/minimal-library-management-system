@@ -22,9 +22,9 @@ export default function Overview() {
   const { resolvedTheme } = useTheme();
   const c = useMemo(() => chartColors(), [resolvedTheme]);
   const { data: statsData, isLoading: statsLoading, isError: statsError, refetch } = useGetDashboardStatsQuery();
-  const { data: borrowsData } = useGetMyBorrowsQuery();
+  const { data: borrowsData, isError: borrowsError } = useGetMyBorrowsQuery();
   const { data: wishlistData } = useGetWishlistQuery();
-  const { data: trendsData } = useGetBorrowTrendsQuery();
+  const { data: trendsData, isError: trendsError } = useGetBorrowTrendsQuery();
 
   if (statsLoading) return <DashboardSkeleton />;
   if (statsError) return <ErrorState message="Failed to load dashboard" onRetry={refetch} />;
@@ -55,7 +55,9 @@ export default function Overview() {
           <Button asChild variant="ghost" size="sm"><Link to="/dashboard/my-borrows">View all</Link></Button>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          {recentBorrows.length === 0 ? (
+          {borrowsError ? (
+            <p className="text-sm text-destructive">Failed to load your borrows.</p>
+          ) : recentBorrows.length === 0 ? (
             <p className="text-sm text-muted-foreground">No active borrows. <Link to="/books" className="text-primary hover:underline">Browse books</Link> to get started.</p>
           ) : (
             <ul className="divide-y divide-border">
@@ -79,7 +81,9 @@ export default function Overview() {
       <Card className="p-0">
         <CardHeader className="p-6 pb-4"><CardTitle>Your borrowing activity (12 months)</CardTitle></CardHeader>
         <CardContent className="p-6 pt-0">
-          {trendData.length > 0 ? (
+          {trendsError ? (
+            <p className="text-sm text-destructive">Failed to load your activity trends.</p>
+          ) : trendData.length > 0 ? (
             <ResponsiveContainer width="100%" height={280} role="img" aria-label={`Line chart showing your borrowing activity over the last 12 months: ${trendData.map(t => `${t.month}: ${t.borrows} borrows`).join(", ")}`}>
               <LineChart data={trendData}>
                 <XAxis dataKey="month" tick={{ fill: c.muted, fontSize: 11 }} />

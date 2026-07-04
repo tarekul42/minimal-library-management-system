@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCredentials, logout } from "@/redux/features/authSlice";
 import { useLoginMutation, useRegisterMutation, useLogoutMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
-import type { ILoginCredentials, IRegisterCredentials } from "@/types/auth";
+import type { ILoginCredentials, IRegisterCredentials, IAuthResponse } from "@/types/auth";
 import { getApiError } from "@/lib/utils";
 
 export const useAuth = () => {
@@ -15,34 +15,50 @@ export const useAuth = () => {
   const [registerMutation] = useRegisterMutation();
   const [logoutMutation] = useLogoutMutation();
 
-  const login = useCallback(
-    async (credentials: ILoginCredentials) => {
+  const handleAuthAction = useCallback(
+    async <T>(
+      mutation: (args: T) => { unwrap: () => Promise<IAuthResponse> },
+      args: T,
+      onSuccess: (res: IAuthResponse) => void,
+      errorMessage: string,
+    ) => {
       try {
-        const result = await loginMutation(credentials).unwrap();
+        const result = await mutation(args).unwrap();
         dispatch(setCredentials(result));
-        if (result.user.role === "admin" || result.user.role === "librarian") {
-          navigate("/admin");
-        } else {
-          navigate("/dashboard");
-        }
+        onSuccess(result);
       } catch (err: unknown) {
-        toast.error(getApiError(err, "Login failed"));
+        toast.error(getApiError(err, errorMessage));
       }
     },
-    [loginMutation, dispatch, navigate],
+    [dispatch],
+  );
+
+  const login = useCallback(
+    (credentials: ILoginCredentials) =>
+      handleAuthAction(
+        loginMutation,
+        credentials,
+        (result) => {
+          if (result.user.role === "admin" || result.user.role === "librarian") {
+            navigate("/admin");
+          } else {
+            navigate("/dashboard");
+          }
+        },
+        "Login failed",
+      ),
+    [handleAuthAction, loginMutation, navigate],
   );
 
   const register = useCallback(
-    async (credentials: IRegisterCredentials) => {
-      try {
-        const result = await registerMutation(credentials).unwrap();
-        dispatch(setCredentials(result));
-        navigate("/dashboard");
-      } catch (err: unknown) {
-        toast.error(getApiError(err, "Registration failed"));
-      }
-    },
-    [registerMutation, dispatch, navigate],
+    (credentials: IRegisterCredentials) =>
+      handleAuthAction(
+        registerMutation,
+        credentials,
+        () => navigate("/dashboard"),
+        "Registration failed",
+      ),
+    [handleAuthAction, registerMutation, navigate],
   );
 
   const handleLogout = useCallback(async () => {

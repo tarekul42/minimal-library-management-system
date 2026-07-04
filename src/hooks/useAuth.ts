@@ -26,7 +26,6 @@ export const useAuth = () => {
           navigate("/dashboard");
         }
       } catch (err: unknown) {
-        console.error("Login failed:", err);
         toast.error(getApiError(err, "Login failed"));
       }
     },
@@ -40,7 +39,6 @@ export const useAuth = () => {
         dispatch(setCredentials(result));
         navigate("/dashboard");
       } catch (err: unknown) {
-        console.error("Registration failed:", err);
         toast.error(getApiError(err, "Registration failed"));
       }
     },
@@ -50,8 +48,8 @@ export const useAuth = () => {
   const handleLogout = useCallback(async () => {
     try {
       await logoutMutation().unwrap();
-    } catch (err) {
-      console.error("Logout failed:", err);
+    } catch {
+      // User is logged out locally regardless of server response
     }
     dispatch(logout());
     navigate("/login");

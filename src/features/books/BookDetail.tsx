@@ -19,7 +19,7 @@ export default function BookDetail() {
   const reviews: IReview[] = reviewsData?.data ?? [];
 
   const { data: relatedData, isError: relatedError } = useGetBooksQuery(
-    book ? { genre: book.genre as any, limit: 5 } : undefined,
+    book ? { genre: book.genre, limit: 5 } : undefined,
     { skip: !book }
   );
   const related = (relatedData?.data ?? []).filter((b) => b._id !== bookId).slice(0, 4);

@@ -4,18 +4,18 @@ import { AdminRoute } from "@/components/route/AdminRoute";
 import { LibrarianRoute } from "@/components/route/LibrarianRoute";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 
-const AdminOverview = lazy(() => import("@/features/dashboard/admin/Overview"));
-const ManageUsers = lazy(() => import("@/features/dashboard/admin/ManageUsers"));
-const ManageBooks = lazy(() => import("@/features/dashboard/admin/ManageBooks"));
-const ManageAuthors = lazy(() => import("@/features/dashboard/admin/ManageAuthors"));
-const ManageCategories = lazy(() => import("@/features/dashboard/admin/ManageCategories"));
-const ManageBorrows = lazy(() => import("@/features/dashboard/admin/ManageBorrows"));
-const ManageFines = lazy(() => import("@/features/dashboard/admin/ManageFines"));
-const Reports = lazy(() => import("@/features/dashboard/admin/Reports"));
-const Analytics = lazy(() => import("@/features/dashboard/admin/Analytics"));
-const AdminSettings = lazy(() => import("@/features/dashboard/admin/Settings"));
-
 export function adminDashboardRoutes(): RouteObject[] {
+  const AdminOverview = lazy(() => import("@/features/dashboard/admin/Overview"));
+  const ManageUsers = lazy(() => import("@/features/dashboard/admin/ManageUsers"));
+  const ManageBooks = lazy(() => import("@/features/dashboard/admin/ManageBooks"));
+  const ManageAuthors = lazy(() => import("@/features/dashboard/admin/ManageAuthors"));
+  const ManageCategories = lazy(() => import("@/features/dashboard/admin/ManageCategories"));
+  const ManageBorrows = lazy(() => import("@/features/dashboard/admin/ManageBorrows"));
+  const ManageFines = lazy(() => import("@/features/dashboard/admin/ManageFines"));
+  const Reports = lazy(() => import("@/features/dashboard/admin/Reports"));
+  const Analytics = lazy(() => import("@/features/dashboard/admin/Analytics"));
+  const AdminSettings = lazy(() => import("@/features/dashboard/admin/Settings"));
+
   return [
     {
       element: <LibrarianRoute />,

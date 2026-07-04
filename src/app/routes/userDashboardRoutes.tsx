@@ -3,16 +3,16 @@ import type { RouteObject } from "react-router";
 import { ProtectedRoute } from "@/components/route/ProtectedRoute";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 
-const UserOverview = lazy(() => import("@/features/dashboard/user/Overview"));
-const MyBorrows = lazy(() => import("@/features/dashboard/user/MyBorrows"));
-const MyReservations = lazy(() => import("@/features/dashboard/user/MyReservations"));
-const Wishlist = lazy(() => import("@/features/dashboard/user/Wishlist"));
-const Fines = lazy(() => import("@/features/dashboard/user/Fines"));
-const Notifications = lazy(() => import("@/features/dashboard/user/Notifications"));
-const Profile = lazy(() => import("@/features/dashboard/user/Profile"));
-const Settings = lazy(() => import("@/features/dashboard/user/Settings"));
-
 export function userDashboardRoutes(): RouteObject[] {
+  const UserOverview = lazy(() => import("@/features/dashboard/user/Overview"));
+  const MyBorrows = lazy(() => import("@/features/dashboard/user/MyBorrows"));
+  const MyReservations = lazy(() => import("@/features/dashboard/user/MyReservations"));
+  const Wishlist = lazy(() => import("@/features/dashboard/user/Wishlist"));
+  const Fines = lazy(() => import("@/features/dashboard/user/Fines"));
+  const Notifications = lazy(() => import("@/features/dashboard/user/Notifications"));
+  const Profile = lazy(() => import("@/features/dashboard/user/Profile"));
+  const Settings = lazy(() => import("@/features/dashboard/user/Settings"));
+
   return [
     {
       element: <ProtectedRoute />,

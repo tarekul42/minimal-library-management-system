@@ -81,7 +81,7 @@ export default function ManageBooks() {
       await deleteBook(deleteTarget._id).unwrap();
       toast.success("Book deleted");
       setDeleteTarget(null);
-    } catch (err) {
+    } catch {
       toast.error("Failed to delete book");
     }
   };

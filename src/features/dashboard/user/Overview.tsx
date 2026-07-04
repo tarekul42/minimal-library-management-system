@@ -9,18 +9,15 @@ import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { DashboardSkeleton } from "@/components/ui/dashboard-skeleton";
-import { useTheme } from "next-themes";
-import { useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { chartColors, tooltipStyle } from "@/lib/chart-utils";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import type { IBorrow } from "@/types/borrow";
 import { Seo } from "@/components/Seo";
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 export default function Overview() {
-  const { resolvedTheme } = useTheme();
-  const c = useMemo(() => chartColors(), [resolvedTheme]);
+  const c = chartColors();
   const { data: statsData, isLoading: statsLoading, isError: statsError, refetch } = useGetDashboardStatsQuery();
   const { data: borrowsData, isError: borrowsError } = useGetMyBorrowsQuery();
   const { data: wishlistData } = useGetWishlistQuery();

@@ -2,22 +2,22 @@ import { lazy } from "react";
 import { Navigate } from "react-router";
 import type { RouteObject } from "react-router";
 
-const Home = lazy(() => import("@/features/home/Home"));
-const About = lazy(() => import("@/features/static/About"));
-const Contact = lazy(() => import("@/features/static/Contact"));
-const BlogList = lazy(() => import("@/features/static/BlogList"));
-const BlogPost = lazy(() => import("@/features/static/BlogPost"));
-const Help = lazy(() => import("@/features/static/Help"));
-const Privacy = lazy(() => import("@/features/static/Privacy"));
-const Terms = lazy(() => import("@/features/static/Terms"));
-const Books = lazy(() => import("@/features/books/Books"));
-const BookDetail = lazy(() => import("@/features/books/BookDetail"));
-const Authors = lazy(() => import("@/features/authors/Authors"));
-const AuthorDetail = lazy(() => import("@/features/authors/AuthorDetail"));
-const BorrowSummary = lazy(() => import("@/features/borrow/BorrowSummary"));
-const NotFound = lazy(() => import("@/features/static/NotFound"));
-
 export function marketingRoutes(): RouteObject[] {
+  const Home = lazy(() => import("@/features/home/Home"));
+  const About = lazy(() => import("@/features/static/About"));
+  const Contact = lazy(() => import("@/features/static/Contact"));
+  const BlogList = lazy(() => import("@/features/static/BlogList"));
+  const BlogPost = lazy(() => import("@/features/static/BlogPost"));
+  const Help = lazy(() => import("@/features/static/Help"));
+  const Privacy = lazy(() => import("@/features/static/Privacy"));
+  const Terms = lazy(() => import("@/features/static/Terms"));
+  const Books = lazy(() => import("@/features/books/Books"));
+  const BookDetail = lazy(() => import("@/features/books/BookDetail"));
+  const Authors = lazy(() => import("@/features/authors/Authors"));
+  const AuthorDetail = lazy(() => import("@/features/authors/AuthorDetail"));
+  const BorrowSummary = lazy(() => import("@/features/borrow/BorrowSummary"));
+  const NotFound = lazy(() => import("@/features/static/NotFound"));
+
   return [
     { index: true, element: <Home /> },
     { path: "books", element: <Books /> },

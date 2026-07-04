@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTheme } from "next-themes";
 import { useGetBorrowTrendsQuery, useGetGenreDistributionQuery, useGetPopularBooksQuery } from "@/redux/api/dashboardApi";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,13 +11,17 @@ import { Seo } from "@/components/Seo";
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 export default function Analytics() {
-  const { resolvedTheme } = useTheme();
-  const c = useMemo(() => chartColors(), [resolvedTheme]);
+  const c = chartColors();
   const COLORS = [c.chart1, c.chart2, c.chart3, c.chart4, c.chart5];
 
   const { data: trendsData, isLoading: trendsLoading, isError: trendsError, refetch: refetchTrends } = useGetBorrowTrendsQuery();
   const { data: genreData, isLoading: genreLoading, isError: genreError, refetch: refetchGenre } = useGetGenreDistributionQuery();
   const { data: popularData, isLoading: popularLoading, isError: popularError, refetch: refetchPopular } = useGetPopularBooksQuery();
+
+  const userGrowth = useMemo(() => {
+    const base = 120;
+    return MONTHS.map((m, i) => ({ month: m, users: Math.round(base + i * 15 + (i * 7) % 30) }));
+  }, []);
 
   if (trendsLoading || genreLoading || popularLoading) return <DashboardSkeleton />;
   if (trendsError || genreError || popularError) return <ErrorState message="Failed to load analytics data" onRetry={() => { refetchTrends(); refetchGenre(); refetchPopular(); }} />;
@@ -26,11 +29,6 @@ export default function Analytics() {
   const trends = (trendsData?.data ?? []).map((t) => ({ month: `${MONTHS[t.month - 1]} ${t.year}`, borrows: t.count }));
   const genres = (genreData?.data ?? []).map((g, i) => ({ name: g.genre, value: g.count, fill: COLORS[i % COLORS.length] }));
   const popular = (popularData?.data ?? []).map((b) => ({ title: b.title.length > 20 ? b.title.slice(0, 20) + "…" : b.title, borrows: b.borrowCount }));
-
-  const userGrowth = useMemo(() => {
-    const base = 120;
-    return MONTHS.map((m, i) => ({ month: m, users: Math.round(base + i * 15 + Math.random() * 30) }));
-  }, []);
 
   return (
     <>

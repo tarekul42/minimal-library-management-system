@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-import { useTheme } from "next-themes";
 import { useGetDashboardStatsQuery, useGetPopularBooksQuery, useGetBorrowTrendsQuery, useGetGenreDistributionQuery } from "@/redux/api/dashboardApi";
 import { useGetAllBorrowsQuery } from "@/redux/api/borrowApi";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -16,8 +14,7 @@ import { Seo } from "@/components/Seo";
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 export default function Overview() {
-  const { resolvedTheme } = useTheme();
-  const c = useMemo(() => chartColors(), [resolvedTheme]);
+  const c = chartColors();
   const COLORS = [c.chart1, c.chart2, c.chart3, c.chart4, c.chart5];
 
   const { data: statsData, isLoading, isError, refetch } = useGetDashboardStatsQuery();

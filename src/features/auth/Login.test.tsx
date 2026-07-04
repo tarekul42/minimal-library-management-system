@@ -26,10 +26,10 @@ describe("Login", () => {
     expect(link).toHaveAttribute("href", "/forgot-password");
   });
 
-  it("renders the demo credentials fill button", () => {
+  it("does not render the demo credentials button when env var is unset", () => {
     render(<Login />);
     expect(
-      screen.getByRole("button", { name: /fill demo credentials/i }),
-    ).toBeInTheDocument();
+      screen.queryByRole("button", { name: /fill demo credentials/i }),
+    ).not.toBeInTheDocument();
   });
 });

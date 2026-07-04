@@ -16,7 +16,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-const DEMO_CREDS = { email: "demo@library.com", password: "demo1234" };
+const DEMO_CREDS = import.meta.env.VITE_DEMO_CREDS ? JSON.parse(import.meta.env.VITE_DEMO_CREDS) : null;
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,6 +30,7 @@ export default function Login() {
   };
 
   const fillDemo = () => {
+    if (!DEMO_CREDS) return;
     form.setValue("email", DEMO_CREDS.email);
     form.setValue("password", DEMO_CREDS.password);
     toast.info("Demo credentials filled. Click Sign in to continue.");
@@ -64,11 +65,13 @@ export default function Login() {
           <SubmitButton label="Sign in" isSubmitting={form.formState.isSubmitting} loadingLabel="Signing in..." className="w-full" />
         </form>
 
+        {DEMO_CREDS && (
         <div className="mt-4">
           <Button type="button" variant="outline" className="w-full" onClick={fillDemo}>
             Fill demo credentials
           </Button>
         </div>
+        )}
 
         <div className="mt-6"><SocialLoginButtons /></div>
       </AuthLayout>

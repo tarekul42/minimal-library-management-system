@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useGetAllUsersQuery, useAdminUpdateUserMutation } from "@/redux/api/userApi";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -49,14 +49,14 @@ export default function ManageUsers() {
     }
   };
 
-  const handleRoleChange = async (userId: string, role: string) => {
+  const handleRoleChange = useCallback(async (userId: string, role: string) => {
     try {
       await adminUpdateUser({ id: userId, body: { role: role as IUser["role"] } }).unwrap();
       toast.success("Role updated");
     } catch (err) {
       toast.error(getApiError(err, "Failed to update role"));
     }
-  };
+  }, [adminUpdateUser]);
 
   const getInitials = (name: string) => name.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
 
@@ -103,7 +103,7 @@ export default function ManageUsers() {
         </Button>
       ),
     },
-  ], []);
+  ], [handleRoleChange]);
 
   return (
     <>

@@ -81,7 +81,7 @@ export default function Books() {
         {/* Main column */}
         <div className="space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
               {meta ? `${meta.total} books` : <span className="inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Loading...</span>}
             </p>
             <div className="flex items-center gap-2">

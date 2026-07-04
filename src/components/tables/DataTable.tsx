@@ -129,7 +129,7 @@ export function DataTable<T>({
 
       {/* Footer: count + pagination */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-muted-foreground">{total !== undefined ? `${total} total` : `${data.length} items`}</p>
+        <p className="text-sm text-muted-foreground" aria-live="polite">{total !== undefined ? `${total} total` : `${data.length} items`}</p>
         {totalPages > 1 && onPageChange && (
           <div className="flex items-center gap-1">
             <Button variant="outline" size="icon" disabled={page <= 1} onClick={() => onPageChange(1)} aria-label="First page"><ChevronsLeft className="h-4 w-4" /></Button>

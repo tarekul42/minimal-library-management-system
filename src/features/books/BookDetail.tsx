@@ -4,6 +4,7 @@ import { useGetBookReviewsQuery } from "@/redux/api/reviewApi";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { ErrorState } from "@/components/feedback/ErrorState";
+import { DetailSkeleton } from "@/components/ui/detail-skeleton";
 import { BookDetailHero } from "./BookDetailHero";
 import { BookDetailTabs } from "./BookDetailTabs";
 import { RelatedBooks } from "./RelatedBooks";
@@ -22,7 +23,7 @@ export default function BookDetail() {
   );
   const related = (relatedData?.data ?? []).filter((b) => b._id !== bookId).slice(0, 4);
 
-  if (isLoading) return <Container className="py-12"><div className="h-96 animate-pulse rounded-lg bg-muted" /></Container>;
+  if (isLoading) return <Container className="py-12"><DetailSkeleton /></Container>;
   if (isError || !book) return <ErrorState title="Book not found" message="This book may have been removed." onRetry={refetch} />;
 
   return (

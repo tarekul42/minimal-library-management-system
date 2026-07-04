@@ -2,10 +2,25 @@ import type { IApiResponse } from "@/types/book";
 import type { IReservation, ICreateReservationInput } from "@/types/reservation";
 import { baseApi } from "./baseApi";
 
+interface IPaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const reservationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMyReservations: builder.query<IApiResponse<IReservation[]>, void>({
-      query: () => "/reservations",
+    getMyReservations: builder.query<IPaginatedResponse<IReservation>, void | { page?: number; limit?: number }>({
+      query: (params) => ({
+        url: "/reservations",
+        params: params || {},
+      }),
       providesTags: ["reservation"],
     }),
 

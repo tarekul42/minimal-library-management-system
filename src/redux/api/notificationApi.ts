@@ -2,10 +2,25 @@ import { baseApi } from "./baseApi";
 import type { IApiResponse } from "@/types/book";
 import type { INotification } from "@/types/notification";
 
+interface IPaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMyNotifications: builder.query<IApiResponse<INotification[]>, void>({
-      query: () => "/notifications/me",
+    getMyNotifications: builder.query<IPaginatedResponse<INotification>, void | { page?: number; limit?: number }>({
+      query: (params) => ({
+        url: "/notifications/me",
+        params: params || {},
+      }),
       providesTags: ["notification"],
     }),
 

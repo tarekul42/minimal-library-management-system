@@ -10,7 +10,11 @@ export function GlobalSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useGetBooksQuery(query ? { search: query, limit: 8 } : undefined);
+  const shouldSearch = open && query.length > 0;
+  const { data, isLoading, isError } = useGetBooksQuery(
+    shouldSearch ? { search: query, limit: 8 } : undefined,
+    { skip: !shouldSearch },
+  );
   const results = data?.data ?? [];
 
   useEffect(() => {

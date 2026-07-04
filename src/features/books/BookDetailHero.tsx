@@ -46,7 +46,7 @@ export function BookDetailHero({ book }: Props) {
       {/* Cover + share */}
       <div className="space-y-3">
         <AspectRatio ratio={3 / 4} className="overflow-hidden rounded-lg border border-border shadow-md">
-          <img src={book.coverImage || "/images/book-placeholder.svg"} alt={book.title} className="h-full w-full object-cover" />
+          <img src={book.coverImage || "/images/book-placeholder.svg"} alt={book.title} fetchPriority="high" className="h-full w-full object-cover" />
         </AspectRatio>
         <Button variant="outline" size="sm" className="w-full" onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success("Link copied"); }}>
           <Share2 className="mr-2 h-4 w-4" /> Share this book

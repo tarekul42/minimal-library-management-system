@@ -69,7 +69,7 @@ export function Hero() {
                     <div className="space-y-3">
                       <Link to={`/books/${book._id}`} className="block">
                         <div className="aspect-[3/4] overflow-hidden rounded-lg border border-border shadow-xl">
-                          <img src={book.coverImage || "/images/book-placeholder.svg"} alt={book.title} className="h-full w-full object-cover" />
+                          <img src={book.coverImage || "/images/book-placeholder.svg"} alt={book.title} fetchPriority="high" className="h-full w-full object-cover" />
                         </div>
                       </Link>
                       <div className="text-center">

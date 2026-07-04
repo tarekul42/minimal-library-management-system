@@ -43,7 +43,7 @@ export default function Analytics() {
           <CardHeader className="p-6 pb-4"><CardTitle>Borrow Trends (12 months)</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
             {trends.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={300} role="img" aria-label={`Line chart showing borrow trends over 12 months: ${trends.map(t => `${t.month}: ${t.borrows} borrows`).join(", ")}`}>
                 <LineChart data={trends}>
                   <XAxis dataKey="month" tick={{ fill: c.muted, fontSize: 11 }} />
                   <YAxis tick={{ fill: c.muted }} />
@@ -59,7 +59,7 @@ export default function Analytics() {
           <CardHeader className="p-6 pb-4"><CardTitle>Genre Distribution</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0 flex justify-center">
             {genres.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={300} role="img" aria-label={`Pie chart showing genre distribution: ${genres.map(g => `${g.name}: ${g.value}`).join(", ")}`}>
                 <PieChart>
                   <Pie data={genres} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}>
                     {genres.map((e, i) => <Cell key={i} fill={e.fill} />)}
@@ -75,7 +75,7 @@ export default function Analytics() {
           <CardHeader className="p-6 pb-4"><CardTitle>Popular Books</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
             {popular.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={300} role="img" aria-label={`Bar chart showing popular books by borrow count: ${popular.map(b => `${b.title}: ${b.borrows} borrows`).join(", ")}`}>
                 <BarChart data={popular}>
                   <XAxis dataKey="title" tick={{ fill: c.muted, fontSize: 11 }} />
                   <YAxis tick={{ fill: c.muted }} />
@@ -90,7 +90,7 @@ export default function Analytics() {
         <Card className="p-0">
           <CardHeader className="p-6 pb-4"><CardTitle>User Growth (estimated)</CardTitle></CardHeader>
           <CardContent className="p-6 pt-0">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} role="img" aria-label={`Area chart showing estimated user growth: ${userGrowth.map(u => `${u.month}: ${u.users} users`).join(", ")}`}>
               <AreaChart data={userGrowth}>
                 <XAxis dataKey="month" tick={{ fill: c.muted, fontSize: 11 }} />
                 <YAxis tick={{ fill: c.muted }} />

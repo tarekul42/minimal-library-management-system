@@ -80,7 +80,7 @@ export default function Overview() {
         <CardHeader className="p-6 pb-4"><CardTitle>Your borrowing activity (12 months)</CardTitle></CardHeader>
         <CardContent className="p-6 pt-0">
           {trendData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={280} role="img" aria-label={`Line chart showing your borrowing activity over the last 12 months: ${trendData.map(t => `${t.month}: ${t.borrows} borrows`).join(", ")}`}>
               <LineChart data={trendData}>
                 <XAxis dataKey="month" tick={{ fill: c.muted, fontSize: 11 }} />
                 <YAxis tick={{ fill: c.muted }} />

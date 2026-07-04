@@ -17,7 +17,7 @@ export default function Contact() {
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr]">
           <div className="space-y-6">
             <Card className="p-0"><CardContent className="space-y-4 p-6">
-              <h3 className="font-semibold">Get in touch</h3>
+              <h2 className="font-semibold">Get in touch</h2>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-3"><Mail className="h-4 w-4 mt-0.5 text-primary" /><div><p className="font-medium">Email</p><a href={`mailto:${siteConfig.email}`} className="text-muted-foreground hover:text-foreground">{siteConfig.email}</a></div></li>
                 <li className="flex items-start gap-3"><Phone className="h-4 w-4 mt-0.5 text-primary" /><div><p className="font-medium">Phone</p><a href={`tel:${siteConfig.phone}`} className="text-muted-foreground hover:text-foreground">{siteConfig.phone}</a></div></li>
@@ -26,7 +26,7 @@ export default function Contact() {
               </ul>
             </CardContent></Card>
             <Card className="p-0"><CardContent className="p-6">
-              <h3 className="font-semibold mb-3">Follow us</h3>
+              <h2 className="font-semibold mb-3">Follow us</h2>
               <div className="flex gap-2">
                 {[Globe, Globe, Globe, Globe].map((Icon, i) => (
                   <a key={i} href="#" className="flex h-10 w-10 items-center justify-center rounded-md border border-border hover:bg-muted"><Icon className="h-4 w-4" /></a>

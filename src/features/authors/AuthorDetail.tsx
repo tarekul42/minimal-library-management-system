@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router";
+import { useParams, Link, Navigate } from "react-router";
 import { useGetAuthorQuery, useGetAuthorBooksQuery } from "@/redux/api/authorApi";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
@@ -15,12 +15,13 @@ import type { IBook } from "@/types/book";
 
 export default function AuthorDetail() {
   const { authorId } = useParams<{ authorId: string }>();
-  const { data: authorData, isLoading, isError, refetch } = useGetAuthorQuery(authorId!);
-  const { data: booksData, isLoading: booksLoading } = useGetAuthorBooksQuery(authorId!);
+  const { data: authorData, isLoading, isError, refetch } = useGetAuthorQuery(authorId!, { skip: !authorId });
+  const { data: booksData, isLoading: booksLoading } = useGetAuthorBooksQuery(authorId!, { skip: !authorId });
 
   const author = authorData?.data;
   const books: IBook[] = booksData?.data ?? [];
 
+  if (!authorId) return <Navigate to="/authors" replace />;
   if (isLoading) return <Container className="py-12"><div className="h-48 animate-pulse rounded-lg bg-muted" /></Container>;
   if (isError || !author) return <ErrorState title="Author not found" onRetry={refetch} />;
 

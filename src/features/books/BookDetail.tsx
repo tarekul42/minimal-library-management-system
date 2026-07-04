@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, Navigate } from "react-router";
 import { useGetBookQuery, useGetBooksQuery } from "@/redux/api/bookApi";
 import { useGetBookReviewsQuery } from "@/redux/api/reviewApi";
 import { Container } from "@/components/layout/Container";
@@ -13,8 +13,8 @@ import type { IReview } from "@/types/review";
 
 export default function BookDetail() {
   const { bookId } = useParams<{ bookId: string }>();
-  const { data, isLoading, isError, refetch } = useGetBookQuery(bookId!);
-  const { data: reviewsData, isError: reviewsError } = useGetBookReviewsQuery(bookId!);
+  const { data, isLoading, isError, refetch } = useGetBookQuery(bookId!, { skip: !bookId });
+  const { data: reviewsData, isError: reviewsError } = useGetBookReviewsQuery(bookId!, { skip: !bookId });
   const book = data?.data;
   const reviews: IReview[] = reviewsData?.data ?? [];
 
@@ -23,6 +23,8 @@ export default function BookDetail() {
     { skip: !book }
   );
   const related = (relatedData?.data ?? []).filter((b) => b._id !== bookId).slice(0, 4);
+
+  if (!bookId) return <Navigate to="/books" replace />;
 
   if (isLoading) return <Container className="py-12"><DetailSkeleton /></Container>;
   if (isError || !book) return <ErrorState title="Book not found" message="This book may have been removed." onRetry={refetch} />;

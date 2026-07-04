@@ -1,14 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./api/baseApi";
 import { newsletterApi } from "./api/newsletterApi";
-import modalReducer from "./features/modalSlice";
 import authReducer from "./features/authSlice";
 
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     [newsletterApi.reducerPath]: newsletterApi.reducer,
-    modal: modalReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) => {

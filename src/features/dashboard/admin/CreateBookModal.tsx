@@ -4,7 +4,7 @@ import { useCreateBookMutation } from "@/redux/api/bookApi";
 import { bookSchema, type BookFormData } from "@/schema/bookSchema";
 import { BookForm } from "@/components/BookForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { getApiError } from "@/lib/utils";
+import { getApiError, splitTags } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IAuthor } from "@/types/author";
 
@@ -28,9 +28,7 @@ export function CreateBookModal({ open, onOpenChange, authors }: Props) {
 
   const onSubmit = async (values: BookFormData) => {
     try {
-      const tags = typeof values.tags === "string"
-        ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
-        : [];
+      const tags = splitTags(values.tags as string | undefined);
       await createBook({ ...values, tags }).unwrap();
       toast.success("Book created successfully");
       onOpenChange(false);

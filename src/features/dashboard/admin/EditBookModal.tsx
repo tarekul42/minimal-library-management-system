@@ -6,7 +6,7 @@ import { bookSchema, type BookFormData } from "@/schema/bookSchema";
 import { BookForm } from "@/components/BookForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FormSkeleton } from "@/components/ui/form-skeleton";
-import { getApiError } from "@/lib/utils";
+import { getApiError, splitTags } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IAuthor } from "@/types/author";
 
@@ -52,9 +52,7 @@ export function EditBookModal({ open, onOpenChange, bookId, authors }: Props) {
 
   const onSubmit = async (values: BookFormData) => {
     try {
-      const tags = typeof values.tags === "string"
-        ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
-        : [];
+      const tags = splitTags(values.tags as string | undefined);
       await editBook({ bookId, bookData: { ...values, tags } }).unwrap();
       toast.success("Book updated successfully");
       onOpenChange(false);

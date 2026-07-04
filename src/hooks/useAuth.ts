@@ -20,7 +20,11 @@ export const useAuth = () => {
       try {
         const result = await loginMutation(credentials).unwrap();
         dispatch(setCredentials(result));
-        navigate("/");
+        if (result.user.role === "admin" || result.user.role === "librarian") {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
       } catch (err: unknown) {
         console.error("Login failed:", err);
         toast.error(getApiError(err, "Login failed"));
@@ -34,7 +38,7 @@ export const useAuth = () => {
       try {
         const result = await registerMutation(credentials).unwrap();
         dispatch(setCredentials(result));
-        navigate("/");
+        navigate("/dashboard");
       } catch (err: unknown) {
         console.error("Registration failed:", err);
         toast.error(getApiError(err, "Registration failed"));

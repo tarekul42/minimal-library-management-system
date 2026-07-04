@@ -35,7 +35,7 @@ export default function App() {
               </div>
             }
           >
-            <main id={mainId} tabIndex={-1} className="outline-none" aria-live="polite">
+            <main id={mainId} tabIndex={-1} className="outline-none">
               <Outlet />
             </main>
           </Suspense>
@@ -54,7 +54,7 @@ export default function App() {
         Skip to main content
       </a>
       <Navbar />
-      <main id={mainId} className="flex-1 flex flex-col w-full outline-none" tabIndex={-1} aria-live="polite">
+      <main id={mainId} className="flex-1 flex flex-col w-full outline-none" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense
             fallback={

@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 
 const faqs = [
@@ -13,7 +14,7 @@ const faqs = [
 
 export function Faq() {
   return (
-    <section className="py-16 md:py-24">
+    <Section>
       <Container className="max-w-3xl">
         <SectionHeader eyebrow="FAQ" title="Frequently asked questions" align="center" />
         <Accordion type="single" collapsible className="mt-10">
@@ -25,6 +26,6 @@ export function Faq() {
           ))}
         </Accordion>
       </Container>
-    </section>
+    </Section>
   );
 }

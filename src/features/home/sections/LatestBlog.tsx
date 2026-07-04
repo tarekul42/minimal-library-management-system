@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { BlogCard } from "@/components/cards/BlogCard";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ const fallbackPosts = [
 
 export function LatestBlog() {
   return (
-    <section className="bg-muted/30 py-16 md:py-24">
+    <Section className="bg-muted/30">
       <Container>
         <SectionHeader
           eyebrow="Blog"
@@ -25,6 +26,6 @@ export function LatestBlog() {
           {fallbackPosts.map((p) => <BlogCard key={p._id} post={p} />)}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

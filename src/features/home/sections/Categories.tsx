@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { GENRE_OPTIONS } from "@/config/constants";
@@ -15,7 +16,7 @@ const EMOJI: Record<string, string> = {
 
 export function Categories() {
   return (
-    <section className="bg-muted/30 py-16 md:py-24">
+    <Section className="bg-muted/30">
       <Container>
         <SectionHeader eyebrow="Browse" title="Explore by category" description="Find your next favorite across six curated genres." align="center" />
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -31,6 +32,6 @@ export function Categories() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

@@ -2,6 +2,7 @@ import { Star, Quote } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 
 const testimonials = [
@@ -27,10 +28,10 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-16 md:py-24">
+    <Section>
       <Container>
         <SectionHeader eyebrow="Testimonials" title="What our members say" align="center" />
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
             <Card key={t.name} className="p-0">
               <CardContent className="space-y-4 p-6">
@@ -55,6 +56,6 @@ export function Testimonials() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

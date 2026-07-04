@@ -190,7 +190,7 @@
     background-image:
       radial-gradient(
         ellipse 80% 80% at 50% -20%,
-        hsl(var(--primary) / 0.15),
+        color-mix(in oklch, var(--primary) 15%, transparent),
         transparent
       ),
       linear-gradient(180deg, var(--background) 0%, var(--muted) 100%);

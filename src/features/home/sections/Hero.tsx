@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles, Star } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Carousel,
   CarouselContent,
@@ -10,13 +11,24 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ErrorState } from "@/components/feedback/ErrorState";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import type { IBook } from "@/types/book";
 import { getAuthorName } from "@/lib/utils";
 
 export function Hero() {
-  const { data, isLoading } = useGetBooksQuery({ limit: 5, sortBy: "avgRating", sortOrder: "desc" });
+  const { data, isLoading, isError, refetch } = useGetBooksQuery({ limit: 5, sortBy: "avgRating", sortOrder: "desc" });
   const featured = (data?.data ?? []).slice(0, 5);
+
+  if (isError) {
+    return (
+      <section className="relative gradient-hero overflow-hidden">
+        <Container className="flex min-h-[60vh] items-center justify-center py-16 lg:min-h-[70vh] lg:py-24">
+          <ErrorState message="Failed to load featured books" onRetry={refetch} />
+        </Container>
+      </section>
+    );
+  }
 
   return (
     <section className="relative gradient-hero overflow-hidden">
@@ -26,7 +38,7 @@ export function Hero() {
             <Sparkles className="h-4 w-4" />
             New: AI-powered book recommendations
           </span>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl text-balance">
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-6xl text-balance">
             Discover your next <span className="text-primary">great read</span> at the Athenaeum
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground text-pretty">
@@ -55,21 +67,30 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative">
+        <div className="relative mx-auto w-full max-w-sm">
           {isLoading ? (
-            <div className="aspect-[3/4] w-full max-w-sm mx-auto animate-pulse rounded-lg bg-muted" />
+            <div className="space-y-3">
+              <Skeleton className="aspect-[3/4] w-full rounded-lg" />
+              <div className="space-y-2 text-center">
+                <Skeleton className="mx-auto h-4 w-3/4" />
+                <Skeleton className="mx-auto h-3 w-1/2" />
+              </div>
+            </div>
           ) : (
-            <Carousel
-              plugins={[Autoplay({ delay: 4000 })]}
-              className="w-full max-w-sm mx-auto"
-            >
+            <Carousel plugins={[Autoplay({ delay: 4000 })]} className="w-full">
               <CarouselContent>
                 {featured.map((book: IBook) => (
                   <CarouselItem key={book._id}>
                     <div className="space-y-3">
                       <Link to={`/books/${book._id}`} className="block">
-                        <div className="aspect-[3/4] overflow-hidden rounded-lg border border-border shadow-xl">
-                          <img src={book.coverImage || "/images/book-placeholder.svg"} alt={book.title} fetchPriority="high" className="h-full w-full object-cover" />
+                        <div className="aspect-[3/4] overflow-hidden rounded-lg border border-border shadow-md">
+                          <img
+                            src={book.coverImage || "/images/book-placeholder.svg"}
+                            alt={book.title}
+                            fetchPriority="high"
+                            className="h-full w-full object-cover"
+                            onError={(e) => { e.currentTarget.src = "/images/book-placeholder.svg"; }}
+                          />
                         </div>
                       </Link>
                       <div className="text-center">
@@ -84,8 +105,8 @@ export function Hero() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <CarouselPrevious className="hidden sm:flex" />
+              <CarouselNext className="hidden sm:flex" />
             </Carousel>
           )}
         </div>

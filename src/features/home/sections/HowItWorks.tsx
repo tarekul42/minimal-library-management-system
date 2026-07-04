@@ -1,5 +1,6 @@
 import { Search, BookMarked, RotateCcw } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 
 const steps = [
@@ -10,10 +11,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 md:py-24">
+    <Section>
       <Container>
         <SectionHeader eyebrow="How it works" title="Borrow a book in three simple steps" align="center" />
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((s, i) => (
             <div key={s.title} className="relative text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -26,6 +27,6 @@ export function HowItWorks() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

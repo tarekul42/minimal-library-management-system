@@ -3,12 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { TextField, SubmitButton } from "@/components/forms";
 import { AuthLayout } from "./AuthLayout";
 import { SocialLoginButtons } from "./SocialLoginButtons";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader } from "@/components/feedback/Loader";
 import { toast } from "sonner";
 
 const schema = z.object({
@@ -43,22 +41,23 @@ export default function Login() {
       footer={<>Don&rsquo;t have an account? <Link to="/register" className="text-primary hover:underline font-medium">Sign up</Link></>}
     >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="you@example.com" autoComplete="email" {...form.register("email")} aria-invalid={!!form.formState.errors.email} />
-          {form.formState.errors.email && <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>}
-        </div>
+        <TextField label="Email" type="email" placeholder="you@example.com" autoComplete="email" error={form.formState.errors.email?.message} {...form.register("email")} />
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
+            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
             <Link to="/forgot-password" className="text-xs text-primary hover:underline">Forgot password?</Link>
           </div>
-          <Input id="password" type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" autoComplete="current-password" {...form.register("password")} aria-invalid={!!form.formState.errors.password} />
-          {form.formState.errors.password && <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>}
+          <input
+            type="password"
+            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+            autoComplete="current-password"
+            aria-invalid={!!form.formState.errors.password}
+            {...form.register("password")}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          />
+          {form.formState.errors.password && <p role="alert" className="text-xs text-destructive">{form.formState.errors.password.message}</p>}
         </div>
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? <Loader label="Signing in..." /> : "Sign in"}
-        </Button>
+        <SubmitButton label="Sign in" isSubmitting={form.formState.isSubmitting} loadingLabel="Signing in..." className="w-full" />
       </form>
 
       <div className="mt-4">

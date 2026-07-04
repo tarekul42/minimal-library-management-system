@@ -2,13 +2,10 @@ import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { TextField, SubmitButton } from "@/components/forms";
 import { AuthLayout } from "./AuthLayout";
 import { SocialLoginButtons } from "./SocialLoginButtons";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader } from "@/components/feedback/Loader";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -41,30 +38,11 @@ export default function Register() {
       footer={<>Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link></>}
     >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Full name</Label>
-          <Input id="name" placeholder="Jane Doe" autoComplete="name" {...form.register("name")} aria-invalid={!!form.formState.errors.name} />
-          {form.formState.errors.name && <p className="text-xs text-destructive">{form.formState.errors.name.message}</p>}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="you@example.com" autoComplete="email" {...form.register("email")} aria-invalid={!!form.formState.errors.email} />
-          {form.formState.errors.email && <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" autoComplete="new-password" {...form.register("password")} aria-invalid={!!form.formState.errors.password} />
-          {form.formState.errors.password && <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>}
-          <p className="text-xs text-muted-foreground">At least 8 characters with one uppercase letter and one number.</p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
-          <Input id="confirmPassword" type="password" autoComplete="new-password" {...form.register("confirmPassword")} aria-invalid={!!form.formState.errors.confirmPassword} />
-          {form.formState.errors.confirmPassword && <p className="text-xs text-destructive">{form.formState.errors.confirmPassword.message}</p>}
-        </div>
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? <Loader label="Creating account..." /> : "Create account"}
-        </Button>
+        <TextField label="Full name" placeholder="Jane Doe" autoComplete="name" error={form.formState.errors.name?.message} {...form.register("name")} />
+        <TextField label="Email" type="email" placeholder="you@example.com" autoComplete="email" error={form.formState.errors.email?.message} {...form.register("email")} />
+        <TextField label="Password" type="password" autoComplete="new-password" error={form.formState.errors.password?.message} hint="At least 8 characters with one uppercase letter and one number." {...form.register("password")} />
+        <TextField label="Confirm password" type="password" autoComplete="new-password" error={form.formState.errors.confirmPassword?.message} {...form.register("confirmPassword")} />
+        <SubmitButton label="Create account" isSubmitting={form.formState.isSubmitting} loadingLabel="Creating account..." className="w-full" />
       </form>
       <div className="mt-6"><SocialLoginButtons /></div>
     </AuthLayout>

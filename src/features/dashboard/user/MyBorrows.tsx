@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetMyBorrowsQuery, useReturnBookMutation } from "@/redux/api/borrowApi";
+import { useGetMyBorrowsQuery, useReturnBookMutation, useRenewBookMutation } from "@/redux/api/borrowApi";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,13 +11,15 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IBorrow } from "@/types/borrow";
-import { BookUp } from "lucide-react";
+import { BookUp, RefreshCw } from "lucide-react";
 import { Seo } from "@/components/Seo";
 
 export default function MyBorrows() {
   const [returnTarget, setReturnTarget] = useState<IBorrow | null>(null);
+  const [renewTarget, setRenewTarget] = useState<IBorrow | null>(null);
   const { data, isLoading, isError, refetch } = useGetMyBorrowsQuery();
   const [returnBook, { isLoading: returning }] = useReturnBookMutation();
+  const [renewBook, { isLoading: renewing }] = useRenewBookMutation();
 
   const borrows: IBorrow[] = data?.data ?? [];
 
@@ -29,6 +31,17 @@ export default function MyBorrows() {
       setReturnTarget(null);
     } catch (err) {
       toast.error(getApiError(err, "Failed to return book"));
+    }
+  };
+
+  const handleRenew = async () => {
+    if (!renewTarget) return;
+    try {
+      await renewBook(renewTarget._id).unwrap();
+      toast.success("Borrow renewed successfully");
+      setRenewTarget(null);
+    } catch (err) {
+      toast.error(getApiError(err, "Failed to renew borrow"));
     }
   };
 
@@ -68,6 +81,10 @@ export default function MyBorrows() {
                       {b.status === "active" && (
                         <div className="inline-flex gap-1">
                           <Button size="sm" variant="outline" onClick={() => setReturnTarget(b)}>Return</Button>
+                          <Button size="sm" variant="ghost" onClick={() => setRenewTarget(b)}>
+                            <RefreshCw className="mr-1 h-3 w-3" />
+                            Renew
+                          </Button>
                         </div>
                       )}
                     </td>
@@ -87,6 +104,16 @@ export default function MyBorrows() {
         confirmLabel="Return book"
         onConfirm={handleReturn}
         loading={returning}
+      />
+
+      <ConfirmationDialog
+        open={!!renewTarget}
+        onOpenChange={(o) => !o && setRenewTarget(null)}
+        title="Renew this borrow?"
+        description={`Extend the due date for "${typeof renewTarget?.book === "string" ? renewTarget?.book : renewTarget?.book?.title}" by 14 days.`}
+        confirmLabel="Renew"
+        onConfirm={handleRenew}
+        loading={renewing}
       />
     </div>
   );

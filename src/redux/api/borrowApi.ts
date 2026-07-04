@@ -36,6 +36,14 @@ export const borrowApi = baseApi.injectEndpoints({
       invalidatesTags: ["borrow", "book"],
     }),
 
+    renewBook: builder.mutation<IApiResponse<IBorrow>, string>({
+      query: (id) => ({
+        url: `/borrow/${id}/renew`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["borrow"],
+    }),
+
     getActiveBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
       query: () => "/borrow/active",
       providesTags: ["borrow"],
@@ -54,6 +62,7 @@ export const {
   useGetAllBorrowsQuery,
   useGetBorrowQuery,
   useReturnBookMutation,
+  useRenewBookMutation,
   useGetActiveBorrowsQuery,
   useGetOverdueBorrowsQuery,
 } = borrowApi;

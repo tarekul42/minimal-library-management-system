@@ -29,9 +29,9 @@ describe("BookCard", () => {
     expect(screen.getByText("Fiction")).toBeInTheDocument();
   });
 
-  it('renders "View Details" link that goes to /books/:id', () => {
+  it("renders as a link that goes to /books/:id", () => {
     render(<BookCard book={mockBook} />);
-    const link = screen.getByRole("link", { name: /view details/i });
+    const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/books/123");
   });
 

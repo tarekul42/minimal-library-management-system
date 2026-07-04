@@ -21,7 +21,8 @@ export function AuthInit({ children }: { children: React.ReactNode }) {
       .then((data) => {
         dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("AuthInit: token refresh failed", err);
         dispatch(logout());
       });
   }, [accessToken, dispatch, trigger]);

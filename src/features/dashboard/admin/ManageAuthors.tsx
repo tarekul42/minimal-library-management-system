@@ -13,6 +13,7 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IAuthor } from "@/types/author";
+import { Seo } from "@/components/Seo";
 
 export default function ManageAuthors() {
   const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
@@ -96,6 +97,8 @@ export default function ManageAuthors() {
   ];
 
   return (
+    <>
+    <Seo title="Manage Authors" description="Manage author profiles and information." />
     <div className="space-y-6">
       <PageHeader
         title="Manage Authors"
@@ -162,5 +165,6 @@ export default function ManageAuthors() {
         onConfirm={handleDelete}
       />
     </div>
+    </>
   );
 }

@@ -24,16 +24,16 @@ export const FormContainer = ({
   onOpenChange,
   className = "w-full sm:w-5/6 md:w-3/4 lg:w-1/2",
 }: FormContainerProps) => {
-  const containerClass = `${className} mx-auto bg-gray-900 border-0 text-gray-300 p-6 sm:p-8 lg:p-10`;
+  const containerClass = `${className} mx-auto bg-card border text-card-foreground p-6 sm:p-8 lg:p-10`;
 
   if (type === "dialog") {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className={`${className} max-h-[90vh] overflow-y-auto`}>
           <DialogHeader>
-            <DialogTitle className="text-gray-300">{title}</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
-          <Card className="w-full mx-auto bg-gray-900 border-0 text-gray-300 py-0">
+          <Card className="w-full mx-auto bg-card border-0 text-card-foreground py-0">
             {children}
           </Card>
         </DialogContent>

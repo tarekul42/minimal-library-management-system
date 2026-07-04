@@ -2,9 +2,12 @@ import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
+import { Seo } from "@/components/Seo";
 
 export default function NotFound() {
   return (
+    <>
+    <Seo title="Page Not Found" description="The page you're looking for doesn't exist." />
     <Section>
       <Container className="flex flex-col items-center justify-center py-24 text-center">
         <p className="text-7xl font-bold text-primary">404</p>
@@ -17,5 +20,6 @@ export default function NotFound() {
         </Button>
       </Container>
     </Section>
+    </>
   );
 }

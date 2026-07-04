@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Calendar, Clock, ArrowRight } from "lucide-react";
 import { blogPosts, blogCategories } from "@/config/blog-posts";
+import { Seo } from "@/components/Seo";
 
 export default function BlogList() {
   const [search, setSearch] = useState("");
@@ -28,6 +29,8 @@ export default function BlogList() {
   const featured = filtered[0];
 
   return (
+    <>
+    <Seo title="Blog" description="Read the latest news, tips, and stories from Athenaeum." />
     <Section>
       <Container>
         <PageHeader title="Blog" description="Library news, reading lists, and book recommendations from our team." />
@@ -103,5 +106,6 @@ export default function BlogList() {
         )}
       </Container>
     </Section>
+    </>
   );
 }

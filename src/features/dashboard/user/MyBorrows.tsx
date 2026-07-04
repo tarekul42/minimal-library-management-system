@@ -12,6 +12,7 @@ import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IBorrow } from "@/types/borrow";
 import { BookUp } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function MyBorrows() {
   const [returnTarget, setReturnTarget] = useState<IBorrow | null>(null);
@@ -36,6 +37,7 @@ export default function MyBorrows() {
 
   return (
     <div className="space-y-6">
+      <Seo title="My Borrows" description="Track your active and past loans." />
       <PageHeader title="My Borrows" description="Track your active and past loans." />
 
       {borrows.length === 0 ? (

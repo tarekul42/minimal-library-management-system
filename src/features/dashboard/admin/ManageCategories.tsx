@@ -13,6 +13,7 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { ICategory } from "@/types/category";
+import { Seo } from "@/components/Seo";
 
 export default function ManageCategories() {
   const { data, isLoading, isError, refetch } = useGetCategoriesQuery();
@@ -87,6 +88,8 @@ export default function ManageCategories() {
   ];
 
   return (
+    <>
+    <Seo title="Manage Categories" description="Organize books by categories and genres." />
     <div className="space-y-6">
       <PageHeader
         title="Manage Categories"
@@ -153,5 +156,6 @@ export default function ManageCategories() {
         onConfirm={handleDelete}
       />
     </div>
+    </>
   );
 }

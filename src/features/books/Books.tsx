@@ -15,6 +15,7 @@ import { BooksSort } from "./BooksSort";
 import { BooksPagination } from "./BooksPagination";
 import { BooksMobileFilters } from "./BooksMobileFilters";
 import { SearchX } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function Books() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +52,8 @@ export default function Books() {
   const clientFiltered = books.filter((b) => b.avgRating >= minRating);
 
   return (
+    <>
+    <Seo title="Browse Books" description="Browse our collection of books across all genres." />
     <Container className="py-8 md:py-12">
       <Breadcrumb items={[{ label: "Books" }]} />
       <PageHeader
@@ -122,5 +125,6 @@ export default function Books() {
         </div>
       </div>
     </Container>
+    </>
   );
 }

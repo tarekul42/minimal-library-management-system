@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileDown, FileSpreadsheet, Download } from "lucide-react";
 import { toast } from "sonner";
+import { Seo } from "@/components/Seo";
 
 const REPORT_TYPES = [
   { value: "borrows", label: "Borrows" },
@@ -40,6 +41,8 @@ export default function Reports() {
   };
 
   return (
+    <>
+    <Seo title="Reports" description="Generate and view library reports." />
     <div className="space-y-8">
       <PageHeader title="Reports" description="Generate and export library reports." />
 
@@ -96,5 +99,6 @@ export default function Reports() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

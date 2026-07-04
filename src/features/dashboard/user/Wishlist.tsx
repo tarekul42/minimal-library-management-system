@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Link } from "react-router";
 import { Heart, Trash2 } from "lucide-react";
 import type { IWishlistItem } from "@/types/wishlist";
+import { Seo } from "@/components/Seo";
 
 export default function Wishlist() {
   const [removeTarget, setRemoveTarget] = useState<IWishlistItem | null>(null);
@@ -48,6 +49,7 @@ export default function Wishlist() {
 
   return (
     <div className="space-y-6">
+      <Seo title="Wishlist" description="View and manage your saved books." />
       <PageHeader title="My Wishlist" description="Books you've saved for later." />
 
       {items.length === 0 ? (

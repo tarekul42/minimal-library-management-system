@@ -12,6 +12,7 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { toast } from "sonner";
 import { getApiError } from "@/lib/utils";
 import type { IUser } from "@/types/auth";
+import { Seo } from "@/components/Seo";
 
 export default function ManageUsers() {
   const [roleFilter, setRoleFilter] = useState("all");
@@ -105,6 +106,8 @@ export default function ManageUsers() {
   ], []);
 
   return (
+    <>
+    <Seo title="Manage Users" description="Manage library user accounts and roles." />
     <div className="space-y-6">
       <PageHeader title="Manage Users" description="View and manage library members and staff." />
       <DataTable
@@ -145,5 +148,6 @@ export default function ManageUsers() {
         loading={updating}
       />
     </div>
+    </>
   );
 }

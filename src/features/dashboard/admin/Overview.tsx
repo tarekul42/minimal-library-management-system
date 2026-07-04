@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen, Users, BookMarked, AlertTriangle, DollarSign } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { chartColors, tooltipStyle } from "@/lib/chart-utils";
+import { Seo } from "@/components/Seo";
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -35,6 +36,8 @@ export default function Overview() {
   const recentBorrows = (recentBorrowsData?.data ?? []).slice(0, 10);
 
   return (
+    <>
+    <Seo title="Admin Dashboard" description="Library administration overview and key metrics." />
     <div className="space-y-8">
       <PageHeader title="Admin Overview" description="Library-wide statistics and recent activity." />
 
@@ -128,5 +131,6 @@ export default function Overview() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

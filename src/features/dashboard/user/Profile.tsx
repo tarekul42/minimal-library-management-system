@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import { Camera } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function Profile() {
   const { user } = useAppSelector((s) => s.auth);
@@ -44,6 +45,7 @@ export default function Profile() {
 
   return (
     <div className="space-y-8">
+      <Seo title="Profile" description="Manage your personal information." />
       <PageHeader title="Profile" description="Manage your personal information." />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_2fr]">

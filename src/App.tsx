@@ -15,6 +15,8 @@ function isHideChrome(pathname: string) {
 export default function App() {
   const { pathname } = useLocation();
 
+  const mainId = "main-content";
+
   if (isHideChrome(pathname)) {
     return (
       <div className="min-h-screen bg-background text-foreground">
@@ -37,8 +39,14 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <ScrollToTop />
+      <a
+        href={`#${mainId}`}
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:border focus:border-border focus:rounded-md focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       <Navbar />
-      <main className="flex-1 flex flex-col w-full">
+      <main id={mainId} className="flex-1 flex flex-col w-full outline-none" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense
             fallback={

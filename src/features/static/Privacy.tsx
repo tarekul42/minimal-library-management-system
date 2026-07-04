@@ -1,9 +1,12 @@
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Seo } from "@/components/Seo";
 
 export default function Privacy() {
   return (
+    <>
+    <Seo title="Privacy Policy" description="Athenaeum privacy policy — how we handle your data." />
     <Section>
       <Container className="max-w-3xl">
         <PageHeader title="Privacy Policy" description="Last updated: June 1, 2026" />
@@ -90,5 +93,6 @@ export default function Privacy() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }

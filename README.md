@@ -1,147 +1,155 @@
-# Minimal Library Management System
+# Athenaeum — Library Management System
 
 ![CI](https://github.com/tarekul42/minimal-library-management-system/actions/workflows/ci.yml/badge.svg)
 ![CD](https://github.com/tarekul42/minimal-library-management-system/actions/workflows/cd.yml/badge.svg)
 
-This is a simple, modern web application for managing a small library. It allows users to add, edit, view, and delete books, as well as manage borrowing records.
-
-## Features
-
--   **Book Management:** Full CRUD (Create, Read, Update, Delete) functionality for books.
--   **Borrowing System:** Track book borrowing and returns.
--   **Responsive UI:** A clean, modern, and responsive user interface built for ease of use.
--   **Form Validation:** Robust client-side validation for all forms.
+A modern, full-featured library management system built with React and TypeScript. Browse books, manage borrows, track fines, and administer your library catalog — all from a responsive, accessible interface.
 
 ## Tech Stack
 
-This project is built with a modern frontend stack:
+| Layer | Technology |
+|-------|-----------|
+| Framework | [React 19](https://react.dev/) |
+| Build Tool | [Vite 8](https://vitejs.dev/) |
+| Language | [TypeScript 6](https://www.typescriptlang.org/) |
+| Routing | [React Router 8](https://reactrouter.com/) |
+| State / Data | [Redux Toolkit](https://redux-toolkit.js.org/) (RTK Query) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
+| UI Components | [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives) |
+| Icons | [Lucide React](https://lucide.dev/) |
+| Forms | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) |
+| Notifications | [Sonner](https://sonner.emilkowal.ski/) |
+| Charts | [Recharts](https://recharts.org/) |
+| Testing (unit) | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) |
+| Testing (e2e) | [Playwright](https://playwright.dev/) |
+| PWA | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) |
+| Deployment | [Vercel](https://vercel.com/) / Docker |
 
--   **Framework:** [React](https://react.dev/)
--   **Build Tool:** [Vite](https://vitejs.dev/)
--   **Language:** [TypeScript](https://www.typescriptlang.org/)
--   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
--   **UI Components:**
-    -   [shadcn/ui](https://ui.shadcn.com/) (using Radix UI primitives)
-    -   Icons from [Lucide React](https://lucide.dev/guide/packages/lucide-react)
--   **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/) (including RTK Query for data fetching)
--   **Routing:** [React Router](https://reactrouter.com/)
--   **Form Handling:** [React Hook Form](https://react-hook-form.com/)
--   **Schema Validation:** [Zod](https://zod.dev/)
--   **Notifications:** [Sonner](https://sonner.emilkowal.ski/)
-
-## Getting Started
-
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-You need to have [Node.js](https://nodejs.org/) (version 20.x or higher) and [npm](https://www.npmjs.com/) installed on your system.
-
-### Installation
-
-1.  Clone the repository:
-    ```sh
-    git clone https://github.com/tarekul42/minimal-library-management-system.git
-    ```
-2.  Navigate to the project directory:
-    ```sh
-    cd minimal-library-management-system
-    ```
-3.  Install the dependencies:
-    ```sh
-    npm install
-    ```
-
-### Development
-
-To run the application in development mode with hot-reloading, execute the following command:
+## Quick Start
 
 ```sh
-npm run dev
+git clone https://github.com/tarekul42/minimal-library-management-system.git
+cd minimal-library-management-system
+pnpm install
+pnpm dev
 ```
 
-This will start the development server, typically at `http://localhost:5173`.
+The app starts at `http://localhost:5173`. The backend API is expected at `http://localhost:5000` (configurable via `VITE_API_URL`).
 
-### Build
+## Environment Variables
 
-To build the application for production, use:
+```env
+VITE_API_URL=http://localhost:5000/api    # Backend API base URL
+VITE_ANALYTICS_ID=                        # (optional) Analytics ID
+VITE_SENTRY_DSN=                          # (optional) Sentry error tracking
+VITE_GOOGLE_CLIENT_ID=                    # (optional) Google OAuth
+VITE_FACEBOOK_APP_ID=                     # (optional) Facebook OAuth
+```
+
+Copy `.env.example` to `.env` and adjust the values for your environment.
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server with HMR |
+| `pnpm build` | Type-check and build for production |
+| `pnpm preview` | Preview production build locally |
+| `pnpm typecheck` | Run TypeScript type checking |
+| `pnpm lint` | Run ESLint |
+| `pnpm lint:fix` | Run ESLint with auto-fix |
+| `pnpm lint:css` | Run Stylelint on CSS files |
+| `pnpm format` | Format code with Prettier |
+| `pnpm format:check` | Check formatting without writing |
+| `pnpm test` | Run Vitest unit/integration tests |
+| `pnpm test:e2e` | Run Playwright E2E tests |
+| `pnpm audit:styles` | Check for hardcoded color tokens |
+
+## Project Structure
+
+```
+src/
+├── app/routes/          # Route definitions (lazy-loaded)
+├── components/          # Reusable UI components
+│   ├── cards/           # BookCard, StatCard, AuthorCard, etc.
+│   ├── feedback/        # ErrorState, EmptyState, Loader, ConfirmationDialog
+│   ├── forms/           # FormRoot, TextField, SelectField, etc.
+│   ├── layout/          # Navbar, Footer, DashboardShell, Container, etc.
+│   ├── tables/          # DataTable with sort/filter/pagination
+│   └── ui/              # shadcn/ui primitives (button, dialog, etc.)
+├── config/              # Site config, nav items, constants
+├── features/            # Feature modules (auth, books, dashboard, home, etc.)
+├── hooks/               # useAuth, useDebounce, useMediaQuery, etc.
+├── lib/                 # Utilities (cn, chart-utils, styles)
+├── redux/               # Redux store, API definitions (RTK Query), slices
+├── schema/              # Zod validation schemas
+├── test/                # Test setup and utilities
+└── types/               # TypeScript type definitions
+```
+
+## Testing
+
+### Unit & Integration Tests
 
 ```sh
-npm run build
+pnpm test
 ```
 
-This command bundles the app into static files for deployment in the `dist/` directory.
+Runs Vitest with jsdom environment. Tests cover:
+- Shared components (BookCard, StatCard, ErrorState, EmptyState, etc.)
+- Form components (TextField, SubmitButton, etc.)
+- Layout components (Container, Breadcrumb)
+- Custom hooks (useDebounce)
+- Feature integration (Hero, Login, Books, MyBorrows)
 
-### Linting
-
-To run the linter and check for code quality issues, use:
+### E2E Tests
 
 ```sh
-npm run lint
+pnpm test:e2e
 ```
 
-## Folder Structure
+Runs Playwright across Chromium, WebKit, and Mobile Chrome. Covers:
+- Home page (sections, CTAs, FAQ accordion)
+- Book explore (search, filter, sort, pagination)
+- Book detail (hero, tabs, related books)
+- Auth (login, register, logout)
+- Dashboard (member sidebar, admin sidebar, role-based access)
+- Theme toggle (light/dark persistence)
+- Responsive layout (mobile, tablet, desktop)
 
-The project follows a feature-oriented structure to keep the codebase organized and maintainable.
+## Deployment
 
+### Vercel (recommended)
+
+1. Push your repository to GitHub.
+2. Import the project into [Vercel](https://vercel.com/).
+3. Set the framework preset to **Vite**.
+4. Add environment variables in the Vercel dashboard.
+5. Deploy — the `vercel.json` in the root handles SPA rewrites and security headers.
+
+### Docker
+
+```sh
+docker build -t athenaeum .
+docker run -p 8080:80 -e VITE_API_URL=http://your-api:5000/api athenaeum
 ```
-/src
-├───assets/         # Static assets like images and SVGs
-├───components/     # Reusable UI components (including shadcn/ui components)
-├───config/         # Application-wide configurations (e.g., form fields)
-├───hooks/          # Custom React hooks
-├───lib/            # Utility functions
-├───pages/          # Top-level page components for each route
-├───redux/          # Redux Toolkit store, slices, and API definitions (RTK Query)
-├───routes/         # Application routing setup
-├───schema/         # Zod schemas for data validation
-└───types/          # TypeScript type definitions
-```
+
+The Dockerfile uses a multi-stage build: Node 22 builds the app, then nginx serves it with the bundled `nginx.conf` (includes API proxy and SPA fallback).
 
 ## CI/CD
 
-This project uses GitHub Actions for continuous integration and deployment:
+The project includes GitHub Actions workflows:
 
-### CI Workflow
-- **Triggers**: Runs on every push and pull request to `main` and `develop` branches
-- **Node Versions**: Tests on Node.js 18.x and 20.x for compatibility
-- **Steps**:
-  - Linting with ESLint
-  - TypeScript compilation
-  - Production build verification
-  - Upload build artifacts
+- **CI** (`.github/workflows/ci.yml`): Runs on every push/PR — typecheck, lint, audit styles, unit tests, E2E tests.
+- **CD** (`.github/workflows/cd.yml`): Deploys to Vercel on push to `main`.
 
-### CD Workflow
-- **Triggers**: Runs on every push to `main` branch
-- **Deployment**: Automatically deploys to Vercel
-- **Steps**:
-  - Build production bundle
-  - Deploy to Vercel production environment
+## Contributing
 
-### Setting up Vercel Deployment
+1. Branch from `upgrade`: `git checkout upgrade && git checkout -b feat/your-feature`.
+2. Follow the existing code conventions (TypeScript strict, Tailwind v4, feature-based structure).
+3. Ensure `pnpm typecheck`, `pnpm lint`, and `pnpm test` all pass.
+4. Open a pull request against `upgrade`.
 
-To enable automatic deployment to Vercel, you need to add the following secrets to your GitHub repository:
+## License
 
-1. **VERCEL_TOKEN**: Your Vercel authentication token
-   - Go to [Vercel Account Settings > Tokens](https://vercel.com/account/tokens)
-   - Create a new token and copy it
-
-2. **VERCEL_ORG_ID**: Your Vercel organization ID
-   - Run `npx vercel link` in your project directory
-   - Find the value in `.vercel/project.json`
-
-3. **VERCEL_PROJECT_ID**: Your Vercel project ID
-   - Same as above, found in `.vercel/project.json`
-
-4. Add these secrets to your GitHub repository:
-   - Go to Settings > Secrets and variables > Actions
-   - Click "New repository secret"
-   - Add each secret with its corresponding value
-
----
-
-## Contact
-
-Name: Tarekul Islam
-
-Email: tarekulrifat142@gmail.com
+MIT

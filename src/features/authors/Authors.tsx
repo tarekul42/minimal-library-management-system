@@ -6,12 +6,15 @@ import { AuthorCard } from "@/components/cards/AuthorCard";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import type { IAuthor } from "@/types/author";
+import { Seo } from "@/components/Seo";
 
 export default function Authors() {
   const { data, isLoading, isError, refetch } = useGetAuthorsQuery();
   const authors: IAuthor[] = data?.data ?? [];
 
   return (
+    <>
+    <Seo title="Authors" description="Meet the authors behind our collection." />
     <Container className="py-8 md:py-12">
       <Breadcrumb items={[{ label: "Authors" }]} />
       <PageHeader title="Authors" description="Discover the writers behind our catalog." className="mt-4" />
@@ -29,5 +32,6 @@ export default function Authors() {
         </div>
       )}
     </Container>
+    </>
   );
 }

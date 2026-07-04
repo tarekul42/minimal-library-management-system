@@ -10,6 +10,7 @@ import { BookCardSkeleton } from "@/components/cards/BookCardSkeleton";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Seo } from "@/components/Seo";
 import type { IBook } from "@/types/book";
 
 export default function AuthorDetail() {
@@ -27,6 +28,7 @@ export default function AuthorDetail() {
 
   return (
     <Container className="py-8 md:py-12">
+      <Seo title={author.name} description={`Books by ${author.name} — browse their catalog at Athenaeum.`} />
       <Breadcrumb items={[{ label: "Authors", href: "/authors" }, { label: author.name }]} />
       <Button asChild variant="ghost" size="sm" className="mt-4">
         <Link to="/authors"><ArrowLeft className="mr-2 h-4 w-4" /> All authors</Link>

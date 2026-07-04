@@ -4,6 +4,7 @@ import { SectionHeader } from "@/components/layout/SectionHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Target, Heart, BookOpen } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 const values = [
   { icon: Target, title: "Accessible to all", description: "We believe knowledge should be free to access. Membership is free for residents and affordable for everyone else." },
@@ -21,6 +22,7 @@ const team = [
 export default function About() {
   return (
     <>
+      <Seo title="About" description="Learn about Athenaeum — our mission, values, and team." />
       <Section className="gradient-hero">
         <Container className="max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-primary">Our mission</p>

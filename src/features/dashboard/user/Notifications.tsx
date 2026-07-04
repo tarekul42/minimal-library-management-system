@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import type { INotification } from "@/types/notification";
 import { Bell, CheckCheck, Mail, MailOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Seo } from "@/components/Seo";
 
 export default function Notifications() {
   const { data, isLoading, isError, refetch } = useGetMyNotificationsQuery();
@@ -53,6 +54,7 @@ export default function Notifications() {
 
   return (
     <div className="space-y-6">
+      <Seo title="Notifications" description="Stay updated with library notifications." />
       <PageHeader
         title="Notifications"
         description={unreadCount > 0 ? `${unreadCount} unread` : "No unread notifications"}

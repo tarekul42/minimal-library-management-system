@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SwitchField } from "@/components/forms";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
+import { Seo } from "@/components/Seo";
 
 type NotificationSettings = {
   dueSoon: boolean;
@@ -44,6 +45,7 @@ export default function Settings() {
 
   return (
     <div className="space-y-6">
+      <Seo title="Settings" description="Configure your account preferences." />
       <PageHeader title="Settings" description="Manage your account preferences." />
 
       {/* Tab bar */}

@@ -10,6 +10,7 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { toast } from "sonner";
 import { getApiError } from "@/lib/utils";
 import type { IFine } from "@/types/fine";
+import { Seo } from "@/components/Seo";
 
 export default function ManageFines() {
   const [statusFilter, setStatusFilter] = useState("all");
@@ -67,6 +68,8 @@ export default function ManageFines() {
   ], []);
 
   return (
+    <>
+    <Seo title="Manage Fines" description="Track and manage library fines." />
     <div className="space-y-6">
       <PageHeader title="Manage Fines" description="View and manage library fines." />
       <DataTable
@@ -98,5 +101,6 @@ export default function ManageFines() {
         loading={paying}
       />
     </div>
+    </>
   );
 }

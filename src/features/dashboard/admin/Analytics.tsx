@@ -7,6 +7,7 @@ import { DashboardSkeleton } from "@/components/ui/dashboard-skeleton";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from "recharts";
 import { chartColors, tooltipStyle } from "@/lib/chart-utils";
+import { Seo } from "@/components/Seo";
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -32,6 +33,8 @@ export default function Analytics() {
   }, []);
 
   return (
+    <>
+    <Seo title="Analytics" description="Library usage analytics and trends." />
     <div className="space-y-8">
       <PageHeader title="Analytics" description="Deep dive into library statistics and trends." />
 
@@ -99,5 +102,6 @@ export default function Analytics() {
         </Card>
       </div>
     </div>
+    </>
   );
 }

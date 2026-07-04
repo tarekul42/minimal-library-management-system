@@ -12,6 +12,7 @@ import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IFine } from "@/types/fine";
 import { DollarSign } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function Fines() {
   const [payTarget, setPayTarget] = useState<IFine | null>(null);
@@ -37,6 +38,7 @@ export default function Fines() {
 
   return (
     <div className="space-y-6">
+      <Seo title="Fines" description="View and pay your library fines." />
       <PageHeader title="Fines" description={`Total unpaid: $${totalUnpaid.toFixed(2)}`} />
 
       {fines.length === 0 ? (

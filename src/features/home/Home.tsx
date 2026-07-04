@@ -8,10 +8,12 @@ import { Testimonials } from "./sections/Testimonials";
 import { LatestBlog } from "./sections/LatestBlog";
 import { Faq } from "./sections/Faq";
 import { CtaBand } from "./sections/CtaBand";
+import { Seo } from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Home" description="Browse, borrow, and discover books at Athenaeum — your modern library." />
       <Hero />
       <StatsBar />
       <FeaturedBooks />

@@ -1,9 +1,12 @@
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Seo } from "@/components/Seo";
 
 export default function Terms() {
   return (
+    <>
+    <Seo title="Terms of Service" description="Athenaeum terms of service and conditions of use." />
     <Section>
       <Container className="max-w-3xl">
         <PageHeader title="Terms of Service" description="Last updated: June 1, 2026" />
@@ -105,5 +108,6 @@ export default function Terms() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }

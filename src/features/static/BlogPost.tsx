@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Seo } from "@/components/Seo";
 import { blogPosts } from "@/config/blog-posts";
 
 export default function BlogPost() {
@@ -18,6 +19,7 @@ export default function BlogPost() {
   if (!post) {
     return (
       <Section>
+        <Seo title="Post Not Found" />
         <Container className="py-16 text-center">
           <h1 className="text-2xl font-bold">Post not found</h1>
           <p className="text-muted-foreground mt-2">The blog post you're looking for doesn't exist.</p>
@@ -31,6 +33,7 @@ export default function BlogPost() {
 
   return (
     <Section>
+      <Seo title={post.title} description={post.excerpt} image={`/images/blog-${post.slug.split("-")[0]}.svg`} />
       <Container className="max-w-3xl">
         <Link to="/blog" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4 mr-1" /> Back to blog

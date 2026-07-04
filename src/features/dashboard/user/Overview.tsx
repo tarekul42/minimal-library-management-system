@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { chartColors, tooltipStyle } from "@/lib/chart-utils";
 import type { IBorrow } from "@/types/borrow";
+import { Seo } from "@/components/Seo";
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -36,6 +37,7 @@ export default function Overview() {
 
   return (
     <div className="space-y-8">
+      <Seo title="Dashboard" description="Overview of your library activity." />
       <PageHeader title="Welcome back" description="Here's what's happening with your library account." />
 
       {/* Stat cards */}

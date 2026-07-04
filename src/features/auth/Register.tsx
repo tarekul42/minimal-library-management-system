@@ -6,6 +6,7 @@ import { TextField, SubmitButton } from "@/components/forms";
 import { AuthLayout } from "./AuthLayout";
 import { SocialLoginButtons } from "./SocialLoginButtons";
 import { useAuth } from "@/hooks/useAuth";
+import { Seo } from "@/components/Seo";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,19 +33,22 @@ export default function Register() {
   };
 
   return (
-    <AuthLayout
-      title="Create your account"
-      description="Free membership. Instant access to 10,000+ books."
-      footer={<>Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link></>}
-    >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <TextField label="Full name" placeholder="Jane Doe" autoComplete="name" error={form.formState.errors.name?.message} {...form.register("name")} />
-        <TextField label="Email" type="email" placeholder="you@example.com" autoComplete="email" error={form.formState.errors.email?.message} {...form.register("email")} />
-        <TextField label="Password" type="password" autoComplete="new-password" error={form.formState.errors.password?.message} hint="At least 8 characters with one uppercase letter and one number." {...form.register("password")} />
-        <TextField label="Confirm password" type="password" autoComplete="new-password" error={form.formState.errors.confirmPassword?.message} {...form.register("confirmPassword")} />
-        <SubmitButton label="Create account" isSubmitting={form.formState.isSubmitting} loadingLabel="Creating account..." className="w-full" />
-      </form>
-      <div className="mt-6"><SocialLoginButtons /></div>
-    </AuthLayout>
+    <>
+      <Seo title="Sign Up" description="Create an account to start borrowing books." />
+      <AuthLayout
+        title="Create your account"
+        description="Free membership. Instant access to 10,000+ books."
+        footer={<>Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link></>}
+      >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <TextField label="Full name" placeholder="Jane Doe" autoComplete="name" error={form.formState.errors.name?.message} {...form.register("name")} />
+          <TextField label="Email" type="email" placeholder="you@example.com" autoComplete="email" error={form.formState.errors.email?.message} {...form.register("email")} />
+          <TextField label="Password" type="password" autoComplete="new-password" error={form.formState.errors.password?.message} hint="At least 8 characters with one uppercase letter and one number." {...form.register("password")} />
+          <TextField label="Confirm password" type="password" autoComplete="new-password" error={form.formState.errors.confirmPassword?.message} {...form.register("confirmPassword")} />
+          <SubmitButton label="Create account" isSubmitting={form.formState.isSubmitting} loadingLabel="Creating account..." className="w-full" />
+        </form>
+        <div className="mt-6"><SocialLoginButtons /></div>
+      </AuthLayout>
+    </>
   );
 }

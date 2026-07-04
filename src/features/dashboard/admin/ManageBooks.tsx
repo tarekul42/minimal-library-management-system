@@ -15,6 +15,7 @@ import { GENRE_LABELS, GENRE_OPTIONS } from "@/config/constants";
 import { getAuthorName } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IBook } from "@/types/book";
+import { Seo } from "@/components/Seo";
 
 export default function ManageBooks() {
   const [search, setSearch] = useState("");
@@ -86,6 +87,8 @@ export default function ManageBooks() {
   };
 
   return (
+    <>
+    <Seo title="Manage Books" description="Add, edit, and manage the library book catalog." />
     <div className="space-y-6">
       <PageHeader
         title="Manage Books"
@@ -127,5 +130,6 @@ export default function ManageBooks() {
         loading={deleting}
       />
     </div>
+    </>
   );
 }

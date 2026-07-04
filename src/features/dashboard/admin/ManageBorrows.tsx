@@ -10,6 +10,7 @@ import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
 import { toast } from "sonner";
 import { getApiError } from "@/lib/utils";
 import type { IBorrow } from "@/types/borrow";
+import { Seo } from "@/components/Seo";
 
 export default function ManageBorrows() {
   const [statusFilter, setStatusFilter] = useState("all");
@@ -71,6 +72,8 @@ export default function ManageBorrows() {
   ], []);
 
   return (
+    <>
+    <Seo title="Manage Borrows" description="View and manage all book borrows across users." />
     <div className="space-y-6">
       <PageHeader title="Manage Borrows" description="View and manage all book borrows across users." />
       <DataTable
@@ -103,5 +106,6 @@ export default function ManageBorrows() {
         loading={returning}
       />
     </div>
+    </>
   );
 }

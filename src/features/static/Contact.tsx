@@ -5,9 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Clock, Globe } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { ContactForm } from "./ContactForm";
+import { Seo } from "@/components/Seo";
 
 export default function Contact() {
   return (
+    <>
+    <Seo title="Contact" description="Get in touch with the Athenaeum team." />
     <Section>
       <Container>
         <PageHeader title="Contact us" description="We respond to every message within 2 business days." />
@@ -35,5 +38,6 @@ export default function Contact() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }

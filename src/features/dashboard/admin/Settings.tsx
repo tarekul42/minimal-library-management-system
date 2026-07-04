@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function Settings() {
   const [settings, setSettings] = useState({
@@ -36,6 +37,8 @@ export default function Settings() {
   };
 
   return (
+    <>
+    <Seo title="Admin Settings" description="Configure library system settings." />
     <div className="space-y-8">
       <PageHeader title="Settings" description="Configure library-wide settings." />
 
@@ -161,5 +164,6 @@ export default function Settings() {
         </TabsContent>
       </Tabs>
     </div>
+    </>
   );
 }

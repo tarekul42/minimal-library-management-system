@@ -4,6 +4,7 @@ import { useGetBookReviewsQuery } from "@/redux/api/reviewApi";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { ErrorState } from "@/components/feedback/ErrorState";
+import { Seo } from "@/components/Seo";
 import { DetailSkeleton } from "@/components/ui/detail-skeleton";
 import { BookDetailHero } from "./BookDetailHero";
 import { BookDetailTabs } from "./BookDetailTabs";
@@ -28,6 +29,7 @@ export default function BookDetail() {
 
   return (
     <Container className="py-8 md:py-12">
+      <Seo title={book.title} description={book.description ? book.description.slice(0, 160) : undefined} />
       <Breadcrumb items={[
         { label: "Books", href: "/books" },
         { label: book.title },

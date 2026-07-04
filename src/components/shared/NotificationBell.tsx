@@ -24,14 +24,14 @@ const NotificationBell = () => {
         <Button variant="ghost" size="icon" className="relative" aria-label={`Notifications${unread.length > 0 ? ` (${unread.length} unread)` : ""}`}>
           <Bell className="h-5 w-5" aria-hidden="true" />
           {unread.length > 0 && (
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] font-bold flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
               {unread.length > 9 ? "9+" : unread.length}
             </span>
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-gray-950 text-gray-300 w-80 mr-4">
-        <div className="px-3 py-2 text-sm font-medium border-b border-gray-800">
+      <DropdownMenuContent className="bg-popover text-popover-foreground w-80 mr-4">
+        <div className="px-3 py-2 text-sm font-medium border-b border-border">
           Notifications {unread.length > 0 && `(${unread.length} new)`}
         </div>
         {latest.length === 0 ? (
@@ -40,15 +40,15 @@ const NotificationBell = () => {
           latest.map((n) => (
             <DropdownMenuItem key={n._id} className="cursor-pointer flex-col items-start py-2">
               <div className="flex items-center gap-2">
-                {!n.read && <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0" />}
+                {!n.read && <span className="h-2 w-2 rounded-full bg-primary shrink-0" />}
                 <span className="font-medium text-sm">{n.title}</span>
               </div>
               <p className="text-xs text-muted-foreground truncate w-full pl-4">{n.message}</p>
             </DropdownMenuItem>
           ))
         )}
-        <div className="border-t border-gray-800 p-1">
-          <DropdownMenuItem onClick={() => navigate("/notifications")} className="justify-center text-sm text-blue-400 cursor-pointer">
+        <div className="border-t border-border p-1">
+          <DropdownMenuItem onClick={() => navigate("/notifications")} className="justify-center text-sm text-primary cursor-pointer">
             View All
           </DropdownMenuItem>
         </div>

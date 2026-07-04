@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronDown, ChevronUp, HelpCircle, MessageCircle } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 interface FAQ {
   q: string;
@@ -73,6 +74,8 @@ export default function Help() {
   };
 
   return (
+    <>
+    <Seo title="Help & Support" description="Find answers to common questions and get support." />
     <Section>
       <Container className="max-w-4xl">
         <PageHeader title="Help & Support" description="Find answers to common questions about using the library." />
@@ -133,5 +136,6 @@ export default function Help() {
         </Card>
       </Container>
     </Section>
+    </>
   );
 }

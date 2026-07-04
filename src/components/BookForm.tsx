@@ -1,29 +1,9 @@
-import { useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Spinner } from "@/components/ui/spinner";
+import { useState, type ChangeEvent } from "react";
+import { TextField, TextAreaField, SelectField, FileUploadField, SubmitButton } from "@/components/forms";
 import { bookFormFields } from "@/config/formFields";
 import { useAppSelector } from "@/redux/hook";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
-import type { BookFormData } from "@/schema/bookSchema";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 const UPLOAD_FIELD_NAME = "file";
@@ -44,21 +24,20 @@ export const BookForm = ({
   authorOptions,
 }: IBookFormProps) => {
   const [uploading, setUploading] = useState(false);
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = form;
 
-  const handleSubmit = (data: BookFormData) => {
+  const handleFormSubmit = (data: import("@/schema/bookSchema").BookFormData) => {
     const sanitized = Object.fromEntries(
       Object.entries(data).map(([key, val]) => [key, val === "" ? undefined : val])
-    ) as BookFormData;
+    ) as import("@/schema/bookSchema").BookFormData;
     onSubmit(sanitized);
   };
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const token = useAppSelector((s) => s.auth.accessToken);
 
   const uploadFile = async (file: File): Promise<string | null> => {
     const formData = new FormData();
     formData.append(UPLOAD_FIELD_NAME, file);
-
     try {
       setUploading(true);
       const res = await fetch(`${VITE_API_URL}/uploads`, {
@@ -73,8 +52,7 @@ export const BookForm = ({
       }
       toast.error(json.message || "Upload failed");
       return null;
-    } catch (err) {
-      console.error("Upload failed:", err);
+    } catch {
       toast.error("Upload failed");
       return null;
     } finally {
@@ -82,106 +60,76 @@ export const BookForm = ({
     }
   };
 
-  const renderFormField = (fieldConfig: IFormFieldConfig) => {
-    const { name, label, placeholder, type, min } = fieldConfig;
-    const options = getOptions(fieldConfig, authorOptions);
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = await uploadFile(file);
+      if (url) setValue("coverImage", url);
+    }
+  };
 
-    return (
-      <FormField
-        key={name}
-        control={form.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-              {type === "file" ? (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      ref={fileInputRef}
-                      disabled={uploading}
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const url = await uploadFile(file);
-                          if (url) field.onChange(url);
-                        }
-                      }}
-                      className="flex-1"
-                    />
-                    {uploading && <Spinner size={20} />}
-                  </div>
-                  {field.value && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Upload className="h-3 w-3" />
-                      <span className="truncate max-w-[300px]">{field.value as string}</span>
-                    </div>
-                  )}
-                </div>
-              ) : type === "select" ? (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value as string}
-                  value={field.value as string}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue
-                        placeholder={`Select a ${label.toLowerCase()}`}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {options?.map(
-                      (option: { value: string; label: string }) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ),
-                    )}
-                  </SelectContent>
-                </Select>
-              ) : type === "textarea" ? (
-                <Textarea placeholder={placeholder} {...field} />
-              ) : (
-                <Input
-                  type={type}
-                  min={min}
-                  placeholder={placeholder}
-                  {...field}
-                  onChange={(e) => {
-                    if (type !== "number") { field.onChange(e.target.value); return; }
-                    const val = e.target.value;
-                    if (val === "") { field.onChange(""); return; }
-                    const num = Number(val);
-                    field.onChange(Number.isNaN(num) ? field.value : num);
-                  }}
-                />
-              )}
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    );
+  const renderField = (field: IFormFieldConfig) => {
+    const { name, label, placeholder, type, min } = field;
+    const options = getOptions(field, authorOptions);
+    const error = errors[name]?.message;
+
+    switch (type) {
+      case "select":
+        return (
+          <SelectField
+            key={name}
+            label={label}
+            value={String(watch(name) ?? "")}
+            onValueChange={(val) => setValue(name, val, { shouldValidate: true })}
+            options={options ?? []}
+            error={error}
+            placeholder={placeholder ?? `Select a ${label.toLowerCase()}`}
+          />
+        );
+      case "textarea":
+        return (
+          <TextAreaField
+            key={name}
+            label={label}
+            placeholder={placeholder}
+            error={error}
+            {...register(name)}
+          />
+        );
+      case "file":
+        return (
+          <FileUploadField
+            key={name}
+            label={label}
+            value={String(watch(name) ?? "")}
+            onChange={handleFileChange}
+            error={error}
+          />
+        );
+      default:
+        return (
+          <TextField
+            key={name}
+            label={label}
+            type={type}
+            placeholder={placeholder}
+            min={min}
+            error={error}
+            {...register(name, type === "number" && name !== "copies"
+              ? { setValueAs: (v: string) => v === "" ? undefined : Number(v) }
+              : type === "number"
+                ? { valueAsNumber: true }
+                : undefined
+            )}
+          />
+        );
+    }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {bookFormFields.map(renderFormField)}
-
-        <Button
-          type="submit"
-          disabled={isLoading || uploading}
-          className="w-full text-foreground"
-        >
-          {isLoading ? "Processing..." : submitButtonText}
-        </Button>
-      </form>
-    </Form>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      {bookFormFields.map(renderField)}
+      <SubmitButton label={submitButtonText} isSubmitting={isLoading || uploading} className="w-full" />
+    </form>
   );
 };

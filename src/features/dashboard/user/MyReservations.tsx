@@ -12,6 +12,7 @@ import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IReservation } from "@/types/reservation";
 import { BookX } from "lucide-react";
+import { Seo } from "@/components/Seo";
 
 export default function MyReservations() {
   const [cancelTarget, setCancelTarget] = useState<IReservation | null>(null);
@@ -42,6 +43,7 @@ export default function MyReservations() {
 
   return (
     <div className="space-y-6">
+      <Seo title="My Reservations" description="Manage your book reservations." />
       <PageHeader title="My Reservations" description="Books you've reserved and their status." />
 
       {reservations.length === 0 ? (

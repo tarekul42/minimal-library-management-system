@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// Must match backend GENRES (library-management-api/src/shared/constants.ts)
 export const GENRE_VALUES = [
   "FICTION",
   "NON_FICTION",

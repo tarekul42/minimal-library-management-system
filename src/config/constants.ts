@@ -1,6 +1,7 @@
-import type { Genre } from "@/types/book";
+import { GENRE_VALUES } from "@/schema/bookSchema";
 
-export const GENRE_LABELS: Record<Genre, string> = {
+// Must match backend's GENRES (src/shared/constants.ts)
+const LABELS_MAP: Record<string, string> = {
   FICTION: "Fiction",
   NON_FICTION: "Non-Fiction",
   SCIENCE: "Science",
@@ -9,4 +10,8 @@ export const GENRE_LABELS: Record<Genre, string> = {
   FANTASY: "Fantasy",
 };
 
-export const GENRE_OPTIONS = Object.entries(GENRE_LABELS).map(([value, label]) => ({ value, label }));
+export const GENRE_LABELS = Object.fromEntries(
+  GENRE_VALUES.map((g) => [g, LABELS_MAP[g]]),
+) as Record<(typeof GENRE_VALUES)[number], string>;
+
+export const GENRE_OPTIONS = GENRE_VALUES.map((value) => ({ value, label: GENRE_LABELS[value] }));

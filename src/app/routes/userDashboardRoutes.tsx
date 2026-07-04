@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
 import { ProtectedRoute } from "@/components/route/ProtectedRoute";
-import { DashboardShell } from "@/components/route/DashboardShell";
+import { DashboardShell } from "@/components/layout/DashboardShell";
 
 const UserOverview = lazy(() => import("@/features/dashboard/user/Overview"));
 const MyBorrows = lazy(() => import("@/features/dashboard/user/MyBorrows"));

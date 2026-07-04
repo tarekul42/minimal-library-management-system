@@ -2,7 +2,7 @@ import { lazy } from "react";
 import type { RouteObject } from "react-router";
 import { AdminRoute } from "@/components/route/AdminRoute";
 import { LibrarianRoute } from "@/components/route/LibrarianRoute";
-import { DashboardShell } from "@/components/route/DashboardShell";
+import { DashboardShell } from "@/components/layout/DashboardShell";
 
 const AdminOverview = lazy(() => import("@/features/dashboard/admin/Overview"));
 const ManageUsers = lazy(() => import("@/features/dashboard/admin/ManageUsers"));

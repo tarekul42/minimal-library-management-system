@@ -31,7 +31,7 @@ export function BookCard({ book }: BookCardProps) {
             <Badge variant="secondary" className="text-xs">
               {GENRE_LABELS[book.genre] ?? book.genre}
             </Badge>
-            <div className="inline-flex items-center gap-1 rounded-md bg-black/50 px-2 py-0.5 text-xs text-white">
+            <div className="inline-flex items-center gap-1 rounded-md bg-background/50 px-2 py-0.5 text-xs text-primary-foreground">
               <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
               {book.avgRating.toFixed(1)}
             </div>

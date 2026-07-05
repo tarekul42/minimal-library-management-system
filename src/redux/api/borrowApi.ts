@@ -1,5 +1,5 @@
 import type { IApiResponse } from "@/types/book";
-import type { IBorrow, ICreateBorrowInput } from "@/types/borrows";
+import type { IBorrow, ICreateBorrowInput } from "@/types/borrow";
 import { baseApi } from "./baseApi";
 
 export const borrowApi = baseApi.injectEndpoints({

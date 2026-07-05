@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useGetMyFinesQuery, usePayFineMutation } from "@/redux/api/finesApi";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { ErrorState } from "@/components/feedback/ErrorState";
-import { EmptyState } from "@/components/feedback/EmptyState";
 import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
+import { DataTable } from "@/components/tables/DataTable";
+import type { Column } from "@/components/tables/types";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IFine } from "@/types/fine";
-import { DollarSign } from "lucide-react";
+
 import { Seo } from "@/components/Seo";
 
 export default function Fines() {
@@ -33,6 +33,23 @@ export default function Fines() {
     }
   };
 
+  const columns: Column<IFine>[] = useMemo(() => [
+    { key: "book", header: "Book", render: (f) => <span className="font-medium">{f.borrow?.book?.title}</span> },
+    { key: "amount", header: "Amount", render: (f) => <span className="font-mono">${f.amount.toFixed(2)}</span> },
+    { key: "reason", header: "Reason", render: (f) => <span className="text-muted-foreground">{f.reason}</span> },
+    { key: "date", header: "Date", render: (f) => <span className="text-muted-foreground">{new Date(f.createdAt).toLocaleDateString()}</span> },
+    {
+      key: "status", header: "Status", render: (f) => (
+        <Badge variant={f.paid ? "secondary" : "destructive"}>{f.paid ? "Paid" : "Unpaid"}</Badge>
+      ),
+    },
+    {
+      key: "actions", header: "Actions", align: "right", render: (f) => (
+        !f.paid ? <Button size="sm" onClick={() => setPayTarget(f)}>Pay now</Button> : null
+      ),
+    },
+  ], []);
+
   if (isLoading) return <div className="space-y-4"><PageHeader title="Fines" /><TableSkeleton /></div>;
   if (isError) return <ErrorState message="Failed to load fines" onRetry={refetch} />;
 
@@ -41,44 +58,14 @@ export default function Fines() {
       <Seo title="Fines" description="View and pay your library fines." />
       <PageHeader title="Fines" description={`Total unpaid: $${totalUnpaid.toFixed(2)}`} />
 
-      {fines.length === 0 ? (
-        <EmptyState icon={DollarSign} title="No fines" description="You have no fines on your account." />
-      ) : (
-        <Card className="p-0 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm" aria-label="Fines list">
-              <thead className="bg-muted/50 text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3 text-left font-medium">Book</th>
-                  <th className="px-4 py-3 text-left font-medium">Amount</th>
-                  <th className="px-4 py-3 text-left font-medium">Reason</th>
-                  <th className="px-4 py-3 text-left font-medium">Date</th>
-                  <th className="px-4 py-3 text-left font-medium">Status</th>
-                  <th className="px-4 py-3 text-right font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {fines.map((f) => (
-                  <tr key={f._id} className="hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{f.borrow?.book?.title}</td>
-                    <td className="px-4 py-3 font-mono">${f.amount.toFixed(2)}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{f.reason}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{new Date(f.createdAt).toLocaleDateString()}</td>
-                    <td className="px-4 py-3">
-                      <Badge variant={f.paid ? "secondary" : "destructive"}>{f.paid ? "Paid" : "Unpaid"}</Badge>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      {!f.paid && (
-                        <Button size="sm" onClick={() => setPayTarget(f)}>Pay now</Button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      )}
+      <DataTable
+        data={fines}
+        columns={columns}
+        emptyTitle="No fines"
+        emptyDescription="You have no fines on your account."
+        emptyAction={<Button asChild><a href="/books">Browse books</a></Button>}
+        getRowId={(f) => f._id}
+      />
 
       <ConfirmationDialog
         open={!!payTarget}

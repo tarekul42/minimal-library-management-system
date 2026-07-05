@@ -27,6 +27,7 @@ interface DataTableProps<T> {
   total?: number;
   emptyTitle?: string;
   emptyDescription?: string;
+  emptyAction?: React.ReactNode;
   getRowId: (row: T) => string;
 }
 
@@ -36,7 +37,7 @@ export function DataTable<T>({
   filters = [], sort, onSortChange,
   page = 1, totalPages = 1, onPageChange, total,
   emptyTitle = "No results", emptyDescription = "Try adjusting your search or filters.",
-  getRowId,
+  emptyAction, getRowId,
 }: DataTableProps<T>) {
   const toggleSort = (col: Column<T>) => {
     if (!col.sortable || !onSortChange) return;
@@ -112,7 +113,7 @@ export function DataTable<T>({
             </thead>
             <tbody className="divide-y divide-border">
               {data.length === 0 ? (
-                <tr><td colSpan={columns.length} className="px-4 py-8"><EmptyState title={emptyTitle} description={emptyDescription} /></td></tr>
+                <tr><td colSpan={columns.length} className="px-4 py-8"><EmptyState title={emptyTitle} description={emptyDescription} action={emptyAction} /></td></tr>
               ) : data.map((row) => (
                 <tr key={getRowId(row)} className="hover:bg-muted/30 transition-colors">
                   {columns.map((col) => (

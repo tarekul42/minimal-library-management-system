@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useGetMyReservationsQuery, useCancelReservationMutation } from "@/redux/api/reservationApi";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { ErrorState } from "@/components/feedback/ErrorState";
-import { EmptyState } from "@/components/feedback/EmptyState";
 import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
+import { DataTable } from "@/components/tables/DataTable";
+import type { Column } from "@/components/tables/types";
 import { getApiError } from "@/lib/utils";
 import { toast } from "sonner";
 import type { IReservation } from "@/types/reservation";
-import { BookX } from "lucide-react";
+
 import { Seo } from "@/components/Seo";
 
 export default function MyReservations() {
@@ -38,6 +38,24 @@ export default function MyReservations() {
     return "destructive" as const;
   };
 
+  const columns: Column<IReservation>[] = useMemo(() => [
+    { key: "book", header: "Book", render: (r) => <span className="font-medium">{r.book?.title}</span> },
+    { key: "reservedAt", header: "Reserved", render: (r) => <span className="text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</span> },
+    { key: "queuePosition", header: "Queue", render: (r) => <span className="text-muted-foreground">{r.queuePosition ?? "-"}</span> },
+    {
+      key: "status", header: "Status", render: (r) => (
+        <Badge variant={statusVariant(r.status)} className="capitalize">{r.status}</Badge>
+      ),
+    },
+    {
+      key: "actions", header: "Actions", align: "right", render: (r) => (
+        r.status === "waiting" ? (
+          <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setCancelTarget(r)}>Cancel</Button>
+        ) : null
+      ),
+    },
+  ], []);
+
   if (isLoading) return <div className="space-y-4"><PageHeader title="My Reservations" /><TableSkeleton /></div>;
   if (isError) return <ErrorState message="Failed to load reservations" onRetry={refetch} />;
 
@@ -46,42 +64,14 @@ export default function MyReservations() {
       <Seo title="My Reservations" description="Manage your book reservations." />
       <PageHeader title="My Reservations" description="Books you've reserved and their status." />
 
-      {reservations.length === 0 ? (
-        <EmptyState icon={BookX} title="No reservations" description="When you reserve a book, it'll appear here." action={<Button asChild><a href="/books">Browse books</a></Button>} />
-      ) : (
-        <Card className="p-0 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm" aria-label="My reservations">
-              <thead className="bg-muted/50 text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3 text-left font-medium">Book</th>
-                  <th className="px-4 py-3 text-left font-medium">Reserved</th>
-                  <th className="px-4 py-3 text-left font-medium">Queue</th>
-                  <th className="px-4 py-3 text-left font-medium">Status</th>
-                  <th className="px-4 py-3 text-right font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {reservations.map((r) => (
-                  <tr key={r._id} className="hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{r.book?.title}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{r.queuePosition ?? "-"}</td>
-                    <td className="px-4 py-3">
-                      <Badge variant={statusVariant(r.status)} className="capitalize">{r.status}</Badge>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      {r.status === "waiting" && (
-                        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setCancelTarget(r)}>Cancel</Button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      )}
+      <DataTable
+        data={reservations}
+        columns={columns}
+        emptyTitle="No reservations"
+        emptyDescription="When you reserve a book, it'll appear here."
+        emptyAction={<Button asChild><a href="/books">Browse books</a></Button>}
+        getRowId={(r) => r._id}
+      />
 
       <ConfirmationDialog
         open={!!cancelTarget}

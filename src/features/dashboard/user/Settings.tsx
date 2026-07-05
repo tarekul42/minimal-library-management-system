@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { SwitchField } from "@/components/forms";
 import { useTheme } from "next-themes";
@@ -40,77 +41,64 @@ export default function Settings() {
     toast.success("Privacy setting updated");
   };
 
-  const tabs = ["Notifications", "Appearance", "Privacy"] as const;
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Notifications");
-
   return (
     <div className="space-y-6">
       <Seo title="Settings" description="Configure your account preferences." />
       <PageHeader title="Settings" description="Manage your account preferences." />
 
-      {/* Tab bar */}
-      <div className="flex gap-1 border-b border-border">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 text-sm font-medium transition-colors -mb-px border-b-2 ${
-              activeTab === tab
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      <Tabs defaultValue="Notifications">
+        <TabsList variant="line">
+          <TabsTrigger value="Notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="Appearance">Appearance</TabsTrigger>
+          <TabsTrigger value="Privacy">Privacy</TabsTrigger>
+        </TabsList>
 
-      {/* Tab content */}
-      {activeTab === "Notifications" && (
-        <Card className="p-0">
-          <CardHeader className="p-6 pb-4"><CardTitle>Email Notifications</CardTitle></CardHeader>
-          <CardContent className="p-6 pt-0 space-y-4">
-            <SwitchField label="Due soon reminders" checked={notifications.dueSoon} onCheckedChange={() => toggleNotification("dueSoon")} hint="Get a reminder 3 days before a book is due." />
-            <SwitchField label="Overdue alerts" checked={notifications.overdue} onCheckedChange={() => toggleNotification("overdue")} hint="Get notified when a book becomes overdue." />
-            <SwitchField label="Reservation ready" checked={notifications.reservationReady} onCheckedChange={() => toggleNotification("reservationReady")} hint="Get notified when a reserved book is available." />
-            <SwitchField label="Newsletter" checked={notifications.newsletter} onCheckedChange={() => toggleNotification("newsletter")} hint="Monthly reading recommendations and library news." />
-          </CardContent>
-        </Card>
-      )}
+        <TabsContent value="Notifications">
+          <Card className="p-0">
+            <CardHeader className="p-6 pb-4"><CardTitle>Email Notifications</CardTitle></CardHeader>
+            <CardContent className="p-6 pt-0 space-y-4">
+              <SwitchField label="Due soon reminders" checked={notifications.dueSoon} onCheckedChange={() => toggleNotification("dueSoon")} hint="Get a reminder 3 days before a book is due." />
+              <SwitchField label="Overdue alerts" checked={notifications.overdue} onCheckedChange={() => toggleNotification("overdue")} hint="Get notified when a book becomes overdue." />
+              <SwitchField label="Reservation ready" checked={notifications.reservationReady} onCheckedChange={() => toggleNotification("reservationReady")} hint="Get notified when a reserved book is available." />
+              <SwitchField label="Newsletter" checked={notifications.newsletter} onCheckedChange={() => toggleNotification("newsletter")} hint="Monthly reading recommendations and library news." />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-      {activeTab === "Appearance" && (
-        <Card className="p-0">
-          <CardHeader className="p-6 pb-4"><CardTitle>Theme</CardTitle></CardHeader>
-          <CardContent className="p-6 pt-0">
-            <div className="flex flex-wrap gap-3">
-              {(["light", "dark", "system"] as const).map((t) => (
-                <Button
-                  key={t}
-                  variant={theme === t ? "default" : "outline"}
-                  onClick={() => setTheme(t)}
-                  className="capitalize"
-                >
-                  {t}
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+        <TabsContent value="Appearance">
+          <Card className="p-0">
+            <CardHeader className="p-6 pb-4"><CardTitle>Theme</CardTitle></CardHeader>
+            <CardContent className="p-6 pt-0">
+              <div className="flex flex-wrap gap-3">
+                {(["light", "dark", "system"] as const).map((t) => (
+                  <Button
+                    key={t}
+                    variant={theme === t ? "default" : "outline"}
+                    onClick={() => setTheme(t)}
+                    className="capitalize"
+                  >
+                    {t}
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-      {activeTab === "Privacy" && (
-        <Card className="p-0">
-          <CardHeader className="p-6 pb-4"><CardTitle>Privacy</CardTitle></CardHeader>
-          <CardContent className="p-6 pt-0">
-            <SwitchField
-              label="Hide profile from public reviews"
-              checked={privacy.hideProfile}
-              onCheckedChange={() => togglePrivacy("hideProfile")}
-              hint="Your name won't appear next to book reviews you've written."
-            />
-          </CardContent>
-        </Card>
-      )}
+        <TabsContent value="Privacy">
+          <Card className="p-0">
+            <CardHeader className="p-6 pb-4"><CardTitle>Privacy</CardTitle></CardHeader>
+            <CardContent className="p-6 pt-0">
+              <SwitchField
+                label="Hide profile from public reviews"
+                checked={privacy.hideProfile}
+                onCheckedChange={() => togglePrivacy("hideProfile")}
+                hint="Your name won't appear next to book reviews you've written."
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

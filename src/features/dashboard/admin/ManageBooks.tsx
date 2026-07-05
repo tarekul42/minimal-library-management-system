@@ -8,8 +8,7 @@ import { Plus, Eye, Pencil, Trash2 } from "lucide-react";
 import { DataTable } from "@/components/tables/DataTable";
 import type { Column } from "@/components/tables/types";
 import { ConfirmationDialog } from "@/components/feedback/ConfirmationDialog";
-import { CreateBookModal } from "./CreateBookModal";
-import { EditBookModal } from "./EditBookModal";
+import { BookFormModal } from "./BookFormModal";
 import { BookViewModal } from "./BookViewModal";
 import { GENRE_LABELS, GENRE_OPTIONS } from "@/config/constants";
 import { getAuthorName } from "@/lib/utils";
@@ -116,8 +115,7 @@ export default function ManageBooks() {
       />
 
       {authorsError && <p className="text-xs text-destructive -mt-4">Could not load authors. Create and edit book forms will have an empty author list.</p>}
-      <CreateBookModal open={createOpen} onOpenChange={setCreateOpen} authors={authorsData?.data ?? []} />
-      {editTarget && <EditBookModal open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)} bookId={editTarget} authors={authorsData?.data ?? []} />}
+      <BookFormModal open={createOpen || !!editTarget} onOpenChange={(o) => { if (!o) { setCreateOpen(false); setEditTarget(null); } }} bookId={editTarget} authors={authorsData?.data ?? []} />
       {viewTarget && <BookViewModal open={!!viewTarget} onOpenChange={(o) => !o && setViewTarget(null)} bookId={viewTarget} />}
 
       <ConfirmationDialog

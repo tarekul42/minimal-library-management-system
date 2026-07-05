@@ -1,35 +1,11 @@
 import { Link } from "react-router";
-import { ArrowRight, Sparkles, Star } from "lucide-react";
-import Autoplay from "embla-carousel-autoplay";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { ErrorState } from "@/components/feedback/ErrorState";
-import { useGetBooksQuery } from "@/redux/api/bookApi";
-import type { IBook } from "@/types/book";
-import { getAuthorName } from "@/lib/utils";
+
+const readers = ["A", "B", "C", "D"];
 
 export function Hero() {
-  const { data, isLoading, isError, refetch } = useGetBooksQuery({ limit: 5, sortBy: "avgRating", sortOrder: "desc" });
-  const featured = (data?.data ?? []).slice(0, 5);
-
-  if (isError) {
-    return (
-      <section className="relative gradient-hero overflow-hidden">
-        <Container className="flex min-h-[60vh] items-center justify-center py-16 lg:min-h-[70vh] lg:py-24">
-          <ErrorState message="Failed to load featured books" onRetry={refetch} />
-        </Container>
-      </section>
-    );
-  }
-
   return (
     <section className="relative gradient-hero overflow-hidden">
       <Container className="grid min-h-[60vh] grid-cols-1 items-center gap-12 py-16 lg:min-h-[70vh] lg:grid-cols-2 lg:py-24">
@@ -57,7 +33,7 @@ export function Hero() {
           </div>
           <div className="flex items-center gap-3 pt-4 text-sm text-muted-foreground">
             <div className="flex -space-x-2">
-              {["A", "B", "C", "D"].map((i) => (
+              {readers.map((i) => (
                 <span key={i} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium">
                   {i}
                 </span>
@@ -68,47 +44,29 @@ export function Hero() {
         </div>
 
         <div className="relative mx-auto w-full max-w-sm">
-          {isLoading ? (
-            <div className="space-y-3">
-              <Skeleton className="aspect-[3/4] w-full rounded-lg" />
-              <div className="space-y-2 text-center">
-                <Skeleton className="mx-auto h-4 w-3/4" />
-                <Skeleton className="mx-auto h-3 w-1/2" />
+          <div className="space-y-4">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-border shadow-md bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 flex items-center justify-center">
+              <div className="text-center p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">10,000+ Titles</h3>
+                <p className="text-sm text-muted-foreground mt-1">Six genres. Endless stories.</p>
               </div>
             </div>
-          ) : (
-            <Carousel plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]} className="w-full">
-              <CarouselContent>
-                {featured.map((book: IBook) => (
-                  <CarouselItem key={book._id}>
-                    <div className="space-y-3">
-                      <Link to={`/books/${book._id}`} className="block">
-                        <div className="aspect-[3/4] overflow-hidden rounded-lg border border-border shadow-md">
-                          <img
-                            src={book.coverImage || "/images/book-placeholder.svg"}
-                            alt={book.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover"
-                            onError={(e) => { e.currentTarget.src = "/images/book-placeholder.svg"; }}
-                          />
-                        </div>
-                      </Link>
-                      <div className="text-center">
-                        <p className="font-semibold line-clamp-1">{book.title}</p>
-                        <p className="text-sm text-muted-foreground">by {getAuthorName(book.author)}</p>
-                        <div className="mt-1 inline-flex items-center gap-1 text-sm">
-                          <Star className="h-4 w-4 fill-accent text-accent" />
-                          <span className="font-medium">{book.avgRating.toFixed(1)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="hidden sm:flex" />
-              <CarouselNext className="hidden sm:flex" />
-            </Carousel>
-          )}
+            <div className="flex justify-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+              <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+              <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+              <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+              From classics to bestsellers — find your next read
+            </p>
+          </div>
         </div>
       </Container>
     </section>

@@ -75,7 +75,7 @@ export default function MyReservations() {
 
       <ConfirmationDialog
         open={!!cancelTarget}
-        onOpenChange={(o) => !o && setCancelTarget(null)}
+        onOpenChange={(open: boolean) => !open && setCancelTarget(null)}
         title="Cancel reservation?"
         description={`You're about to cancel your reservation for "${cancelTarget?.book?.title}". Your place in the queue will be lost.`}
         confirmLabel="Cancel reservation"

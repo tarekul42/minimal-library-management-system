@@ -137,7 +137,7 @@ export default function ManageUsers() {
 
       <ConfirmationDialog
         open={!!toggleTarget}
-        onOpenChange={(o) => !o && setToggleTarget(null)}
+        onOpenChange={(open: boolean) => !open && setToggleTarget(null)}
         title={toggleTarget?.isActive ? "Deactivate this user?" : "Activate this user?"}
         description={toggleTarget?.isActive
           ? `"${toggleTarget.name}" will lose access to the system until reactivated.`

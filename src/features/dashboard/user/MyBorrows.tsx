@@ -88,7 +88,7 @@ export default function MyBorrows() {
 
       <ConfirmationDialog
         open={!!returnTarget}
-        onOpenChange={(o) => !o && setReturnTarget(null)}
+        onOpenChange={(open: boolean) => !open && setReturnTarget(null)}
         title="Return this book?"
         description={`You're about to return "${typeof returnTarget?.book === "string" ? returnTarget?.book : returnTarget?.book?.title}". This cannot be undone.`}
         confirmLabel="Return book"
@@ -98,7 +98,7 @@ export default function MyBorrows() {
 
       <ConfirmationDialog
         open={!!renewTarget}
-        onOpenChange={(o) => !o && setRenewTarget(null)}
+        onOpenChange={(open: boolean) => !open && setRenewTarget(null)}
         title="Renew this borrow?"
         description={`Extend the due date for "${typeof renewTarget?.book === "string" ? renewTarget?.book : renewTarget?.book?.title}" by 14 days.`}
         confirmLabel="Renew"

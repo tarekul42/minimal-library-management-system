@@ -79,7 +79,7 @@ export default function Wishlist() {
 
       <ConfirmationDialog
         open={!!removeTarget}
-        onOpenChange={(o) => !o && setRemoveTarget(null)}
+        onOpenChange={(open: boolean) => !open && setRemoveTarget(null)}
         title="Remove from wishlist?"
         description={`Remove "${removeTarget?.book?.title}" from your wishlist?`}
         confirmLabel="Remove"

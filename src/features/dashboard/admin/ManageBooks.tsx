@@ -115,12 +115,12 @@ export default function ManageBooks() {
       />
 
       {authorsError && <p className="text-xs text-destructive -mt-4">Could not load authors. Create and edit book forms will have an empty author list.</p>}
-      <BookFormModal open={createOpen || !!editTarget} onOpenChange={(o) => { if (!o) { setCreateOpen(false); setEditTarget(null); } }} bookId={editTarget} authors={authorsData?.data ?? []} />
-      {viewTarget && <BookViewModal open={!!viewTarget} onOpenChange={(o) => !o && setViewTarget(null)} bookId={viewTarget} />}
+      <BookFormModal open={createOpen || !!editTarget} onOpenChange={(open: boolean) => { if (!open) { setCreateOpen(false); setEditTarget(null); } }} bookId={editTarget} authors={authorsData?.data ?? []} />
+      {viewTarget && <BookViewModal open={!!viewTarget} onOpenChange={(open: boolean) => !open && setViewTarget(null)} bookId={viewTarget} />}
 
       <ConfirmationDialog
         open={!!deleteTarget}
-        onOpenChange={(o) => !o && setDeleteTarget(null)}
+        onOpenChange={(open: boolean) => !open && setDeleteTarget(null)}
         title="Delete this book?"
         description={`"${deleteTarget?.title}" will be permanently removed from the catalog. This action cannot be undone.`}
         confirmLabel="Delete book"

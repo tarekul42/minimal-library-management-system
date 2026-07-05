@@ -93,7 +93,7 @@ export default function ManageFines() {
 
       <ConfirmationDialog
         open={!!payTarget}
-        onOpenChange={(o) => !o && setPayTarget(null)}
+        onOpenChange={(open: boolean) => !open && setPayTarget(null)}
         title="Mark fine as paid?"
         description={`Mark $${payTarget?.amount.toFixed(2)} fine for "${typeof payTarget?.user === "string" ? payTarget?.user : payTarget?.user?.name}" as paid?`}
         confirmLabel="Confirm payment"

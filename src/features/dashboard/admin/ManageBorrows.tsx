@@ -98,7 +98,7 @@ export default function ManageBorrows() {
 
       <ConfirmationDialog
         open={!!returnTarget}
-        onOpenChange={(o) => !o && setReturnTarget(null)}
+        onOpenChange={(open: boolean) => !open && setReturnTarget(null)}
         title="Mark as returned?"
         description={`Return "${typeof returnTarget?.book === "string" ? returnTarget?.book : returnTarget?.book?.title}" borrowed by "${typeof returnTarget?.user === "string" ? returnTarget?.user : returnTarget?.user?.name}"?`}
         confirmLabel="Confirm return"

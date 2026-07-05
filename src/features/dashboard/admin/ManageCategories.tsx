@@ -132,7 +132,7 @@ export default function ManageCategories() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)}>
+      <Dialog open={!!editTarget} onOpenChange={(open: boolean) => !open && setEditTarget(null)}>
         <DialogContent>
           <DialogHeader><DialogTitle>Edit Category</DialogTitle></DialogHeader>
           <div className="space-y-4">
@@ -155,7 +155,7 @@ export default function ManageCategories() {
 
       <ConfirmationDialog
         open={!!deleteTarget}
-        onOpenChange={(o) => !o && setDeleteTarget(null)}
+        onOpenChange={(open: boolean) => !open && setDeleteTarget(null)}
         title="Delete this category?"
         description={`"${deleteTarget?.name}" will be permanently removed. This action cannot be undone.`}
         confirmLabel="Delete category"

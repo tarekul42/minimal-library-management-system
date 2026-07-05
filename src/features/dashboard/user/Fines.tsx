@@ -69,7 +69,7 @@ export default function Fines() {
 
       <ConfirmationDialog
         open={!!payTarget}
-        onOpenChange={(o) => !o && setPayTarget(null)}
+        onOpenChange={(open: boolean) => !open && setPayTarget(null)}
         title="Pay this fine?"
         description={`Pay $${payTarget?.amount.toFixed(2)} for "${payTarget?.borrow?.book?.title}"? This action cannot be undone.`}
         confirmLabel={`Pay $${payTarget?.amount.toFixed(2)}`}

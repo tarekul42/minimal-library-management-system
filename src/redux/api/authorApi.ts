@@ -41,7 +41,7 @@ export const authorApi = baseApi.injectEndpoints({
       invalidatesTags: ["author"],
     }),
 
-    deleteAuthor: builder.mutation<IApiResponse<void>, string>({
+    deleteAuthor: builder.mutation<void, string>({
       query: (id) => ({
         url: `/authors/${id}`,
         method: "DELETE",

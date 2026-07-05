@@ -17,7 +17,7 @@ export const wishlistApi = baseApi.injectEndpoints({
       invalidatesTags: ["wishlist"],
     }),
 
-    removeFromWishlist: builder.mutation<IApiResponse<void>, string>({
+    removeFromWishlist: builder.mutation<void, string>({
       query: (bookId) => ({
         url: `/wishlist/${bookId}`,
         method: "DELETE",

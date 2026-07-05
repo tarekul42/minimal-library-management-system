@@ -33,7 +33,7 @@ export const reservationApi = baseApi.injectEndpoints({
       invalidatesTags: ["reservation", "book"],
     }),
 
-    cancelReservation: builder.mutation<IApiResponse<IReservation>, string>({
+    cancelReservation: builder.mutation<void, string>({
       query: (id) => ({
         url: `/reservations/${id}`,
         method: "DELETE",

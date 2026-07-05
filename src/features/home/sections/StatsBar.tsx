@@ -3,9 +3,11 @@ import { Container } from "@/components/layout/Container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { useGetDashboardStatsQuery } from "@/redux/api/dashboardApi";
+import { useAppSelector } from "@/redux/hook";
 
 export function StatsBar() {
-  const { data, isLoading, isError, refetch } = useGetDashboardStatsQuery();
+  const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
+  const { data, isLoading, isError, refetch } = useGetDashboardStatsQuery(undefined, { skip: !isAuthenticated });
   const stats = data?.data;
   const items = [
     { label: "Books in catalog", value: stats?.totalBooks ?? 0, icon: BookOpen },

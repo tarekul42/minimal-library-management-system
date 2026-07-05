@@ -24,9 +24,8 @@ export function AuthInit({ children }: { children: React.ReactNode }) {
         if (cancelled) return;
         dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
       })
-      .catch((err) => {
+      .catch(() => {
         if (cancelled) return;
-        console.error("AuthInit: token refresh failed", err);
         dispatch(logout());
       });
 

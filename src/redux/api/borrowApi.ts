@@ -1,12 +1,12 @@
 import type { IApiResponse } from "@/types/book";
-import type { IBorrow, ICreateBorrowInput } from "@/types/borrow";
+import type { IBorrow, ICreateBorrowInput } from "@/types/borrows";
 import { baseApi } from "./baseApi";
 
 export const borrowApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     borrowBook: builder.mutation<IApiResponse<IBorrow>, ICreateBorrowInput>({
       query: (body) => ({
-        url: "/borrow",
+        url: "/borrows",
         method: "POST",
         body,
       }),
@@ -14,23 +14,23 @@ export const borrowApi = baseApi.injectEndpoints({
     }),
 
     getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow/me",
+      query: () => "/borrows/me",
       providesTags: ["borrow"],
     }),
 
     getAllBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow",
+      query: () => "/borrows",
       providesTags: ["borrow"],
     }),
 
     getBorrow: builder.query<IApiResponse<IBorrow>, string>({
-      query: (id) => `/borrow/${id}`,
+      query: (id) => `/borrows/${id}`,
       providesTags: ["borrow"],
     }),
 
     returnBook: builder.mutation<IApiResponse<IBorrow>, string>({
       query: (id) => ({
-        url: `/borrow/${id}/return`,
+        url: `/borrows/${id}/return`,
         method: "PUT",
       }),
       invalidatesTags: ["borrow", "book"],
@@ -38,19 +38,19 @@ export const borrowApi = baseApi.injectEndpoints({
 
     renewBook: builder.mutation<IApiResponse<IBorrow>, string>({
       query: (id) => ({
-        url: `/borrow/${id}/renew`,
+        url: `/borrows/${id}/renew`,
         method: "PUT",
       }),
       invalidatesTags: ["borrow"],
     }),
 
     getActiveBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow/active",
+      query: () => "/borrows/active",
       providesTags: ["borrow"],
     }),
 
     getOverdueBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
-      query: () => "/borrow/overdue",
+      query: () => "/borrows/overdue",
       providesTags: ["borrow"],
     }),
   }),

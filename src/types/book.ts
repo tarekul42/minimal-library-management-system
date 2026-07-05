@@ -41,7 +41,7 @@ export interface IBookQueryParams {
 
 export interface IApiResponse<T> {
   success: boolean;
-  message: string;
+  message?: string;
   data: T;
 }
 

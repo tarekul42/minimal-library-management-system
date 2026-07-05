@@ -12,7 +12,7 @@ interface IUserQueryParams {
 
 interface IUsersResponse {
   success: boolean;
-  message: string;
+  message?: string;
   data: IUser[];
   meta?: { total: number; page: number; totalPages: number };
 }

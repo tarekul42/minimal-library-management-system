@@ -11,7 +11,7 @@ type UpdateBookInput = Partial<CreateBookInput>;
 
 export interface IBooksResponse {
   success: boolean;
-  message: string;
+  message?: string;
   data: IBook[];
   meta: {
     page: number;

@@ -4,7 +4,7 @@ import { baseApi } from "./baseApi";
 
 interface IPaginatedResponse<T> {
   success: boolean;
-  message: string;
+  message?: string;
   data: T[];
   meta: {
     page: number;

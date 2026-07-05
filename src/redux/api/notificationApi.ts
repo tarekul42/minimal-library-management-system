@@ -4,7 +4,7 @@ import type { INotification } from "@/types/notification";
 
 interface IPaginatedResponse<T> {
   success: boolean;
-  message: string;
+  message?: string;
   data: T[];
   meta: {
     page: number;

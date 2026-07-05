@@ -1,26 +1,47 @@
-export type Genre =
-  | "FICTION"
-  | "NON_FICTION"
-  | "SCIENCE"
-  | "HISTORY"
-  | "BIOGRAPHY"
-  | "FANTASY";
+import { GENRE_VALUES } from "@/schema/bookSchema";
+
+export type Genre = (typeof GENRE_VALUES)[number];
+
+export interface IAuthorRef {
+  _id: string;
+  name: string;
+}
 
 export interface IBook {
   _id: string;
-  bookId: string;
   title: string;
-  author: string;
+  author: IAuthorRef | string;
   genre: Genre;
   isbn: string;
   description?: string;
+  coverImage?: string;
+  pages?: number;
+  publisher?: string;
+  publishedYear?: number;
   copies: number;
+  availableCopies: number;
+  tags: string[];
+  avgRating: number;
+  reviewCount: number;
+  shelfLocation?: string;
   available: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBookQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  genre?: Genre;
+  available?: boolean;
+  sortBy?: "title" | "author" | "createdAt" | "avgRating";
+  sortOrder?: "asc" | "desc";
 }
 
 export interface IApiResponse<T> {
   success: boolean;
-  message: string;
+  message?: string;
   data: T;
 }
 

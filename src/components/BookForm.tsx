@@ -1,102 +1,135 @@
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { useState, type ChangeEvent } from "react";
+import { TextField, TextAreaField, SelectField, FileUploadField, SubmitButton } from "@/components/forms";
 import { bookFormFields } from "@/config/formFields";
+import { useAppSelector } from "@/redux/hook";
 import type { IBookFormProps, IFormFieldConfig } from "@/types/form";
+import { toast } from "sonner";
+
+const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const UPLOAD_FIELD_NAME = "file";
+
+const getOptions = (
+  field: IFormFieldConfig,
+  authorOptions?: { value: string; label: string }[],
+) => {
+  if (field.name === "author" && authorOptions) return authorOptions;
+  return field.options;
+};
 
 export const BookForm = ({
   form,
   onSubmit,
   isLoading,
   submitButtonText,
+  authorOptions,
 }: IBookFormProps) => {
-  const renderFormField = (fieldConfig: IFormFieldConfig) => {
-    const { name, label, placeholder, type, options, min } = fieldConfig;
+  const [uploading, setUploading] = useState(false);
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = form;
 
-    return (
-      <FormField
-        key={name}
-        control={form.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-              {type === "select" ? (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value as string}
-                  value={field.value as string}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue
-                        placeholder={`Select a ${label.toLowerCase()}`}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {options?.map(
-                      (option: { value: string; label: string }) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
-              ) : type === "textarea" ? (
-                <Textarea placeholder={placeholder} {...field} />
-              ) : (
-                <Input
-                  type={type}
-                  min={min}
-                  placeholder={placeholder}
-                  {...field}
-                  onChange={(e) =>
-                    type === "number"
-                      ? field.onChange(Number(e.target.value))
-                      : field.onChange(e.target.value)
-                  }
-                />
-              )}
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    );
+  const handleFormSubmit = (data: import("@/schema/bookSchema").BookFormData) => {
+    const sanitized = Object.fromEntries(
+      Object.entries(data).map(([key, val]) => [key, val === "" ? undefined : val])
+    ) as import("@/schema/bookSchema").BookFormData;
+    onSubmit(sanitized);
+  };
+
+  const token = useAppSelector((s) => s.auth.accessToken);
+
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append(UPLOAD_FIELD_NAME, file);
+    try {
+      setUploading(true);
+      const res = await fetch(`${VITE_API_URL}/uploads`, {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: formData,
+      });
+      const json = await res.json();
+      if (json.success && json.data?.url) {
+        toast.success("Image uploaded");
+        return json.data.url;
+      }
+      toast.error(json.message || "Upload failed");
+      return null;
+    } catch {
+      toast.error("Upload failed");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = await uploadFile(file);
+      if (url) setValue("coverImage", url);
+    }
+  };
+
+  const renderField = (field: IFormFieldConfig) => {
+    const { name, label, placeholder, type, min } = field;
+    const options = getOptions(field, authorOptions);
+    const error = errors[name]?.message;
+
+    switch (type) {
+      case "select":
+        return (
+          <SelectField
+            key={name}
+            label={label}
+            value={String(watch(name) ?? "")}
+            onValueChange={(val) => setValue(name, val, { shouldValidate: true })}
+            options={options ?? []}
+            error={error}
+            placeholder={placeholder ?? `Select a ${label.toLowerCase()}`}
+          />
+        );
+      case "textarea":
+        return (
+          <TextAreaField
+            key={name}
+            label={label}
+            placeholder={placeholder}
+            error={error}
+            {...register(name)}
+          />
+        );
+      case "file":
+        return (
+          <FileUploadField
+            key={name}
+            label={label}
+            value={String(watch(name) ?? "")}
+            onChange={handleFileChange}
+            error={error}
+          />
+        );
+      default:
+        return (
+          <TextField
+            key={name}
+            label={label}
+            type={type}
+            placeholder={placeholder}
+            min={min}
+            error={error}
+            {...register(name, type === "number" && name !== "copies"
+              ? { setValueAs: (v: string) => v === "" ? undefined : Number(v) }
+              : type === "number"
+                ? { valueAsNumber: true }
+                : undefined
+            )}
+          />
+        );
+    }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {bookFormFields.map(renderFormField)}
-
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full text-foreground"
-        >
-          {isLoading ? "Processing..." : submitButtonText}
-        </Button>
-      </form>
-    </Form>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      {bookFormFields.map(renderField)}
+      <SubmitButton label={submitButtonText} isSubmitting={isLoading || uploading} className="w-full" />
+    </form>
   );
 };

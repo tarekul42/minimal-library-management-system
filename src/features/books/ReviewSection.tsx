@@ -1,0 +1,99 @@
+import { useState } from "react";
+import { useCreateReviewMutation } from "@/redux/api/reviewApi";
+import { useAppSelector } from "@/redux/hook";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+import { Star, MessageSquare } from "lucide-react";
+import type { IReview } from "@/types/review";
+
+import { ErrorState } from "@/components/feedback/ErrorState";
+
+interface ReviewSectionProps {
+  bookId: string;
+  reviews: IReview[];
+  reviewsError?: boolean;
+}
+
+export function ReviewSection({ bookId, reviews, reviewsError }: ReviewSectionProps) {
+  const { user } = useAppSelector((state) => state.auth);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [createReview, { isLoading: isCreating }] = useCreateReviewMutation();
+
+  const handleSubmitReview = async () => {
+    if (!user) { toast.error("Sign in to review"); return; }
+    try {
+      await createReview({ bookId, body: { rating, comment: comment || undefined } }).unwrap();
+      toast.success("Review submitted");
+      setComment("");
+      setRating(5);
+    } catch {
+      toast.error("Failed to submit review");
+    }
+  };
+
+  return (
+    <div className="border-t border-border pt-8">
+      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+        <MessageSquare className="h-5 w-5" />
+        Reviews ({reviews.length})
+      </h2>
+
+      {user && (
+        <div className="mb-8 space-y-3 rounded-lg border border-border bg-muted/30 p-4">
+          <h3 className="font-medium">Write a Review</h3>
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <button key={n} type="button" onClick={() => setRating(n)} className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm">
+                <Star className={`h-5 w-5 ${n <= rating ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+              </button>
+            ))}
+            <span className="ml-2 text-sm text-muted-foreground">{rating}/5</span>
+          </div>
+          <div className="space-y-1">
+            <Textarea
+              placeholder="Share your thoughts about this book..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              rows={3}
+              aria-invalid={!comment.trim()}
+            />
+            {!comment.trim() && <p className="text-xs text-muted-foreground">Write a comment to submit your review.</p>}
+          </div>
+          <Button onClick={handleSubmitReview} disabled={isCreating || !comment.trim()}>
+            {isCreating ? "Submitting..." : "Submit Review"}
+          </Button>
+        </div>
+      )}
+
+      {reviewsError ? (
+        <ErrorState title="Failed to load reviews" message="Reviews could not be loaded at this time." />
+      ) : reviews.length === 0 ? (
+        <p className="text-muted-foreground">No reviews yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {reviews.map((r) => (
+            <div key={r._id} className="rounded-lg border border-border bg-muted/30 p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground">
+                    {r.user?.name?.charAt(0) || "?"}
+                  </div>
+                  <span className="font-medium">{r.user?.name || "Anonymous"}</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <Star key={n} className={`h-4 w-4 ${n <= r.rating ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+                  ))}
+                </div>
+              </div>
+              {r.comment && <p className="text-sm text-muted-foreground">{r.comment}</p>}
+              <p className="mt-2 text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

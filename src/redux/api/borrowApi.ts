@@ -1,28 +1,68 @@
 import type { IApiResponse } from "@/types/book";
-import type { IBorrowSummary } from "@/types/borrowSummary";
+import type { IBorrow, ICreateBorrowInput } from "@/types/borrow";
 import { baseApi } from "./baseApi";
 
 export const borrowApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // borrow book
-    borrowBook: builder.mutation<
-      IApiResponse<void>,
-      { book: string; quantity: number; dueDate: string }
-    >({
-      query: (bookData) => ({
-        url: "/borrow",
+    borrowBook: builder.mutation<IApiResponse<IBorrow>, ICreateBorrowInput>({
+      query: (body) => ({
+        url: "/borrows",
         method: "POST",
-        body: bookData,
+        body,
       }),
       invalidatesTags: ["borrow", "book"],
     }),
 
-    // get borrow summary
-    getBorrowSummary: builder.query<IApiResponse<IBorrowSummary[]>, void>({
-      query: () => "/borrow",
+    getMyBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrows/me",
+      providesTags: ["borrow"],
+    }),
+
+    getAllBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrows",
+      providesTags: ["borrow"],
+    }),
+
+    getBorrow: builder.query<IApiResponse<IBorrow>, string>({
+      query: (id) => `/borrows/${id}`,
+      providesTags: ["borrow"],
+    }),
+
+    returnBook: builder.mutation<IApiResponse<IBorrow>, string>({
+      query: (id) => ({
+        url: `/borrows/${id}/return`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["borrow", "book"],
+    }),
+
+    renewBook: builder.mutation<IApiResponse<IBorrow>, string>({
+      query: (id) => ({
+        url: `/borrows/${id}/renew`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["borrow"],
+    }),
+
+    getActiveBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrows/active",
+      providesTags: ["borrow"],
+    }),
+
+    getOverdueBorrows: builder.query<IApiResponse<IBorrow[]>, void>({
+      query: () => "/borrows/overdue",
       providesTags: ["borrow"],
     }),
   }),
 });
 
-export const { useBorrowBookMutation, useGetBorrowSummaryQuery } = borrowApi;
+export const {
+  useBorrowBookMutation,
+  useGetMyBorrowsQuery,
+  useGetAllBorrowsQuery,
+  useGetBorrowQuery,
+  useReturnBookMutation,
+  useRenewBookMutation,
+  useGetActiveBorrowsQuery,
+  useGetOverdueBorrowsQuery,
+} = borrowApi;

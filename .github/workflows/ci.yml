@@ -1,61 +1,46 @@
-on:
-  pull_request:
-  push:
-    branches:
-      - main
-
 name: CI
+
+on:
+  push:
+    branches: [main, upgrade]
+  pull_request:
+    branches: [main, upgrade]
+
 permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build & Check
+  test-unit:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: TypeScript check
-        run: |
-          if [ -f tsconfig.json ]; then
-            npx tsc --noEmit
-          else
-            echo "No tsconfig.json — skipping tsc check"
-          fi
-
-      - name: Lint
-        run: |
-          if npm run -s lint --if-present; then
-            echo "Lint passed (or no lint script)"
-          else
-            exit 1
-          fi
-
-      - name: Run tests
-        run: |
-          if npm test --if-present; then
-            echo "Tests passed (or no test script)"
-          else
-            exit 1
-          fi
-
-      - name: Build
-        run: |
-          if npm run -s build --if-present; then
-            echo "Build succeeded (or no build script)"
-          else
-            exit 1
-          fi
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm audit:styles
+      - run: pnpm test
+  test-e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/

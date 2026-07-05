@@ -1,12 +1,6 @@
 import type { BookFormData } from "@/schema/bookSchema";
 import type { UseFormReturn } from "react-hook-form";
 
-export interface IInput {
-  name: keyof BookFormData;
-  label: string;
-  defaultValue?: string;
-}
-
 export interface IFormFieldConfig {
   name: keyof BookFormData;
   label: string;
@@ -21,4 +15,5 @@ export interface IBookFormProps {
   onSubmit: (values: BookFormData) => void | Promise<void>;
   isLoading: boolean;
   submitButtonText: string;
+  authorOptions?: { value: string; label: string }[];
 }

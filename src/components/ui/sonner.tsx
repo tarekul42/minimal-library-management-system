@@ -5,16 +5,20 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "lucide-react";
-import { useTheme } from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
+function ToasterInner(props: ToasterProps) {
+  const { theme: resolvedTheme } = useTheme();
+  const theme: ToasterProps["theme"] = (resolvedTheme as ToasterProps["theme"]) ?? "dark";
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={theme}
       className="toaster group"
+      position="bottom-right"
+      closeButton
+      richColors
       icons={{
         success: <CircleCheckIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,
@@ -33,6 +37,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
       {...props}
     />
   );
-};
+}
+
+const Toaster = (props: ToasterProps) => (
+  <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
+    <ToasterInner {...props} />
+  </ThemeProvider>
+);
 
 export { Toaster };

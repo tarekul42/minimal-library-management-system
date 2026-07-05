@@ -1,4 +1,4 @@
-import { availabilityOptions, genreOptions } from "@/fakeData/editBookData";
+import { GENRE_OPTIONS } from "@/config/constants";
 import type { IFormFieldConfig } from "@/types/form";
 
 export const bookFormFields: IFormFieldConfig[] = [
@@ -11,14 +11,14 @@ export const bookFormFields: IFormFieldConfig[] = [
   {
     name: "author",
     label: "Author",
-    placeholder: "Enter author name",
-    type: "text",
+    placeholder: "Select an author",
+    type: "select",
   },
   {
     name: "genre",
     label: "Genre",
     type: "select",
-    options: genreOptions,
+    options: GENRE_OPTIONS,
   },
   {
     name: "isbn",
@@ -33,6 +33,32 @@ export const bookFormFields: IFormFieldConfig[] = [
     type: "textarea",
   },
   {
+    name: "coverImage",
+    label: "Cover Image",
+    placeholder: "Upload a cover image",
+    type: "file",
+  },
+  {
+    name: "pages",
+    label: "Pages",
+    placeholder: "Number of pages",
+    type: "number",
+    min: 1,
+  },
+  {
+    name: "publisher",
+    label: "Publisher",
+    placeholder: "Publisher name",
+    type: "text",
+  },
+  {
+    name: "publishedYear",
+    label: "Published Year",
+    placeholder: "e.g. 2024",
+    type: "number",
+    min: 1000,
+  },
+  {
     name: "copies",
     label: "Copies",
     placeholder: "Enter copies",
@@ -40,9 +66,15 @@ export const bookFormFields: IFormFieldConfig[] = [
     min: 0,
   },
   {
-    name: "availability",
-    label: "Availability",
-    type: "select",
-    options: availabilityOptions,
+    name: "tags",
+    label: "Tags",
+    placeholder: "Comma-separated tags",
+    type: "text",
+  },
+  {
+    name: "shelfLocation",
+    label: "Shelf Location",
+    placeholder: "e.g. A3-12",
+    type: "text",
   },
 ];

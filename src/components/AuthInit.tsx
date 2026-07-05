@@ -16,15 +16,23 @@ export function AuthInit({ children }: { children: React.ReactNode }) {
 
     if (accessToken) return;
 
+    let cancelled = false;
+
     trigger()
       .unwrap()
       .then((data) => {
+        if (cancelled) return;
         dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
       })
       .catch((err) => {
+        if (cancelled) return;
         console.error("AuthInit: token refresh failed", err);
         dispatch(logout());
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [accessToken, dispatch, trigger]);
 
   return <>{children}</>;
